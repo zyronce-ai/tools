@@ -92,7 +92,7 @@ export function AppSidebar() {
       collapsed ? "w-[60px]" : "w-60"
     )}>
       <div className="flex items-center gap-2.5 px-4 h-14 border-b border-[#2A2A38] flex-shrink-0">
-        <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#FF6B35] to-[#7C3AED] flex items-center justify-center flex-shrink-0">
+        <div className="h-8 w-8 rounded-lg bg-[#FF6B35] flex items-center justify-center flex-shrink-0">
           <Sparkles className="h-4 w-4 text-white" />
         </div>
         {!collapsed && (
@@ -110,7 +110,7 @@ export function AppSidebar() {
                   onClick={() => toggleGroup(group.label)}
                   className="flex items-center gap-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-widest text-[#8888A0]/60 hover:text-[#8888A0] transition-colors"
                 >
-                  <div className={cn("h-1.5 w-1.5 rounded-full bg-gradient-to-r", group.color)} />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#FF6B35]" />
                   {group.label}
                   <ChevronDown className={cn("h-3 w-3 ml-auto transition-transform", groupOpen && "rotate-180")} />
                 </button>
@@ -135,7 +135,7 @@ export function AppSidebar() {
                     <div className={cn(
                       "h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200",
                       active
-                        ? "bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5"
+                        ? "bg-[#FF6B35]/10"
                         : "group-hover:bg-white/[0.04]"
                     )}>
                       <item.icon className="h-4 w-4" style={{ color: active ? '#FF6B35' : item.color }} />
@@ -168,7 +168,7 @@ export function AppSidebar() {
         {!collapsed ? (
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#7C3AED] flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+              <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
                 {initials}
               </div>
               <div className="flex-1 min-w-0">
@@ -176,14 +176,14 @@ export function AppSidebar() {
                 <p className="text-[11px] text-[#7C3AED] font-semibold">{plan} Plan</p>
               </div>
             </div>
-            <button className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-gradient-to-r from-[#FF6B35] to-[#e85d2a] text-white text-xs font-semibold hover:brightness-110 transition-all shadow-lg shadow-[#FF6B35]/20">
+            <button className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
               <Crown className="h-3.5 w-3.5" />
               Upgrade to Pro
             </button>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#7C3AED] flex items-center justify-center text-xs font-bold text-white">
+            <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-xs font-bold text-white">
               {initials}
             </div>
             <button className="h-7 w-7 rounded-lg bg-[#FF6B35] flex items-center justify-center hover:brightness-110 transition-all">

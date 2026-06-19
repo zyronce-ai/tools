@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { UserProfileDropdown } from "@/components/UserProfileDropdown";
-import { Bell, Search, Crown, Sparkles, Menu, X } from "lucide-react";
+import { Bell, Search, Crown, Sparkles, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,7 +30,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </button>
 
           <div className="hidden md:flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-[#FF6B35] to-[#7C3AED] flex items-center justify-center">
+            <div className="h-7 w-7 rounded-lg bg-[#FF6B35] flex items-center justify-center">
               <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
             <span className="font-heading text-sm font-bold text-[#F1F1F5]">NayraTools</span>
@@ -53,7 +51,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#FF6B35] rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>
             </button>
             <Link to="/api-settings">
-              <Button className="hidden sm:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#e85d2a] text-white text-xs font-semibold hover:brightness-110 transition-all shadow-lg shadow-[#FF6B35]/20">
+              <Button className="hidden sm:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
                 <Crown className="h-3.5 w-3.5" />
                 Upgrade to Pro
               </Button>

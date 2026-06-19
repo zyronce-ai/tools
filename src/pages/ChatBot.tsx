@@ -18,10 +18,10 @@ function extractText(content: string | any[]): string {
 function generateTitle(msg: string) { return msg.length > 30 ? msg.slice(0, 30) + "…" : msg; }
 
 const quickActions = [
-  { icon: "📦", label: "Write product description" },
-  { icon: "💰", label: "Calculate GST" },
-  { icon: "🏆", label: "Beat competitor price" },
-  { icon: "🖼️", label: "Suggest banner copy" },
+  { icon: "📦", label: "Write listing" },
+  { icon: "💰", label: "GST help" },
+  { icon: "🏆", label: "Beat competitor" },
+  { icon: "🖼️", label: "Banner copy" },
 ];
 
 export default function ChatBot() {
@@ -184,7 +184,7 @@ export default function ChatBot() {
               <MessageCircle className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#6D28D9] flex items-center justify-center shadow-lg shadow-[#7C3AED]/20">
+              <div className="h-8 w-8 rounded-xl bg-[#7C3AED] flex items-center justify-center">
                 <Bot className="h-4 w-4 text-white" />
               </div>
               <div>
@@ -214,7 +214,7 @@ export default function ChatBot() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="h-20 w-20 rounded-2xl bg-gradient-to-br from-[#FF6B35] to-[#7C3AED] flex items-center justify-center mb-6 shadow-2xl shadow-[#FF6B35]/20 animate-pulse-glow"
+                className="h-20 w-20 rounded-2xl bg-[#FF6B35] flex items-center justify-center mb-6 shadow-2xl shadow-[#FF6B35]/20 animate-pulse-glow"
               >
                 <Bot className="h-10 w-10 text-white" />
               </motion.div>
@@ -250,14 +250,14 @@ export default function ChatBot() {
                     className={cn("flex gap-3", msg.role === "user" ? "justify-end" : "justify-start")}
                   >
                     {msg.role === "assistant" && (
-                      <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#7C3AED]/20 to-[#7C3AED]/5 flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#7C3AED]/10">
+                      <div className="h-8 w-8 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Bot className="h-4 w-4 text-[#7C3AED]" />
                       </div>
                     )}
                     <div className={cn(
                       "max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed relative group",
                       msg.role === "user"
-                        ? "bg-gradient-to-br from-[#FF6B35] to-[#e85d2a] text-white rounded-br-md"
+                        ? "bg-[#FF6B35] text-white rounded-br-md"
                         : "bg-[#1E1E28] border border-[#2A2A38] border-l-[#7C3AED] border-l-2 rounded-bl-md"
                     )}>
                       {msg.role === "assistant" ? (
@@ -285,7 +285,7 @@ export default function ChatBot() {
                       </div>
                     </div>
                     {msg.role === "user" && (
-                      <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#FF6B35]/5 flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#FF6B35]/10">
+                      <div className="h-8 w-8 rounded-xl bg-[#FF6B35]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <User className="h-4 w-4 text-[#FF6B35]" />
                       </div>
                     )}
@@ -294,7 +294,7 @@ export default function ChatBot() {
               </AnimatePresence>
               {loading && messages[messages.length - 1]?.role !== "assistant" && (
                 <div className="flex gap-3">
-                  <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#7C3AED]/20 to-[#7C3AED]/5 flex items-center justify-center border border-[#7C3AED]/10">
+                  <div className="h-8 w-8 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center">
                     <Bot className="h-4 w-4 text-[#7C3AED]" />
                   </div>
                   <div className="bg-[#1E1E28] border border-[#2A2A38] border-l-[#7C3AED] border-l-2 rounded-2xl rounded-bl-md px-4 py-3">
@@ -340,7 +340,7 @@ export default function ChatBot() {
                   "h-8 w-8 rounded-xl flex items-center justify-center transition-all flex-shrink-0",
                   loading || (!input.trim() && !attachedImage)
                     ? "bg-[#2A2A38] text-[#8888A0]"
-                    : "bg-gradient-to-br from-[#FF6B35] to-[#e85d2a] text-white shadow-lg shadow-[#FF6B35]/20 hover:scale-105 active:scale-95"
+                    : "bg-[#FF6B35] text-white hover:scale-105 active:scale-95"
                 )}
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
