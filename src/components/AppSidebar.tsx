@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { title: "AI Chatbot", url: "/", icon: MessageCircle },
+  { title: "AI Chatbot", url: "/chat", icon: MessageCircle },
   { title: "Startup Guide", url: "/startup-guide", icon: Rocket },
   { title: "Image & Video Extractor", url: "/images", icon: ImageDown },
   { title: "Product Keywords", url: "/keywords", icon: Tags },
