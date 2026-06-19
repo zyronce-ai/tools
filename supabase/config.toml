@@ -1,0 +1,28 @@
+project_id = "hqsdjvixllofvkyvgrgh"
+
+[functions.chat]
+verify_jwt = false
+
+[functions.generate-content]
+verify_jwt = false
+
+[functions.product-keywords]
+verify_jwt = false
+
+[functions.competitor-analysis]
+verify_jwt = false
+
+[functions.banner-maker]
+verify_jwt = false
+
+[functions.bg-remover]
+verify_jwt = false
+
+[functions.listing-scorer]
+verify_jwt = false
+
+[functions.image-upscaler]
+verify_jwt = false
+
+[functions.elevenlabs-tts]
+verify_jwt = false

@@ -1,0 +1,16 @@
+{
+  "name": "Nayra Trendz - AI Ecommerce Tools",
+  "short_name": "Nayra Tools",
+  "description": "AI-powered ecommerce tools for sellers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
