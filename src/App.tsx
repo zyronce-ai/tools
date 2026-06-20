@@ -72,7 +72,7 @@ const DashboardRoutes = () => (
         <Route path="history" element={<ContentHistory />} />
         <Route path="images" element={<ImageExtractor />} />
         <Route path="keywords" element={<ProductKeywords />} />
-        <Route path="pricing" element={<PricingCalculator />} />
+        <Route path="pricing-calculator" element={<PricingCalculator />} />
         <Route path="competitor" element={<CompetitorAnalysis />} />
         <Route path="banner" element={<BannerMaker />} />
         <Route path="invoice" element={<GSTInvoice />} />

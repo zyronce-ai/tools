@@ -4,9 +4,11 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { UserProfileDropdown } from "@/components/UserProfileDropdown";
 import { Bell, Search, Crown, Sparkles, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PricingModal } from "@/components/PricingModal";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pricingOpen, setPricingOpen] = useState(false);
 
   return (
     <div className="dashboard-dark min-h-screen flex bg-[#0F0F13] text-[#F1F1F5]">
@@ -50,12 +52,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <Bell className="h-4 w-4" />
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#FF6B35] rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>
             </button>
-            <a href="/#pricing">
+            <button onClick={() => setPricingOpen(true)}>
               <Button className="hidden sm:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
                 <Crown className="h-3.5 w-3.5" />
                 Upgrade to Pro
               </Button>
-            </a>
+            </button>
             <UserProfileDropdown />
           </div>
         </header>
@@ -64,6 +66,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      <PricingModal open={pricingOpen} onClose={() => setPricingOpen(false)} />
     </div>
   );
 }

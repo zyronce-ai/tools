@@ -4,6 +4,7 @@ import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { PricingModal } from "@/components/PricingModal";
 
 type ToolGroup = {
   label: string;
@@ -49,7 +50,7 @@ const toolGroups: ToolGroup[] = [
     color: "from-emerald-500 to-emerald-600",
     items: [
       { title: "GST Invoice", url: "/invoice", icon: FileText, color: "#10B981" },
-      { title: "Pricing Calculator", url: "/pricing", icon: Calculator, color: "#10B981" },
+      { title: "Pricing Calculator", url: "/pricing-calculator", icon: Calculator, color: "#10B981" },
       { title: "Barcode/QR", url: "/barcode-generator", icon: QrCode, color: "#10B981" },
     ],
   },
@@ -70,6 +71,7 @@ export function AppSidebar() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>([]);
+  const [pricingOpen, setPricingOpen] = useState(false);
 
   const isActive = (url: string) => {
     if (url === "/chat") return location.pathname === "/chat";
@@ -176,22 +178,23 @@ export function AppSidebar() {
                 <p className="text-[11px] text-[#7C3AED] font-semibold">{plan} Plan</p>
               </div>
             </div>
-            <a href="/#pricing" className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
+            <button onClick={() => setPricingOpen(true)} className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
               <Crown className="h-3.5 w-3.5" />
               Upgrade to Pro
-            </a>
+            </button>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-xs font-bold text-white">
               {initials}
             </div>
-            <a href="/#pricing" className="h-7 w-7 rounded-lg bg-[#FF6B35] flex items-center justify-center hover:brightness-110 transition-all">
+            <button onClick={() => setPricingOpen(true)} className="h-7 w-7 rounded-lg bg-[#FF6B35] flex items-center justify-center hover:brightness-110 transition-all">
               <Crown className="h-3.5 w-3.5 text-white" />
-            </a>
+            </button>
           </div>
         )}
       </div>
+      <PricingModal open={pricingOpen} onClose={() => setPricingOpen(false)} />
     </div>
   );
 }

@@ -115,7 +115,9 @@ const LandingPage = () => {
             </Link>
             <nav className="hidden md:flex items-center gap-8">
               {["Features", "Pricing", "Blog", "About Us", "Contact"].map((item) => (
-                <Link key={item} to={item === "Blog" ? "/blog" : item === "About Us" ? "/about" : item === "Contact" ? "/contact" : `/${item.toLowerCase().replace(/\s+/g, "-")}`} className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</Link>
+                item === "Pricing"
+                  ? <a key={item} href="#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</a>
+                  : <Link key={item} to={item === "Blog" ? "/blog" : item === "About Us" ? "/about" : item === "Contact" ? "/contact" : `/${item.toLowerCase().replace(/\s+/g, "-")}`} className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</Link>
               ))}
             </nav>
             <div className="flex items-center gap-3">
@@ -124,7 +126,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        <AnimatePresence>{navOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden border-t border-gray-100 bg-white overflow-hidden"><div className="px-4 py-4 space-y-3"><Link to="/chat" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Features</Link><Link to="/pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Pricing</Link><Link to="/blog" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Blog</Link><Link to="/about" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>About Us</Link><Link to="/contact" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Contact</Link><Link to="/login"><Button className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2">Get Started Free</Button></Link></div></motion.div>}</AnimatePresence>
+        <AnimatePresence>{navOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden border-t border-gray-100 bg-white overflow-hidden"><div className="px-4 py-4 space-y-3"><Link to="/chat" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Features</Link><a href="#pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Pricing</a><Link to="/blog" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Blog</Link><Link to="/about" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>About Us</Link><Link to="/contact" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Contact</Link><Link to="/login"><Button className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2">Get Started Free</Button></Link></div></motion.div>}</AnimatePresence>
       </header>
 
       {/* HERO */}
