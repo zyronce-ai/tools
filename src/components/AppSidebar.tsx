@@ -69,7 +69,7 @@ export function AppSidebar() {
   const { user } = useAuth();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const [openGroups, setOpenGroups] = useState<string[]>(toolGroups.map(g => g.label));
+  const [openGroups, setOpenGroups] = useState<string[]>([]);
 
   const isActive = (url: string) => {
     if (url === "/chat") return location.pathname === "/chat";
