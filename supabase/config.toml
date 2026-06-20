@@ -1,5 +1,33 @@
 project_id = "hqsdjvixllofvkyvgrgh"
 
+[auth]
+site_url = "https://tool.nayratrendz.in"
+additional_redirect_urls = [
+  "https://tool.nayratrendz.in/*",
+  "https://lovable-project-d1096c27.vercel.app/*",
+  "http://localhost:8080/*",
+  "http://localhost:5173/*",
+]
+jwt_expiry = 86400
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[auth.external.github]
+enabled = true
+client_id = "Ov23liLrVXqzSxAUUxvm"
+secret = "env(GITHUB_CLIENT_SECRET)"
+redirect_uri = ""
+
+[auth.external.google]
+enabled = true
+client_id = "1063158139850-6pqtc7c50cflqbeb6hm0t71b7fleds85.apps.googleusercontent.com"
+secret = "env(GOOGLE_CLIENT_SECRET)"
+redirect_uri = ""
+
 [functions.chat]
 verify_jwt = false
 
