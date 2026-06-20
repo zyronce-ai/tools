@@ -43,6 +43,7 @@ const AboutUs = lazy(() => import("./pages/AboutUs"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Profile = lazy(() => import("./pages/Profile"));
 const ImageView = lazy(() => import("./pages/ImageView"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -114,6 +115,7 @@ const App = () => (
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/i/*" element={<ImageView />} />
                 <Route path="/*" element={<DashboardRoutes />} />
               </Routes>
