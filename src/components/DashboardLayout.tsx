@@ -50,12 +50,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <Bell className="h-4 w-4" />
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#FF6B35] rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>
             </button>
-            <Link to="/api-settings">
+            <a href="/#pricing">
               <Button className="hidden sm:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#FF6B35] text-white text-xs font-semibold hover:brightness-110 transition-all">
                 <Crown className="h-3.5 w-3.5" />
                 Upgrade to Pro
               </Button>
-            </Link>
+            </a>
             <UserProfileDropdown />
           </div>
         </header>
