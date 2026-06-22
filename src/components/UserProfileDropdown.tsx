@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { User, LogOut, Settings, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -20,8 +19,8 @@ export function UserProfileDropdown() {
 
   if (!user) return null;
 
-  const displayName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
-  const avatarUrl = user.user_metadata?.avatar_url;
+  const displayName = user.displayName || user.email?.split("@")[0] || "User";
+  const avatarUrl = user.avatarUrl;
   const initials = displayName.slice(0, 2).toUpperCase();
 
   const handleLogout = async () => {

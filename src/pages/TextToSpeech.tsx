@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, Play, Pause, Download, Loader2, Mic, Sparkles, User, AudioLines } from "lucide-react";
-import { useLang } from "@/lib/language-context";
 import { useToast } from "@/hooks/use-toast";
 
 const voices = [
@@ -35,12 +36,11 @@ const TextToSpeech = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const { t } = useLang();
   const { toast } = useToast();
 
   const generateSpeech = async () => {
     if (!text.trim()) {
-      toast({ title: t("tts.text_required"), variant: "destructive" });
+      toast({ title: "Enter some text first", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -68,10 +68,10 @@ const TextToSpeech = () => {
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
-      toast({ title: t("tts.success") });
+      toast({ title: "Speech generated successfully!" });
     } catch (err) {
       console.error(err);
-      toast({ title: t("tts.failed"), variant: "destructive" });
+      toast({ title: "Speech generation failed, try again", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -99,7 +99,8 @@ const TextToSpeech = () => {
   const charPercent = Math.min((text.length / 5000) * 100, 100);
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <main className="max-w-5xl mx-auto space-y-8">
+      <SEO title="Text to Speech" description="Convert text to natural-sounding speech" path="/text-to-speech" />
       {/* Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
@@ -115,8 +116,8 @@ const TextToSpeech = () => {
             <Mic className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("tts.title")}</h1>
-            <p className="text-muted-foreground mt-1">{t("tts.subtitle")}</p>
+            <h1 className="text-3xl font-bold tracking-tight">{"AI Text to Speech"}</h1>
+            <p className="text-muted-foreground mt-1">{"Convert your text to realistic speech with 18+ AI voices"}</p>
           </div>
         </div>
         <div className="relative z-10 flex gap-3 mt-5">
@@ -140,10 +141,10 @@ const TextToSpeech = () => {
           <Card className="h-full">
             <CardContent className="p-6 space-y-4 h-full flex flex-col">
               <label className="text-sm font-semibold flex items-center gap-2">
-                ✍️ {t("tts.text_label")}
+                ✍️ {"Enter Text"}
               </label>
               <Textarea
-                placeholder={t("tts.text_placeholder")}
+                placeholder={"Type or paste your text here... product description, ad copy, anything!"}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 rows={8}
@@ -169,12 +170,12 @@ const TextToSpeech = () => {
                 {loading ? (
                   <>
                     <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    {t("tts.generating")}
+                    {"Generating..."}
                   </>
                 ) : (
                   <>
                     <Volume2 className="h-5 w-5 mr-2" />
-                    {t("tts.generate_btn")}
+                    {"Generate Speech"}
                   </>
                 )}
               </Button>
@@ -191,7 +192,7 @@ const TextToSpeech = () => {
           <Card className="h-full">
             <CardContent className="p-5 space-y-3">
               <label className="text-sm font-semibold flex items-center gap-2">
-                🎙️ {t("tts.voice_label")}
+                🎙️ {"Choose Voice"}
               </label>
               <div className="grid grid-cols-1 gap-2 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
                 {voices.map((voice) => (
@@ -233,7 +234,7 @@ const TextToSpeech = () => {
             <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-accent/5">
               <CardContent className="p-6 space-y-4">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
-                  🎧 {t("tts.result")}
+                  🎧 {"Generated Audio 🎧"}
                 </h2>
 
                 <audio
@@ -260,13 +261,13 @@ const TextToSpeech = () => {
                   </motion.div>
                 </div>
 
-                <p className="text-xs text-muted-foreground text-center">{t("tts.tip")}</p>
+                <p className="text-xs text-muted-foreground text-center">{"💡 Try different voices for different content — formal, casual, narrative!"}</p>
               </CardContent>
             </Card>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </main>
   );
 };
 

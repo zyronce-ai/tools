@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,13 +9,12 @@ import { ClipboardCheck, Loader2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { streamFromEdge } from "@/lib/ai-stream";
 import ReactMarkdown from "react-markdown";
-import { useLang } from "@/lib/language-context";
 import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
+import { SEO } from "@/components/SEO";
 
 export default function ListingScorer() {
   const { toast } = useToast();
-  const { t } = useLang();
   const [listingUrl, setListingUrl] = useState("");
   const [platform, setPlatform] = useState("auto");
   const [result, setResult] = useState("");
@@ -22,7 +22,7 @@ export default function ListingScorer() {
   const [copied, setCopied] = useState(false);
 
   const analyze = async () => {
-    if (!listingUrl.trim()) { toast({ title: t("scorer.url_required"), variant: "destructive" }); return; }
+    if (!listingUrl.trim()) { toast({ title: "Enter product listing URL", variant: "destructive" }); return; }
     setLoading(true); setResult("");
     try {
       let content = "";
@@ -39,25 +39,27 @@ export default function ListingScorer() {
   const copyResult = () => { navigator.clipboard.writeText(result); setCopied(true); setTimeout(() => setCopied(false), 2000); toast({ title: "Copied! ✅" }); };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main>
+      <SEO title="Listing Scorer" description="Score and optimize your product listings for better sales" path="/listing-scorer" />
+      <div className="space-y-6 max-w-4xl mx-auto">
       <AnimatePresence>
         {loading && !result && <ToolLoadingOverlay message="Scoring your listing…" />}
       </AnimatePresence>
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><ClipboardCheck className="h-6 w-6 text-primary" />{t("scorer.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("scorer.subtitle")}</p>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><ClipboardCheck className="h-6 w-6 text-primary" />{"Listing Quality Scorer"}</h1>
+        <p className="text-muted-foreground mt-1">{"Paste your product listing link — AI will score it and give improvement tips"}</p>
       </div>
 
       <Card>
         <CardHeader><CardTitle className="text-lg">Product Listing</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label>{t("scorer.url_label")}</Label>
+            <Label>{"Product Listing URL *"}</Label>
             <Input placeholder="e.g. https://www.flipkart.com/product/..." value={listingUrl} onChange={(e) => setListingUrl(e.target.value)} />
-            <p className="text-xs text-muted-foreground mt-1">{t("scorer.url_hint")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{"Paste any Flipkart, Meesho, or Amazon product link"}</p>
           </div>
           <div>
-            <Label>{t("pricing.platform")}</Label>
+            <Label>{"Platform"}</Label>
             <Select value={platform} onValueChange={setPlatform}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -70,7 +72,7 @@ export default function ListingScorer() {
           </div>
           <Button onClick={analyze} disabled={loading} className="w-full" size="lg">
             {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ClipboardCheck className="h-4 w-4 mr-2" />}
-            {loading ? t("scorer.analyzing") : t("scorer.analyze")}
+            {loading ? "Analyzing..." : "Analyze Listing"}
           </Button>
         </CardContent>
       </Card>
@@ -78,12 +80,13 @@ export default function ListingScorer() {
       {result && (
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg">{t("scorer.result")}</CardTitle>
+            <CardTitle className="text-lg">{"Analysis Report"}</CardTitle>
             <Button variant="outline" size="sm" onClick={copyResult}>{copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}</Button>
           </CardHeader>
           <CardContent><div className="prose prose-sm dark:prose-invert max-w-none"><ReactMarkdown>{result}</ReactMarkdown></div></CardContent>
         </Card>
       )}
     </div>
+    </main>
   );
 }

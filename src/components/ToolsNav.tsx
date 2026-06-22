@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useLang } from "@/lib/language-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,7 +31,6 @@ const tools = [
 
 export function ToolsNav() {
   const location = useLocation();
-  const { lang, setLang, t } = useLang();
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
 
   useEffect(() => {
@@ -70,9 +68,6 @@ export function ToolsNav() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setLang(lang === "en" ? "hi" : "en")}>
-          <Languages className="h-4 w-4" />
-        </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDark(!dark)}>
           {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>

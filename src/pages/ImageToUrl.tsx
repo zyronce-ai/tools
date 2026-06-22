@@ -1,4 +1,6 @@
 import { useState, useCallback } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,7 +104,8 @@ const ImageToUrl = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <main className="max-w-4xl mx-auto space-y-6">
+      <SEO title="Image to URL" description="Upload images and get shareable URLs instantly" path="/image-to-url" />
       <div>
         <h1 className="text-2xl font-bold text-foreground">Image to URL</h1>
         <p className="text-muted-foreground mt-1">Upload multiple images and get their public URLs instantly</p>
@@ -185,7 +188,7 @@ const ImageToUrl = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

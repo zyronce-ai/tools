@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, IndianRupee, TrendingUp, Package } from "lucide-react";
-import { useLang } from "@/lib/language-context";
+import { SEO } from "@/components/SEO";
 
 type Platform = "flipkart" | "meesho" | "amazon" | "website";
 
@@ -23,7 +24,6 @@ export default function PricingCalculator() {
   const [packagingCost, setPackagingCost] = useState("15");
   const [shippingCost, setShippingCost] = useState("");
   const [results, setResults] = useState<any>(null);
-  const { t } = useLang();
 
   const calculate = () => {
     const cp = parseFloat(costPrice) || 0;
@@ -56,18 +56,20 @@ export default function PricingCalculator() {
   const suggestions = costPrice ? suggestPrice() : [];
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main>
+      <SEO title="Pricing Calculator" description="Calculate optimal pricing for your ecommerce products" path="/pricing-calculator" />
+      <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Calculator className="h-6 w-6 text-primary" />{t("pricing.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("pricing.subtitle")}</p>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><Calculator className="h-6 w-6 text-primary" />{"Pricing Calculator"}</h1>
+        <p className="text-muted-foreground mt-1">{"Calculate platform commission, shipping & profit margin"}</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle className="text-lg">{t("pricing.product_details")}</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-lg">{"Product Details"}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>{t("pricing.platform")}</Label>
+              <Label>{"Platform"}</Label>
               <Select value={platform} onValueChange={(v) => setPlatform(v as Platform)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -77,18 +79,18 @@ export default function PricingCalculator() {
                 </SelectContent>
               </Select>
             </div>
-            <div><Label>{t("pricing.cost_price")}</Label><Input type="number" placeholder="e.g. 200" value={costPrice} onChange={(e) => setCostPrice(e.target.value)} /></div>
-            <div><Label>{t("pricing.selling_price")}</Label><Input type="number" placeholder="e.g. 499" value={sellingPrice} onChange={(e) => setSellingPrice(e.target.value)} /></div>
-            <div><Label>{t("pricing.packaging")}</Label><Input type="number" placeholder="e.g. 15" value={packagingCost} onChange={(e) => setPackagingCost(e.target.value)} /></div>
-            <div><Label>{t("pricing.shipping")}</Label><Input type="number" placeholder={`Default: ₹${platformCommissions[platform].shipping}`} value={shippingCost} onChange={(e) => setShippingCost(e.target.value)} /></div>
-            <Button onClick={calculate} className="w-full" size="lg"><IndianRupee className="h-4 w-4 mr-2" /> {t("pricing.calculate")}</Button>
+            <div><Label>{"Cost Price (₹) - Product cost"}</Label><Input type="number" placeholder="e.g. 200" value={costPrice} onChange={(e) => setCostPrice(e.target.value)} /></div>
+            <div><Label>{"Selling Price (₹) - Price to sell at"}</Label><Input type="number" placeholder="e.g. 499" value={sellingPrice} onChange={(e) => setSellingPrice(e.target.value)} /></div>
+            <div><Label>{"Packaging Cost (₹)"}</Label><Input type="number" placeholder="e.g. 15" value={packagingCost} onChange={(e) => setPackagingCost(e.target.value)} /></div>
+            <div><Label>{"Shipping Cost (₹) - Leave empty for default"}</Label><Input type="number" placeholder={`Default: ₹${platformCommissions[platform].shipping}`} value={shippingCost} onChange={(e) => setShippingCost(e.target.value)} /></div>
+            <Button onClick={calculate} className="w-full" size="lg"><IndianRupee className="h-4 w-4 mr-2" /> {"Calculate Profit"}</Button>
           </CardContent>
         </Card>
 
         <div className="space-y-4">
           {results && (
             <Card className={results.profit >= 0 ? "border-green-500/50" : "border-destructive/50"}>
-              <CardHeader><CardTitle className="text-lg flex items-center gap-2"><TrendingUp className="h-5 w-5" />{t("pricing.breakdown")} - {platformCommissions[platform].label}</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="text-lg flex items-center gap-2"><TrendingUp className="h-5 w-5" />{"Profit Breakdown"} - {platformCommissions[platform].label}</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <Row label="Selling Price" value={results.sellingPrice} />
@@ -111,7 +113,7 @@ export default function PricingCalculator() {
 
           {suggestions.length > 0 && (
             <Card>
-              <CardHeader><CardTitle className="text-lg flex items-center gap-2"><Package className="h-5 w-5" />{t("pricing.suggested")}</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="text-lg flex items-center gap-2"><Package className="h-5 w-5" />{"Suggested Selling Prices"}</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-2">
                   {suggestions.map((s) => (
@@ -121,13 +123,14 @@ export default function PricingCalculator() {
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-muted-foreground mt-3">{t("pricing.click_tip")}</p>
+                <p className="text-xs text-muted-foreground mt-3">{"👆 Click to set selling price, then Calculate"}</p>
               </CardContent>
             </Card>
           )}
         </div>
       </div>
     </div>
+    </main>
   );
 }
 

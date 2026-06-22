@@ -42,7 +42,7 @@ For each review, provide:
 - How to get genuine reviews for your products
 - How to report fake reviews on each platform
 
-Use Hinglish where helpful for Indian sellers.`;
+Provide clear English responses.`;
 
     const response = await callAI([
       { role: "user", content: prompt },

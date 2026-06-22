@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { SEO } from "@/components/SEO";
 import { useAuth } from "@/hooks/useAuth";
+import { getFirebaseToken } from "@/lib/firebase";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,8 +23,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      setFullName(user.user_metadata?.full_name || "");
-      setAvatarUrl(user.user_metadata?.avatar_url || "");
+      setFullName(user.displayName || "");
+      setAvatarUrl(user.avatarUrl || "");
     }
   }, [user]);
 
@@ -49,8 +51,13 @@ const Profile = () => {
       const url = data.publicUrl + "?t=" + Date.now();
       setAvatarUrl(url);
 
-      await supabase.auth.updateUser({ data: { avatar_url: url } });
-      toast({ title: "Profile picture updated! 📸" });
+      const token = await getFirebaseToken();
+      await fetch("/api/auth/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ avatar_url: url }),
+      });
+      toast({ title: "Profile picture updated! ✅" });
     } catch (err: any) {
       toast({ title: "Upload failed", description: err.message, variant: "destructive" });
     } finally {
@@ -62,12 +69,16 @@ const Profile = () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { error } = await supabase.auth.updateUser({ data: { full_name: fullName } });
-      if (error) throw error;
+      const token = await getFirebaseToken();
+      await fetch("/api/auth/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ full_name: fullName, avatar_url: avatarUrl }),
+      });
 
       await supabase
         .from("profiles")
-        .update({ full_name: fullName, avatar_url: avatarUrl, updated_at: new Date().toISOString() })
+        .upsert({ id: user.id, full_name: fullName, avatar_url: avatarUrl, updated_at: new Date().toISOString() })
         .eq("id", user.id);
 
       toast({ title: "Profile updated successfully! ✅" });
@@ -83,7 +94,8 @@ const Profile = () => {
   const initials = (fullName || user.email || "U").slice(0, 2).toUpperCase();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <main className="max-w-2xl mx-auto space-y-6">
+      <SEO title="Profile" description="Manage your account profile and preferences" path="/profile" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <User className="h-7 w-7 text-primary" />
@@ -157,7 +169,7 @@ const Profile = () => {
           </CardContent>
         </Card>
       </motion.div>
-    </div>
+    </main>
   );
 };
 

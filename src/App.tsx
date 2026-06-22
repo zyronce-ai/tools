@@ -4,9 +4,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import { OrganizationSchema, WebSiteSchema } from "@/components/JsonLd";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { LangProvider } from "@/lib/language-context";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
 // Lazy load all pages
@@ -100,10 +101,12 @@ const DashboardRoutes = () => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
    <AuthProvider>
-      <LangProvider>
-        <TooltipProvider>
+      <TooltipProvider>
           <Toaster />
           <Sonner />
+          <HelmetProvider>
+            <OrganizationSchema />
+            <WebSiteSchema />
           <BrowserRouter>
             <Suspense fallback={<PageLoader />}>
               <Routes>
@@ -121,8 +124,8 @@ const App = () => (
               </Routes>
             </Suspense>
           </BrowserRouter>
+          </HelmetProvider>
         </TooltipProvider>
-      </LangProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

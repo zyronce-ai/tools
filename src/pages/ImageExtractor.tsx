@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageDown, Loader2, Globe, Download, AlertTriangle, ExternalLink, Video, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useLang } from "@/lib/language-context";
+import { SEO } from "@/components/SEO";
 
 interface ExtractResult { images: string[]; videos?: string[]; pageTitle: string; totalFound: number; totalVideos?: number; }
 
@@ -16,7 +17,6 @@ const ImageExtractor = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ExtractResult | null>(null);
   const { toast } = useToast();
-  const { t } = useLang();
 
   const handleExtract = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,13 +69,15 @@ const ImageExtractor = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <main>
+      <SEO title="Image Extractor" description="Extract text and data from images using AI" path="/images" />
+      <div className="max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold flex items-center gap-2 mb-1">
           <ImageDown className="h-7 w-7 text-accent" />
-          {t("images.title")}
+          {"Image Extractor"}
         </h1>
-        <p className="text-muted-foreground mb-3">{t("images.subtitle")}</p>
+        <p className="text-muted-foreground mb-3">{"Enter any website URL and extract all images"}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
@@ -90,8 +92,8 @@ const ImageExtractor = () => {
           <div className="flex items-start gap-2 text-sm">
             <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
             <p className="text-muted-foreground">
-              {t("images.disclaimer")}
-              <Link to="/privacy-policy" className="text-primary hover:underline ml-1">{t("images.read_privacy")}</Link>
+              {"This tool is for educational purposes only. Image copyrights belong to their original owners."}
+              <Link to="/privacy-policy" className="text-primary hover:underline ml-1">{"Read Privacy Policy"}</Link>
             </p>
           </div>
         </Card>
@@ -119,12 +121,12 @@ const ImageExtractor = () => {
                 </div>
                 {result.images.length > 0 && (
                   <Button variant="outline" onClick={downloadAll} size="sm">
-                    <Download className="h-4 w-4 mr-2" />{t("images.download_all")}
+                    <Download className="h-4 w-4 mr-2" />{"Download All"}
                   </Button>
                 )}
               </div>
               {result.images.length === 0 ? (
-                <Card className="p-8 text-center"><p className="text-muted-foreground">{t("images.no_images")}</p></Card>
+                <Card className="p-8 text-center"><p className="text-muted-foreground">{"No images found on this page"}</p></Card>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {result.images.map((img, i) => (
@@ -172,6 +174,7 @@ const ImageExtractor = () => {
         </AnimatePresence>
       </motion.div>
     </div>
+    </main>
   );
 };
 

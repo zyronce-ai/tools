@@ -1,16 +1,51 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { UserProfileDropdown } from "@/components/UserProfileDropdown";
 import { Bell, Search, Crown, Sparkles, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PricingModal } from "@/components/PricingModal";
+import { BreadcrumbSchema } from "@/components/JsonLd";
+
+const breadcrumbNames: Record<string, string> = {
+  "chat": "AI Chat",
+  "history": "Content History",
+  "images": "Image Extractor",
+  "keywords": "Keyword Research",
+  "pricing-calculator": "Pricing Calculator",
+  "competitor": "Competitor Analysis",
+  "banner": "Banner Maker",
+  "invoice": "GST Invoice",
+  "bg-remover": "Background Remover",
+  "listing-scorer": "Listing Scorer",
+  "image-upscaler": "Image Upscaler",
+  "text-to-speech": "Text to Speech",
+  "image-to-url": "Image to URL",
+  "logo-maker": "Logo Maker",
+  "trending-products": "Trending Products",
+  "fake-review-detector": "Fake Review Detector",
+  "product-seo": "Product SEO",
+  "startup-guide": "Startup Guide",
+  "api-settings": "API Settings",
+  "barcode-generator": "Barcode Generator",
+  "image-compressor": "Image Compressor",
+  "profile": "Profile",
+};
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pricingOpen, setPricingOpen] = useState(false);
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const firstSegment = pathSegments[0] || "";
+  const breadcrumbItems = [{ name: "Home", path: "/" }];
+  if (firstSegment && breadcrumbNames[firstSegment]) {
+    breadcrumbItems.push({ name: breadcrumbNames[firstSegment], path: `/${firstSegment}` });
+  }
 
   return (
+    <>
+    <BreadcrumbSchema items={breadcrumbItems} />
     <div className="dashboard-dark min-h-screen flex bg-[#0F0F13] text-[#F1F1F5]">
       <div className="hidden md:flex">
         <AppSidebar />
@@ -68,5 +103,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       </div>
       <PricingModal open={pricingOpen} onClose={() => setPricingOpen(false)} />
     </div>
+    </>
   );
 }

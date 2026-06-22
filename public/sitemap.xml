@@ -1,33 +1,183 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yourdomain.com/</loc>
+    <loc>https://tool.nayratrendz.in/</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/blog</loc>
+    <loc>https://tool.nayratrendz.in/login</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/pricing</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/chat</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/about</loc>
+    <loc>https://tool.nayratrendz.in/blog</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/about</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/contact</loc>
+    <loc>https://tool.nayratrendz.in/contact</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/terms</loc>
+    <loc>https://tool.nayratrendz.in/terms</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/privacy-policy</loc>
+    <loc>https://tool.nayratrendz.in/privacy-policy</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/content-writer</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/keywords</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/banner</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/invoice</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/bg-remover</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/listing-scorer</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/image-upscaler</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/text-to-speech</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/image-extractor</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/image-to-url</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/logo-maker</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/trending-products</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/fake-review-detector</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/product-seo</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/startup-guide</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/api-settings</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/barcode-generator</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/image-compressor</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/pricing-calculator</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/profile</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tool.nayratrendz.in/content-history</loc>
+    <lastmod>2026-06-22T17:29:35.490Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset>

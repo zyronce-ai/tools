@@ -31,7 +31,7 @@ ${platformInstructions[platform] || "Write engaging content."}
 ${toneInstructions[tone] || "Use a professional tone."}
 
 Write the content directly without any preamble. The content should be ready to use.
-Respond in the same language the topic is written in (Hindi, English, or Hinglish).`;
+Respond in English only.`;
 
     const response = await callAI([
       { role: "system", content: systemPrompt },

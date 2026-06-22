@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Sparkles, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PricingSection } from "@/components/PricingSection";
 import { useState } from "react";
+import { SEO } from "@/components/SEO";
 
 const PricingPage = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -31,9 +33,10 @@ const PricingPage = () => {
         </div>
       </header>
 
-      <div className="pt-8">
+      <main className="pt-8">
+        <SEO title="Pricing Plans" description="Affordable AI ecommerce tools pricing for Indian sellers. Free plan available with access to chatbot, keywords & image tools." path="/pricing" />
         <PricingSection showHeader={true} showTable={true} />
-      </div>
+      </main>
 
       <footer className="bg-gray-900 text-gray-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

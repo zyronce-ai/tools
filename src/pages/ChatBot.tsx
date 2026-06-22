@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Loader2, Bot, User, Plus, Trash2, MessageCircle, ImagePlus, X, Sparkles, Copy, Check, Settings } from "lucide-react";
@@ -8,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { SEO } from "@/components/SEO";
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 function extractText(content: string | any[]): string {
@@ -136,7 +138,7 @@ export default function ChatBot() {
   const renderMessageContent = (content: string | any[]) => {
     if (typeof content === "string") return content;
     return content.map((part, i) => {
-      if (part.type === "image_url") return <img key={i} src={part.image_url?.url} alt="" className="max-w-[300px] rounded-lg my-1 border border-[#2A2A38]" />;
+      if (part.type === "image_url") return <img key={i} src={part.image_url?.url} alt="User uploaded image for AI analysis" className="max-w-[300px] rounded-lg my-1 border border-[#2A2A38]" />;
       if (part.type === "text") return <span key={i}>{part.text}</span>;
       return null;
     });
@@ -145,7 +147,9 @@ export default function ChatBot() {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden">
+    <main>
+      <SEO title="AI Chat Assistant for Ecommerce" description="Chat with AI for ecommerce product research, listing advice, and content ideas. Free AI chatbot for Amazon & Flipkart sellers." path="/chat" />
+      <div className="flex h-[calc(100vh-3.5rem)] overflow-hidden">
       <AnimatePresence>
         {historyOpen && (
           <>
@@ -314,7 +318,7 @@ export default function ChatBot() {
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className="max-w-3xl mx-auto">
             {attachedImage && (
               <div className="relative inline-block mb-2">
-                <img src={attachedImage} alt="" className="h-16 rounded-lg border border-[#2A2A38]" />
+                <img src={attachedImage} alt="Preview of selected product image" className="h-16 rounded-lg border border-[#2A2A38]" />
                 <button type="button" className="absolute -top-1.5 -right-1.5 bg-[#FF6B35] text-white rounded-full h-5 w-5 flex items-center justify-center shadow-lg" onClick={() => setAttachedImage(null)}><X className="h-3 w-3" /></button>
               </div>
             )}
@@ -329,7 +333,7 @@ export default function ChatBot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onPaste={handlePaste}
-                placeholder="Kuch bhi poocho..."
+                placeholder="Ask me anything..."
                 disabled={loading}
                 className="flex-1 bg-transparent border-0 outline-none text-sm text-[#F1F1F5] placeholder-[#8888A0]/60 py-2 focus:ring-0"
               />
@@ -351,5 +355,6 @@ export default function ChatBot() {
         </div>
       </div>
     </div>
+    </main>
   );
 }

@@ -1,10 +1,12 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { SEO } from "@/components/SEO";
 import { ArrowLeft, Calendar, User, BookOpen, Share2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
 import { getBlogPost, getBlogPosts } from "./Blog";
+import { ArticleSchema } from "@/components/JsonLd";
 
 const categories: Record<string, string> = {
   "ecommerce-tips": "Ecommerce Tips",
@@ -21,14 +23,17 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <>
+      <SEO title="Post Not Found" description="The requested blog post was not found" path={`/blog/${slug}`} />
+      <main className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-bold">Post Not Found</h1>
           <Button asChild>
             <Link to="/blog">Back to Blog</Link>
           </Button>
         </div>
-      </div>
+      </main>
+      </>
     );
   }
 
@@ -41,7 +46,10 @@ const BlogPost = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+    <SEO title={post?.title || "Blog Post"} description={post?.excerpt || "Ecommerce blog post"} path={`/blog/${slug}`} />
+    <ArticleSchema title={post.title} description={post.excerpt || ""} image={post.image || ""} datePublished={post.created_at || post.date || new Date().toISOString()} />
+    <main className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -153,7 +161,8 @@ const BlogPost = () => {
           © 2026 NayraTools. All rights reserved.
         </div>
       </footer>
-    </div>
+    </main>
+    </>
   );
 };
 

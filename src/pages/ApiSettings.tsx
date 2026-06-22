@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,21 +17,22 @@ export default function ApiSettings() {
 
   const handleSave = () => {
     if (!key.trim()) {
-      toast({ title: "API key daalo!", variant: "destructive" });
+      toast({ title: "Enter API key!", variant: "destructive" });
       return;
     }
     setGeminiApiKey(key.trim());
-    toast({ title: "✅ Gemini API Key saved!", description: "Ab saare tools aapki apni key se chalenge" });
+    toast({ title: "✅ Gemini API Key saved!", description: "Now all tools will run on your own key" });
   };
 
   const handleRemove = () => {
     removeGeminiApiKey();
     setKey("");
-    toast({ title: "API Key remove ho gayi", description: "Ab default system use hoga" });
+    toast({ title: "API Key removed", description: "Ab default system use hoga" });
   };
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <main className="space-y-6 max-w-2xl mx-auto">
+      <SEO title="API Settings" description="Manage your API keys and integrations" path="/api-settings" />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Key className="h-6 w-6 text-primary" />
@@ -52,13 +55,13 @@ export default function ApiSettings() {
               <li>
                 <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-primary underline inline-flex items-center gap-1">
                   Google AI Studio <ExternalLink className="h-3 w-3" />
-                </a> pe jaao
+                </a> go to
               </li>
-              <li>Google account se sign in karo</li>
-              <li>"Create API Key" pe click karo</li>
-              <li>Key copy karo aur yahan paste karo</li>
+              <li>Sign in with Google account</li>
+              <li>Click on "Create API Key"</li>
+              <li>Copy the key and paste it here</li>
             </ol>
-            <p className="text-xs text-muted-foreground mt-2">💡 Google free mein 15 RPM (requests per minute) deta hai — personal use ke liye kaafi hai!</p>
+            <p className="text-xs text-muted-foreground mt-2">💡 Google gives 15 RPM (requests per minute) for free — enough for personal use!</p>
           </div>
 
           <div>
@@ -91,12 +94,12 @@ export default function ApiSettings() {
           )}
 
           <div className="bg-muted/20 rounded-lg p-3 text-xs text-muted-foreground space-y-1">
-            <p>🔒 <strong>Safe hai</strong> — Key sirf aapke browser mein save hoti hai, server pe nahi jaati</p>
-            <p>⚡ <strong>Unlimited use</strong> — Google ke free tier mein 1500 requests/day milte hain</p>
-            <p>🔄 <strong>Auto-switch</strong> — Agar key set hai to Gemini direct use hoga, nahi to default system chalega</p>
+            <p>🔒 <strong>Safe</strong> — Key is only saved in your browser, not sent to server</p>
+            <p>⚡ <strong>Unlimited use</strong> — Google's free tier gives 1500 requests/day</p>
+            <p>🔄 <strong>Auto-switch</strong> — If key is set, Gemini will be used directly, otherwise default system runs</p>
           </div>
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 }

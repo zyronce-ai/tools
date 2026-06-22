@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { SEO } from "@/components/SEO";
 import { ArrowLeft, Calendar, Tag, User, ChevronRight, TrendingUp, BookOpen, Sparkles, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -328,7 +330,9 @@ const Blog = () => {
   const regularPosts = filteredPosts.filter(p => !p.featured || activeCategory !== "all" || searchQuery !== "");
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+    <SEO title="Ecommerce Blog" description="Ecommerce selling tips, AI tool guides, and product listing strategies for Amazon, Flipkart & Shopify sellers in India" path="/blog" />
+    <main className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -585,7 +589,8 @@ const Blog = () => {
           © 2026 NayraTools. All rights reserved.
         </div>
       </footer>
-    </div>
+    </main>
+    </>
   );
 };
 

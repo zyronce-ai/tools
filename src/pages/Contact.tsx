@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { ArrowLeft, Mail, MessageCircle } from "lucide-react";
+import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,7 +24,9 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+    <SEO title="Contact Us" description="Get in touch with the NayraTools team" path="/contact" />
+    <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-2xl mx-auto px-4 py-12">
         <Button variant="ghost" asChild className="mb-6">
           <Link to="/"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Home</Link>
@@ -85,7 +89,8 @@ const Contact = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
+    </>
   );
 };
 

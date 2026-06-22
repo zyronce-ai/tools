@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ export default function FakeReviewDetector() {
 
   const analyze = async () => {
     if (!reviews.trim()) {
-      toast({ title: "Reviews paste karo!", variant: "destructive" });
+      toast({ title: "Paste reviews!", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -39,9 +41,10 @@ export default function FakeReviewDetector() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main className="space-y-6 max-w-4xl mx-auto">
+      <SEO title="Fake Review Detector" description="Detect fake reviews using AI analysis" path="/fake-review-detector" />
       <AnimatePresence>
-        {loading && !result && <ToolLoadingOverlay message="Reviews analyze ho rahe hain…" />}
+        {loading && !result && <ToolLoadingOverlay message="Analyzing reviews…" />}
       </AnimatePresence>
 
       <div>
@@ -49,14 +52,14 @@ export default function FakeReviewDetector() {
           <ShieldAlert className="h-6 w-6 text-primary" />
           Fake Review Detector
         </h1>
-        <p className="text-muted-foreground mt-1">Competitors ke fake reviews detect karo — AI powered analysis</p>
+        <p className="text-muted-foreground mt-1">Detect fake reviews from competitors — AI powered analysis</p>
       </div>
 
       <Card>
         <CardHeader><CardTitle className="text-lg">Paste Reviews</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label>Reviews (ek line mein ek review ya copy-paste karein)</Label>
+            <Label>Reviews (one review per line or copy-paste)</Label>
             <Textarea
               placeholder={"Review 1: This product is amazing, best purchase ever!\nReview 2: Very good quality, I love it so much...\nReview 3: Okay product, packaging was damaged but item is fine."}
               value={reviews}
@@ -65,7 +68,7 @@ export default function FakeReviewDetector() {
               className="mt-1"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              💡 Amazon/Flipkart se reviews copy karke paste karo — AI detect karega kaunse fake hain
+              💡 Copy reviews from Amazon/Flipkart and paste — AI will detect which ones are fake
             </p>
           </div>
           <Button onClick={analyze} disabled={loading} className="w-full" size="lg">
@@ -82,6 +85,6 @@ export default function FakeReviewDetector() {
           </CardContent>
         </Card>
       )}
-    </div>
+    </main>
   );
 }

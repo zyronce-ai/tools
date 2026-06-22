@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Shield, AlertTriangle, Scale, Ban, Globe, Lock } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useLang } from "@/lib/language-context";
+import { SEO } from "@/components/SEO";
 
 const PrivacyPolicy = () => {
-  const { lang } = useLang();
-
-  if (lang === "en") {
-    return (
-      <div className="max-w-3xl mx-auto">
+  return (
+    <>
+    <SEO title="Privacy Policy" description="Privacy policy for NayraTools" path="/privacy-policy" />
+      <main className="max-w-3xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-3xl font-bold flex items-center gap-2 mb-6">
             <Shield className="h-7 w-7 text-accent" />
@@ -115,91 +115,8 @@ const PrivacyPolicy = () => {
             </Card>
           </div>
         </motion.div>
-      </div>
-    );
-  }
-
-  // Hindi/Hinglish version
-  return (
-    <div className="max-w-3xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold flex items-center gap-2 mb-6">
-          <Shield className="h-7 w-7 text-accent" />
-          Privacy Policy & Disclaimer
-        </h1>
-
-        <div className="space-y-4">
-          <Card className="p-6 border-border/50">
-            <h2 className="text-xl font-semibold flex items-center gap-2 mb-3">
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-              Disclaimer (अस्वीकरण)
-            </h2>
-            <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
-              <p>
-                यह tool सिर्फ <strong className="text-foreground">educational और personal use</strong> के लिए बनाया गया है।
-                हम किसी भी website की images, content, या data के owner नहीं हैं।
-              </p>
-              <p>
-                इस tool का उपयोग करके download की गई सभी images उनके <strong className="text-foreground">original creators/owners</strong> की 
-                intellectual property हैं। हम इन images के किसी भी प्रकार के misuse, unauthorized distribution, 
-                या commercial use के लिए <strong className="text-foreground">जिम्मेदार नहीं हैं।</strong>
-              </p>
-              <p>
-                User इस tool का उपयोग <strong className="text-foreground">अपनी जिम्मेदारी</strong> पर करता है। 
-                किसी भी copyright violation के लिए user स्वयं जिम्मेदार होगा।
-              </p>
-            </div>
-          </Card>
-
-          <Card className="p-6 border-border/50">
-            <h2 className="text-xl font-semibold flex items-center gap-2 mb-3">
-              <Scale className="h-5 w-5 text-primary" />
-              Terms of Use (उपयोग की शर्तें)
-            </h2>
-            <ul className="space-y-2 text-muted-foreground text-sm leading-relaxed list-disc list-inside">
-              <li>इस tool का उपयोग केवल <strong className="text-foreground">legal purposes</strong> के लिए करें।</li>
-              <li>Download की गई images को <strong className="text-foreground">commercial purpose</strong> के लिए use न करें बिना original owner की permission के।</li>
-              <li>किसी भी website की images को बिना permission <strong className="text-foreground">re-distribute</strong> न करें।</li>
-              <li>इस tool के developers किसी भी <strong className="text-foreground">legal dispute</strong> में party नहीं होंगे।</li>
-              <li>यह tool publicly available content को ही extract करता है।</li>
-              <li>किसी भी प्रकार के <strong className="text-foreground">counterfeit listings</strong> या fake advertisements बनाने के लिए images का use करना सख्त मना है।</li>
-            </ul>
-          </Card>
-
-          <Card className="p-6 border-border/50">
-            <h2 className="text-xl font-semibold flex items-center gap-2 mb-3">
-              <Shield className="h-5 w-5 text-accent" />
-              Privacy Policy (गोपनीयता नीति)
-            </h2>
-            <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
-              <p>
-                हम आपकी <strong className="text-foreground">privacy</strong> का पूरा सम्मान करते हैं।
-              </p>
-              <p>
-                • हम कोई भी <strong className="text-foreground">personal data collect, store, या share</strong> नहीं करते।
-              </p>
-              <p>
-                • आपके द्वारा enter की गई URLs सिर्फ image extraction के लिए use होती हैं और <strong className="text-foreground">कहीं save नहीं</strong> होतीं।
-              </p>
-              <p>
-                • हम किसी भी third-party को आपका data नहीं बेचते।
-              </p>
-              <p>
-                • Authentication data securely stored है और industry-standard encryption use होता है।
-              </p>
-            </div>
-          </Card>
-
-          <Card className="p-6 border-border/50 bg-muted/30">
-            <p className="text-xs text-muted-foreground text-center">
-              इस tool का उपयोग करके आप ऊपर दी गई सभी शर्तों से सहमत होते हैं।
-              <br />
-              Created by <strong className="text-foreground">Chetan Parihar</strong> • © {new Date().getFullYear()} NayraTools
-            </p>
-          </Card>
-        </div>
-      </motion.div>
-    </div>
+      </main>
+    </>
   );
 };
 

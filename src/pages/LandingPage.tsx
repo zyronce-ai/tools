@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { SEO } from "@/components/SEO";
+import { FAQSchema } from "@/components/JsonLd";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import {
@@ -76,9 +78,9 @@ const benefits = [
 ];
 
 const testimonials = [
-  { name: "Rahul Sharma", business: "Amazon Seller — Delhi", rating: 5, text: "NayraTools ne meri listing optimization me bahut madad ki. Keywords tool se maine 3x sales increase kiya." },
-  { name: "Priya Patel", business: "Shopify Store — Mumbai", rating: 5, text: "NayraTools ne meri product listings optimize karke 3x sales increase kiya hai. Best tool for sellers!" },
-  { name: "Amit Kumar", business: "Flipkart Seller — Bangalore", rating: 5, text: "Pricing Calculator se mujhe apni profit margins clear dikhti hain. Ab loss me koi product nahi bechta." },
+  { name: "Rahul Sharma", business: "Amazon Seller — Delhi", rating: 5, text: "NayraTools helped me optimize my listings. The keywords tool increased my sales by 3x." },
+  { name: "Priya Patel", business: "Shopify Store — Mumbai", rating: 5, text: "NayraTools optimized my product listings and boosted sales by 3x. Best tool for sellers!" },
+  { name: "Amit Kumar", business: "Flipkart Seller — Bangalore", rating: 5, text: "The Pricing Calculator shows me clear profit margins. I never sell a product at a loss now." },
 ];
 
 const faqs = [
@@ -102,7 +104,10 @@ const LandingPage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-white">
+    <>
+    <SEO title="AI Ecommerce Tools for Sellers" description="Free AI-powered ecommerce tools for Amazon, Flipkart & Shopify sellers. Product listing optimizer, keyword research, banner maker, competitor analysis & more." path="/" />
+    <FAQSchema questions={faqs.map(f => ({ question: f.q, answer: f.a }))} />
+    <main className="min-h-screen bg-white">
       {/* NAVBAR */}
       <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -320,7 +325,7 @@ const LandingPage = () => {
               { title: "Legal", links: footerLinks.legal },
             ].map((col) => (
               <div key={col.title}>
-                <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">{col.title}</h4>
+                <h2 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">{col.title}</h2>
                 <ul className="space-y-3">
                   {col.links.map((link) => (
                     <li key={link}><Link to={`/${link.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">{link}</Link></li>
@@ -337,7 +342,8 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </main>
+    </>
   );
 };
 

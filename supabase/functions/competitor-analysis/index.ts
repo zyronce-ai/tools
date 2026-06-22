@@ -50,7 +50,7 @@ Provide a detailed analysis in the following format:
 - Pricing mistakes
 - Listing quality issues
 
-Respond in Hinglish (mix of Hindi and English) for better understanding. Use emojis for visual appeal.
+Respond in English. Use emojis for visual appeal.
 Include approximate price ranges in INR (₹).`;
 
     const response = await callAI([

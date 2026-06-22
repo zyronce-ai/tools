@@ -81,7 +81,7 @@ List at least 10-15 products with their ACTUAL Flipkart links.
 - How to compete with these top sellers
 
 IMPORTANT: Use REAL data from the scrape. Include actual Flipkart product URLs wherever possible. Format links as clickable markdown links like [Product Name](URL).
-Use Hinglish where helpful for Indian sellers.`;
+Provide clear English responses.`;
 
     const response = await callAI([
       { role: "user", content: prompt },

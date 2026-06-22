@@ -46,7 +46,7 @@ export async function callAI(
       console.error("Gemini failed:", msg);
     }
   }
-  if (OPENROUTER_API_KEY) throw new Error("OpenRouter fail: Settings mein jaake API key check karo.");
+  if (OPENROUTER_API_KEY) throw new Error("OpenRouter failed: Check your API key in Settings.");
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
   throw new Error("No AI provider. Settings mein Gemini API key lagao ya admin se GROQ_API_KEY set karwaiye.");
 }
@@ -164,7 +164,7 @@ async function callGeminiDirect(
     const t = await resp.text();
     console.error("Gemini direct error:", resp.status, t);
     if (resp.status === 429) throw new Error("RATE_LIMIT");
-    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key galat hai ya expire ho gayi. Settings mein jaake check karo.");
+    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key is invalid or expired. Check in Settings.");
     throw new Error(`Gemini API error: ${resp.status} - ${t.slice(0, 300)}`);
   }
 
@@ -309,7 +309,7 @@ async function callGeminiImageProcess(
     const t = await resp.text();
     console.error("Gemini vision API error:", resp.status, t);
     if (resp.status === 429) throw new Error("RATE_LIMIT");
-    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key galat hai ya expire ho gayi.");
+    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key is invalid or expired.");
     throw new Error(`Gemini image error: ${resp.status}`);
   }
   const data = await resp.json();
@@ -340,7 +340,7 @@ async function callGeminiImageDirect(
     const t = await resp.text();
     console.error("Gemini image API error:", resp.status, t);
     if (resp.status === 429) throw new Error("RATE_LIMIT");
-    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key galat hai ya expire ho gayi.");
+    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key is invalid or expired.");
     throw new Error(`Gemini image error: ${resp.status}`);
   }
   const data = await resp.json();
@@ -352,7 +352,7 @@ async function callGeminiImageDirect(
 export function handleAIError(e: unknown, corsH: Record<string, string>) {
   const msg = e instanceof Error ? e.message : "Unknown error";
   if (msg === "RATE_LIMIT") {
-    return new Response(JSON.stringify({ error: "Rate limit! Thodi der baad try karo." }), {
+    return new Response(JSON.stringify({ error: "Rate limit! Try again later." }), {
       status: 429, headers: { ...corsH, "Content-Type": "application/json" },
     });
   }
@@ -372,7 +372,7 @@ export function handleAIError(e: unknown, corsH: Record<string, string>) {
 export function handleResponseErrors(response: Response, corsH: Record<string, string>) {
   if (response.ok) return null;
   if (response.status === 429) {
-    return new Response(JSON.stringify({ error: "Rate limit exceeded. Thodi der baad try karo." }), {
+    return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again later." }), {
       status: 429, headers: { ...corsH, "Content-Type": "application/json" },
     });
   }

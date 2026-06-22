@@ -14,7 +14,7 @@ Budget: ${budget || "Not specified"}
 Location: ${location || "India"}
 
 IMPORTANT RULES:
-- Never discourage the user. NEVER use phrases like "tumse nahi hoga", "mushkil hai", "possible nahi".
+- Never discourage the user. Always be encouraging and provide practical advice.
 - Always give a "Start Small" path for beginners with low budget.
 - If business is competitive, explain risk honestly but provide workaround steps.
 - Tone must be supportive, motivating, practical, and beginner-friendly.
@@ -23,19 +23,18 @@ IMPORTANT RULES:
 - Give month-by-month projection for first 12 months.
 - Compare with competitors already in the market.
 - Give insider practical tips from Indian market context.
-- Mix Hindi + English naturally (Hinglish) for Indian audience.
 
 FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 
 # 🚀 ${businessIdea} — Complete Startup Blueprint
 
 ## 📊 Business Overview
-- **Kya hai ye business**: 2-3 line mein explain karo simple language mein
+- **What is this business**: Explain in 2-3 lines in simple language
 - **India mein Market Size**: ₹X crore (with source/year)
 - **Growth Rate**: X% yearly
 - **${new Date().getFullYear()} mein start karna chahiye?**: Honest opinion with reasons
-- **Success Rate**: 100 mein se kitne log successful hote hain
-- **Failure Rate**: Kitne log fail hote hain aur TOP 3 reasons
+- **Success Rate**: How many out of 100 succeed
+- **Failure Rate**: How many fail and TOP 3 reasons
 
 ---
 
@@ -107,7 +106,7 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 
 ## 📄 Legal Requirements — Kya Kya Chahiye
 
-| Document/License | Zaruri hai? | Cost (₹) | Time | Kaise apply karein |
+| Document/License | Required? | Cost (₹) | Time | How to apply |
 |-----------------|------------|----------|------|-------------------|
 | Business Registration | | | | Step-by-step |
 | GST Registration | | | | |
@@ -159,7 +158,7 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 
 ### Sales Channels
 - **Online**: Amazon, Flipkart, Meesho, own website — pros/cons of each
-- **Offline**: Shop, market, door-to-door — kya better hai
+- **Offline**: Shop, market, door-to-door — which is better
 
 ### Customer Acquisition Cost (CAC)
 - Ek customer laane mein kitna kharcha aayega
@@ -178,7 +177,7 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 - Kaise survive karein slow months mein
 
 ### Competition Analysis
-- **Direct Competitors**: Kaun kaun hai market mein
+- **Direct Competitors**: Who are the competitors in the market
 - **Unka pricing**: Compared to yours
 - **Aapka USP kya hoga**: Kaise different banoge
 

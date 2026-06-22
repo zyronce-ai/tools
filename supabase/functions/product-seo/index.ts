@@ -53,7 +53,7 @@ For each issue:
 - How to rank higher than competitors
 - Unique selling points to highlight
 
-Keep everything practical and actionable. Use Hinglish where helpful for Indian sellers.`;
+Keep everything practical and actionable. Use clear English.`;
 
     const response = await callAI([
       { role: "user", content: prompt },

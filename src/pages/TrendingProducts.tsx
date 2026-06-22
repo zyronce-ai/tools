@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -54,9 +56,10 @@ export default function TrendingProducts() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main className="space-y-6 max-w-4xl mx-auto">
+      <SEO title="Trending Products" description="Discover trending products and market trends" path="/trending-products" />
       <AnimatePresence>
-        {loading && !result && <ToolLoadingOverlay message="Trending products dhundh raha hai…" />}
+        {loading && !result && <ToolLoadingOverlay message="Finding trending products…" />}
       </AnimatePresence>
 
       <div>
@@ -64,7 +67,7 @@ export default function TrendingProducts() {
           <TrendingUp className="h-6 w-6 text-primary" />
           Trending Products Finder
         </h1>
-        <p className="text-muted-foreground mt-1">Marketplace pe abhi kya trending hai — AI se pata karo</p>
+        <p className="text-muted-foreground mt-1">What's trending on marketplaces right now — find out with AI</p>
       </div>
 
       <Card>
@@ -104,6 +107,6 @@ export default function TrendingProducts() {
           </CardContent>
         </Card>
       )}
-    </div>
+    </main>
   );
 }

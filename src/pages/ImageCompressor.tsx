@@ -1,4 +1,6 @@
 import { useState, useRef, useCallback } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -182,7 +184,8 @@ const ImageCompressor = () => {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <main className="mx-auto max-w-3xl space-y-6">
+      <SEO title="Image Compressor" description="Compress images without losing quality" path="/image-compressor" />
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="flex items-center gap-2 text-2xl font-bold">
           <FileImage className="h-6 w-6 text-primary" />
@@ -292,7 +295,7 @@ const ImageCompressor = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </main>
   );
 };
 

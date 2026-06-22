@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -111,13 +113,14 @@ export default function BarcodeGenerator() {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <main className="space-y-6 max-w-3xl mx-auto">
+      <SEO title="Barcode Generator" description="Generate barcodes for your products" path="/barcode-generator" />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <QrCode className="h-6 w-6 text-primary" />
           Barcode & QR Code Generator
         </h1>
-        <p className="text-muted-foreground mt-1">Products ke liye QR codes aur barcodes generate karo — instant download</p>
+        <p className="text-muted-foreground mt-1">Generate QR codes and barcodes for products — instant download</p>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
@@ -169,7 +172,7 @@ export default function BarcodeGenerator() {
 
                 <div className="bg-muted/30 rounded-lg p-3 text-xs text-muted-foreground space-y-1">
                   <p>💡 <strong>Use cases:</strong></p>
-                  <p>• Product packaging pe QR code lagao → customer direct link pe jaaye</p>
+                  <p>• Put QR code on product packaging → customer goes to direct link</p>
                   <p>• WhatsApp number ka QR → easy contact</p>
                   <p>• Payment UPI QR → direct payment</p>
                   <p>• Google Maps location → store location share</p>
@@ -199,7 +202,7 @@ export default function BarcodeGenerator() {
                 ) : (
                   <div className="text-center text-muted-foreground space-y-2">
                     <QrCode className="h-16 w-16 mx-auto opacity-20" />
-                    <p>Text ya URL daalo — QR code auto generate hoga</p>
+                    <p>Enter text or URL — QR code will be auto generated</p>
                   </div>
                 )}
               </CardContent>
@@ -263,7 +266,7 @@ export default function BarcodeGenerator() {
                 {!barcodeReady && (
                   <div className="text-center text-muted-foreground space-y-2">
                     <Barcode className="h-16 w-16 mx-auto opacity-20" />
-                    <p>Product code daalo — barcode auto generate hoga</p>
+                    <p>Enter product code — barcode will be auto generated</p>
                   </div>
                 )}
               </CardContent>
@@ -271,6 +274,6 @@ export default function BarcodeGenerator() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </main>
   );
 }

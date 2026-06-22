@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { getContentHistory, deleteContent, Platform, platformLabels, platformIcons, toneLabels } from "@/lib/content-store";
 import { Copy, Trash2, History, Search } from "lucide-react";
+import { SEO } from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLang } from "@/lib/language-context";
 
 const allPlatforms: (Platform | "all")[] = ["all", "youtube", "instagram", "blog", "twitter"];
 
@@ -15,7 +16,6 @@ const ContentHistory = () => {
   const [search, setSearch] = useState("");
   const [items, setItems] = useState(getContentHistory());
   const { toast } = useToast();
-  const { t } = useLang();
 
   const filtered = items.filter((item) => {
     if (filter !== "all" && item.platform !== filter) return false;
@@ -27,10 +27,12 @@ const ContentHistory = () => {
   const handleDelete = (id: string) => { deleteContent(id); setItems(getContentHistory()); toast({ title: "Deleted!" }); };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <main>
+      <SEO title="Content History" description="View your saved AI-generated content history" path="/history" />
+      <div className="max-w-3xl mx-auto space-y-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold flex items-center gap-2"><History className="h-7 w-7 text-chart-3" />{t("history.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("history.subtitle")}</p>
+        <h1 className="text-3xl font-bold flex items-center gap-2"><History className="h-7 w-7 text-chart-3" />{"Content History"}</h1>
+        <p className="text-muted-foreground mt-1">{"View your previously generated content here"}</p>
       </motion.div>
 
       <div className="flex flex-col sm:flex-row gap-3">
@@ -50,8 +52,8 @@ const ContentHistory = () => {
       {filtered.length === 0 && (
         <div className="text-center py-20">
           <History className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
-          <p className="text-muted-foreground text-lg">{t("history.no_content")}</p>
-          <p className="text-muted-foreground/70 text-sm">{t("history.no_content_sub")}</p>
+          <p className="text-muted-foreground text-lg">{"No content yet"}</p>
+          <p className="text-muted-foreground/70 text-sm">{"Generate content using Content Writer, it will appear here"}</p>
         </div>
       )}
 
@@ -80,6 +82,7 @@ const ContentHistory = () => {
         ))}
       </AnimatePresence>
     </div>
+    </main>
   );
 };
 

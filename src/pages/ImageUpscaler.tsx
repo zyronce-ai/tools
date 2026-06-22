@@ -1,10 +1,11 @@
 import { useState, useRef, useCallback } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { getGeminiApiKey } from "@/lib/api-key-store";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, ZoomIn, Download, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useLang } from "@/lib/language-context";
 import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 
@@ -12,7 +13,6 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 export default function ImageUpscaler() {
-  const { t } = useLang();
   const { toast } = useToast();
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [upscaledImage, setUpscaledImage] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function ImageUpscaler() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
-      toast({ title: t("upscaler.too_large"), variant: "destructive" });
+      toast({ title: "Image must be under 10MB", variant: "destructive" });
       return;
     }
     const reader = new FileReader();
@@ -39,7 +39,7 @@ export default function ImageUpscaler() {
 
   const handleUpscale = async () => {
     if (!originalImage) {
-      toast({ title: t("upscaler.upload_first"), variant: "destructive" });
+      toast({ title: "Upload an image first", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -56,12 +56,12 @@ export default function ImageUpscaler() {
       if (!resp.ok) throw new Error(data.error || "Upscale failed");
       if (data.image) {
         setUpscaledImage(data.image);
-        toast({ title: t("upscaler.success") });
+        toast({ title: "Image upscaled to 4K!" });
       } else {
         throw new Error("No image returned");
       }
     } catch (err: any) {
-      toast({ title: err.message || t("upscaler.failed"), variant: "destructive" });
+      toast({ title: err.message || "Upscale failed, try again", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -84,24 +84,25 @@ export default function ImageUpscaler() {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
+    <main className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
+      <SEO title="Image Upscaler" description="Upscale and enhance images with AI" path="/image-upscaler" />
       <AnimatePresence>
         {loading && <ToolLoadingOverlay message="Upscaling your image to 4K…" />}
       </AnimatePresence>
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">{t("upscaler.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("upscaler.subtitle")}</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">{"AI Image Upscaler"}</h1>
+        <p className="text-muted-foreground mt-1">{"Upscale your product images to 4K quality with AI"}</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{t("upscaler.upload_label")}</CardTitle>
-          <CardDescription>{t("upscaler.upload_info")}</CardDescription>
+          <CardTitle className="text-lg">{"Upload Image"}</CardTitle>
+          <CardDescription>{"Max 10MB • JPG, PNG, WebP supported"}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <label className="flex flex-col items-center justify-center border-2 border-dashed border-border rounded-xl p-8 cursor-pointer hover:border-primary/50 transition-colors bg-muted/30">
             <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-            <span className="text-sm text-muted-foreground">{t("upscaler.upload_text")}</span>
+            <span className="text-sm text-muted-foreground">{"Click to upload product image"}</span>
             <input type="file" accept="image/*" className="hidden" onChange={handleUpload} />
           </label>
 
@@ -109,12 +110,12 @@ export default function ImageUpscaler() {
             <div className="flex items-center gap-3">
               <img src={originalImage} alt="Original" className="h-20 w-20 object-cover rounded-lg border border-border" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">{t("upscaler.original")}</p>
-                <p className="text-xs text-muted-foreground">{t("upscaler.ready")}</p>
+                <p className="text-sm font-medium text-foreground">{"Image uploaded"}</p>
+                <p className="text-xs text-muted-foreground">{"Ready to upscale"}</p>
               </div>
               <Button onClick={handleUpscale} disabled={loading} className="gap-2">
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ZoomIn className="h-4 w-4" />}
-                {loading ? t("upscaler.processing") : t("upscaler.upscale_btn")}
+                {loading ? "Upscaling..." : "Upscale to 4K"}
               </Button>
             </div>
           )}
@@ -126,9 +127,9 @@ export default function ImageUpscaler() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center justify-between">
-              {t("upscaler.comparison")}
+              {"Before & After Comparison"}
               <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2">
-                <Download className="h-4 w-4" /> {t("download")}
+                <Download className="h-4 w-4" /> {"Download"}
               </Button>
             </CardTitle>
           </CardHeader>
@@ -173,13 +174,13 @@ export default function ImageUpscaler() {
               </div>
               {/* Labels */}
               <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm text-foreground text-xs font-semibold px-2 py-1 rounded-md z-20">
-                {t("upscaler.before")}
+                {"BEFORE"}
               </div>
               <div className="absolute top-3 right-3 bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-semibold px-2 py-1 rounded-md z-20">
-                {t("upscaler.after")}
+                {"AFTER (4K)"}
               </div>
             </div>
-            <p className="text-xs text-muted-foreground text-center mt-3">{t("upscaler.drag_tip")}</p>
+            <p className="text-xs text-muted-foreground text-center mt-3">{"👆 Drag the slider to compare before & after"}</p>
           </CardContent>
         </Card>
       )}
@@ -188,10 +189,10 @@ export default function ImageUpscaler() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-10 w-10 animate-spin text-primary mb-3" />
-            <p className="text-muted-foreground font-medium">{t("upscaler.ai_processing")}</p>
+            <p className="text-muted-foreground font-medium">{"AI is enhancing your image to 4K quality..."}</p>
           </CardContent>
         </Card>
       )}
-    </div>
+    </main>
   );
 }

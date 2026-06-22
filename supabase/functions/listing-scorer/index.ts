@@ -83,12 +83,12 @@ For each issue found above, provide a DETAILED step-by-step guide on HOW to fix 
 
 ### Title Kaise Sudhare:
 - Exact improved title likhke do (copy-paste ready)
-- Kaunse keywords add karne hain aur kahan
+- Which keywords to add and where
 - Character limit ke andar kaise rakhe
 
 ### Description Kaise Sudhare:
 - Exact bullet points likhke do jo seller directly copy kar sake
-- Kaunsi information missing hai aur kaise add kare
+- What information is missing and how to add it
 - SEO friendly description ka example do
 
 ### Images Kaise Sudhare:
@@ -101,20 +101,20 @@ For each issue found above, provide a DETAILED step-by-step guide on HOW to fix 
 - Platform pe kahan jaake keywords update kare (step by step navigation)
 
 ### Pricing Kaise Optimize Kare:
-- Ideal MRP vs Selling price suggest karo
+- Suggest ideal MRP vs Selling price
 - Discount percentage kya rakhna chahiye
 - Competitor price comparison tips
 
 ### Platform-Specific Tips:
-- Agar Flipkart hai: Flipkart Seller Hub pe kaise edit kare
-- Agar Meesho hai: Meesho Supplier Panel pe kaise edit kare  
-- Agar Amazon hai: Amazon Seller Central pe kaise edit kare
+- If Flipkart: How to edit on Flipkart Seller Hub
+- If Meesho: How to edit on Meesho Supplier Panel  
+- If Amazon: How to edit on Amazon Seller Central
 
 Har fix ke saath exact steps do — jaise koi beginner seller bhi follow kar sake. Copy-paste ready content do jahan possible ho.
 
 IMPORTANT LANGUAGE RULES:
-- Saari explanation, tips, suggestions, steps aur guide HINGLISH mein likho (Hindi + English mix) taaki seller easily samajh sake.
-- But jab bhi KEYWORDS, SEARCH TERMS, PRODUCT TITLES, BACKEND KEYWORDS, ya SEO terms likho — wo PURE ENGLISH mein hone chahiye. Keywords kabhi Hindi mein mat likho.
+- Write all explanation, tips, suggestions, steps and guide in clear English.
+- Keywords, search terms, product titles, backend keywords, and SEO terms must be in PURE ENGLISH only.
 - Use emojis for better readability.`;
 
     const response = await callAI([

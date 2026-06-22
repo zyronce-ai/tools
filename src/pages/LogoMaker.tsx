@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { getGeminiApiKey } from "@/lib/api-key-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -52,7 +54,7 @@ export default function LogoMaker() {
 
   const generate = async () => {
     if (!brandName.trim()) {
-      toast({ title: "Brand name daalo!", variant: "destructive" });
+      toast({ title: "Enter brand name!", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -82,7 +84,7 @@ export default function LogoMaker() {
         setLogoUrl(imageUrl);
         toast({ title: "Logo ready! 🎨" });
       } else {
-        throw new Error("Logo generate nahi ho paya");
+        throw new Error("Could not generate logo");
       }
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -101,9 +103,10 @@ export default function LogoMaker() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main className="space-y-6 max-w-4xl mx-auto">
+      <SEO title="AI Logo Maker" description="Create unique logos for your brand with AI" path="/logo-maker" />
       <AnimatePresence>
-        {loading && <ToolLoadingOverlay message="AI se aapka brand logo bana raha hai…" />}
+        {loading && <ToolLoadingOverlay message="AI is creating your brand logo…" />}
       </AnimatePresence>
 
       <div>
@@ -111,7 +114,7 @@ export default function LogoMaker() {
           <Palette className="h-6 w-6 text-primary" />
           Logo Maker
         </h1>
-        <p className="text-muted-foreground mt-1">AI se apne brand ka professional logo banao seconds mein</p>
+        <p className="text-muted-foreground mt-1">Create a professional logo for your brand in seconds with AI</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -173,7 +176,7 @@ export default function LogoMaker() {
             <Card className="flex items-center justify-center h-80">
               <div className="text-center space-y-3">
                 <Loader2 className="h-10 w-10 animate-spin mx-auto text-primary" />
-                <p className="text-muted-foreground">AI aapka logo design kar raha hai...</p>
+                <p className="text-muted-foreground">AI is designing your logo...</p>
               </div>
             </Card>
           )}
@@ -190,7 +193,7 @@ export default function LogoMaker() {
                   <img src={logoUrl} alt={`${brandName} logo`} className="max-w-full max-h-80 object-contain" />
                 </div>
                 <p className="text-xs text-muted-foreground mt-3">
-                  💡 Tip: Agar logo pasand nahi aaya to dubara generate karo — har baar naya design milega!
+                  💡 Tip: Don't like the logo? Generate again — each time you get a new design!
                 </p>
               </CardContent>
             </Card>
@@ -199,12 +202,12 @@ export default function LogoMaker() {
             <Card className="flex items-center justify-center h-80">
               <div className="text-center text-muted-foreground space-y-2">
                 <Palette className="h-12 w-12 mx-auto opacity-30" />
-                <p>Aapka logo yahan dikhega</p>
+                <p>Your logo will appear here</p>
               </div>
             </Card>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

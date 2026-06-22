@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +9,8 @@ import { streamFromEdge } from "@/lib/ai-stream";
 import { Copy, Loader2, Tags, X, ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { useLang } from "@/lib/language-context";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
+import { SEO } from "@/components/SEO";
 
 type Platform = "flipkart" | "meesho" | "amazon" | "myntra" | "website";
 type ListingType = "single" | "bulk";
@@ -29,7 +30,6 @@ const ProductKeywords = () => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const { t } = useLang();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,7 +44,7 @@ const ProductKeywords = () => {
 
   const generate = async () => {
     const selectedFabric = fabric === "Other" ? customFabric : fabric;
-    if (!productName.trim() && !imageBase64) { toast({ title: t("keywords.required"), variant: "destructive" }); return; }
+    if (!productName.trim() && !imageBase64) { toast({ title: "Enter product name or upload an image", variant: "destructive" }); return; }
     setLoading(true); setOutput("");
     let fullContent = "";
     await streamFromEdge({
@@ -70,20 +70,22 @@ const ProductKeywords = () => {
   const copyToClipboard = () => { navigator.clipboard.writeText(output); toast({ title: "Copied! 📋" }); };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <main>
+      <SEO title="Keyword Research Tool" description="Find high-ranking keywords for Amazon, Flipkart & Shopify products. AI-powered keyword research tool for ecommerce sellers." path="/keywords" />
+      <div className="max-w-3xl mx-auto space-y-6">
       <AnimatePresence>
         {loading && !output && <ToolLoadingOverlay message="Finding best keywords for your product…" />}
       </AnimatePresence>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold flex items-center gap-2"><Tags className="h-7 w-7 text-primary" />{t("keywords.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("keywords.subtitle")}</p>
+        <h1 className="text-3xl font-bold flex items-center gap-2"><Tags className="h-7 w-7 text-primary" />{"Product Keyword Generator"}</h1>
+        <p className="text-muted-foreground mt-1">{"Upload product image, select fabric, get keywords & descriptions!"}</p>
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
         <Card>
           <CardContent className="p-6 space-y-5">
             <div className="space-y-2">
-              <Label>{t("keywords.image_label")}</Label>
+              <Label>{"Product Image"}</Label>
               <div className="flex items-start gap-4">
                 {imagePreview ? (
                   <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-border">
@@ -92,29 +94,29 @@ const ProductKeywords = () => {
                   </div>
                 ) : (
                   <button onClick={() => fileInputRef.current?.click()} className="w-32 h-32 rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors cursor-pointer">
-                    <ImageIcon className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">{t("upload")}</span>
+                    <ImageIcon className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">{"Upload"}</span>
                   </button>
                 )}
                 <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                 <div className="flex-1 space-y-2">
-                  <Label htmlFor="productName">{t("keywords.name_label")}</Label>
+                  <Label htmlFor="productName">{"Product Name"}</Label>
                   <Input id="productName" placeholder="e.g. Women's Banarasi Silk Saree" value={productName} onChange={(e) => setProductName(e.target.value)} />
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>{t("keywords.fabric_label")}</Label>
+              <Label>{"Fabric"}</Label>
               <div className="flex flex-wrap gap-2">
                 {fabricOptions.map((f) => (
                   <Button key={f} variant={fabric === f ? "default" : "outline"} size="sm" onClick={() => setFabric(f)} className="transition-all">{f}</Button>
                 ))}
               </div>
-              {fabric === "Other" && <Input placeholder={t("keywords.custom_fabric")} value={customFabric} onChange={(e) => setCustomFabric(e.target.value)} className="mt-2" />}
+              {fabric === "Other" && <Input placeholder={"Enter custom fabric name..."} value={customFabric} onChange={(e) => setCustomFabric(e.target.value)} className="mt-2" />}
             </div>
 
             <div className="space-y-2">
-              <Label>{t("writer.platform")}</Label>
+              <Label>{"Platform"}</Label>
               <div className="flex flex-wrap gap-2">
                 {platforms.map((p) => (
                   <Button key={p} variant={platform === p ? "default" : "outline"} size="sm" onClick={() => setPlatform(p)} className="transition-all">{platformLabels[p]}</Button>
@@ -134,13 +136,13 @@ const ProductKeywords = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {listingType === "single" ? "Keywords comma (,) se separated aayenge" : "Keywords double colon (::) se separated aayenge - bulk upload ke liye"}
+                  {listingType === "single" ? "Keywords will be comma (,) separated" : "Keywords will be double colon (::) separated - for bulk upload"}
                 </p>
               </div>
             )}
 
             <Button onClick={generate} disabled={loading} className="w-full" size="lg">
-              {loading ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>) : t("keywords.generate")}
+              {loading ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>) : "🏷️ Generate Keywords & Description"}
             </Button>
           </CardContent>
         </Card>
@@ -149,10 +151,10 @@ const ProductKeywords = () => {
       {output && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">{t("keywords.result_title")}</h2>
+            <h2 className="text-lg font-bold">{"Generated Keywords & Description"}</h2>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={copyToClipboard}><Copy className="h-4 w-4 mr-1" /> {t("copy")}</Button>
-              <Button variant="outline" size="sm" onClick={generate} disabled={loading}>🔄 {t("writer.regenerate")}</Button>
+              <Button variant="outline" size="sm" onClick={copyToClipboard}><Copy className="h-4 w-4 mr-1" /> {"Copy"}</Button>
+              <Button variant="outline" size="sm" onClick={generate} disabled={loading}>🔄 {"Regenerate"}</Button>
             </div>
           </div>
           {(() => {
@@ -189,6 +191,7 @@ const ProductKeywords = () => {
         </motion.div>
       )}
     </div>
+    </main>
   );
 };
 

@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 
 const TermsConditions = () => (
-  <div className="min-h-screen bg-background text-foreground">
+  <>
+  <SEO title="Terms & Conditions" description="Terms and conditions for using NayraTools" path="/terms" />
+  <main className="min-h-screen bg-background text-foreground">
     <div className="max-w-4xl mx-auto px-4 py-12">
       <Button variant="ghost" asChild className="mb-6">
         <Link to="/"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Home</Link>
@@ -34,7 +38,8 @@ const TermsConditions = () => (
         <p>For any questions about these terms, please contact us at <a href="mailto:support@nayratools.com" className="text-primary hover:underline">support@nayratools.com</a>.</p>
       </div>
     </div>
-  </div>
+  </main>
+  </>
 );
 
 export default TermsConditions;

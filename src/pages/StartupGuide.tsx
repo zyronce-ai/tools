@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,7 +89,7 @@ export default function StartupGuide() {
 
   const analyze = async () => {
     if (!businessIdea.trim()) {
-      toast({ title: "Business idea daalo!", variant: "destructive" });
+      toast({ title: "Enter a business idea!", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -108,9 +110,10 @@ export default function StartupGuide() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main className="space-y-6 max-w-4xl mx-auto">
+      <SEO title="Startup Guide" description="Step-by-step guide to launching your ecommerce business" path="/startup-guide" />
       <AnimatePresence>
-        {loading && !result && <ToolLoadingOverlay message="Aapka business guide ban raha hai…" />}
+        {loading && !result && <ToolLoadingOverlay message="Your business guide is being created…" />}
       </AnimatePresence>
 
       <div>
@@ -118,7 +121,7 @@ export default function StartupGuide() {
           <Rocket className="h-6 w-6 text-primary" />
           Business Startup Guide
         </h1>
-        <p className="text-muted-foreground mt-1">Koi bhi business idea daalo — AI batayega kaise start karein, kitna invest karein, kitna kamayein</p>
+        <p className="text-muted-foreground mt-1">Enter any business idea — AI will tell you how to start, how much to invest, how much to earn</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -135,7 +138,7 @@ export default function StartupGuide() {
             </div>
 
             <div>
-              <Label className="text-xs text-muted-foreground">💡 All Industries — category click karke select karo</Label>
+              <Label className="text-xs text-muted-foreground">💡 All Industries — click a category to select</Label>
               <div className="mt-1.5 space-y-1 max-h-[300px] overflow-y-auto pr-1">
                 {Object.entries(ideaCategories).map(([category, ideas]) => (
                   <div key={category}>
@@ -199,7 +202,7 @@ export default function StartupGuide() {
             <Card className="flex items-center justify-center h-80">
               <div className="text-center space-y-3">
                 <Loader2 className="h-10 w-10 animate-spin mx-auto text-primary" />
-                <p className="text-muted-foreground">AI aapka complete business guide bana raha hai...</p>
+                <p className="text-muted-foreground">AI is creating your complete business guide...</p>
               </div>
             </Card>
           )}
@@ -214,13 +217,13 @@ export default function StartupGuide() {
             <Card className="flex items-center justify-center h-80">
               <div className="text-center text-muted-foreground space-y-2">
                 <Rocket className="h-12 w-12 mx-auto opacity-30" />
-                <p>Business idea select karo aur guide paao!</p>
+                <p>Select a business idea and get your guide!</p>
                 <p className="text-xs">Investment, profit, suppliers, marketing — sab milega</p>
               </div>
             </Card>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

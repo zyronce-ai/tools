@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, Plus, Trash2, Printer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useLang } from "@/lib/language-context";
+import { SEO } from "@/components/SEO";
 
 type InvoiceItem = { name: string; hsn: string; qty: number; rate: number; gstPercent: number; };
 const defaultItem: InvoiceItem = { name: "", hsn: "", qty: 1, rate: 0, gstPercent: 18 };
 
 export default function GSTInvoice() {
   const { toast } = useToast();
-  const { t } = useLang();
   const printRef = useRef<HTMLDivElement>(null);
   const [businessName, setBusinessName] = useState("");
   const [gstin, setGstin] = useState("");
@@ -32,8 +32,8 @@ export default function GSTInvoice() {
   const totals = items.reduce((acc, item) => { const c = calcItem(item); return { taxable: acc.taxable + c.taxable, gst: acc.gst + c.gstAmt, total: acc.total + c.total }; }, { taxable: 0, gst: 0, total: 0 });
 
   const generateInvoice = () => {
-    if (!businessName.trim()) { toast({ title: t("invoice.business_required"), variant: "destructive" }); return; }
-    if (items.some((i) => !i.name.trim() || i.rate <= 0)) { toast({ title: t("invoice.items_required"), variant: "destructive" }); return; }
+    if (!businessName.trim()) { toast({ title: "Enter business name", variant: "destructive" }); return; }
+    if (items.some((i) => !i.name.trim() || i.rate <= 0)) { toast({ title: "Fill name and rate for all items", variant: "destructive" }); return; }
     setShowPreview(true);
   };
 
@@ -48,20 +48,22 @@ export default function GSTInvoice() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main>
+      <SEO title="GST Invoice Generator" description="Generate GST-compliant invoices for your business" path="/invoice" />
+      <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="h-6 w-6 text-primary" />{t("invoice.title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("invoice.subtitle")}</p>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="h-6 w-6 text-primary" />{"GST Invoice Generator"}</h1>
+        <p className="text-muted-foreground mt-1">{"Enter product details to create and print a GST invoice"}</p>
       </div>
 
       {!showPreview ? (
         <div className="space-y-4">
           <Card>
-            <CardHeader><CardTitle className="text-lg">{t("invoice.business_details")}</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-lg">{"Business Details"}</CardTitle></CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
-              <div><Label>{t("invoice.business_name")}</Label><Input placeholder="e.g. Nayra Trendz" value={businessName} onChange={(e) => setBusinessName(e.target.value)} /></div>
+              <div><Label>{"Business / Shop Name *"}</Label><Input placeholder="e.g. Nayra Trendz" value={businessName} onChange={(e) => setBusinessName(e.target.value)} /></div>
               <div><Label>GSTIN (optional)</Label><Input placeholder="e.g. 22AAAAA0000A1Z5" value={gstin} onChange={(e) => setGstin(e.target.value)} /></div>
-              <div><Label>{t("invoice.customer_name")}</Label><Input placeholder={t("invoice.customer_placeholder")} value={customerName} onChange={(e) => setCustomerName(e.target.value)} /></div>
+              <div><Label>{"Customer Name"}</Label><Input placeholder={"Customer name"} value={customerName} onChange={(e) => setCustomerName(e.target.value)} /></div>
               <div className="grid grid-cols-2 gap-2">
                 <div><Label>Invoice No</Label><Input value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} /></div>
                 <div><Label>Date</Label><Input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} /></div>
@@ -71,8 +73,8 @@ export default function GSTInvoice() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg">{t("invoice.products")}</CardTitle>
-              <Button variant="outline" size="sm" onClick={addItem}><Plus className="h-4 w-4 mr-1" /> {t("invoice.add_item")}</Button>
+              <CardTitle className="text-lg">{"Products / Items"}</CardTitle>
+              <Button variant="outline" size="sm" onClick={addItem}><Plus className="h-4 w-4 mr-1" /> {"Add Item"}</Button>
             </CardHeader>
             <CardContent className="space-y-3">
               {items.map((item, idx) => (
@@ -99,7 +101,7 @@ export default function GSTInvoice() {
               </div>
             </CardContent>
           </Card>
-          <Button onClick={generateInvoice} className="w-full" size="lg"><FileText className="h-4 w-4 mr-2" /> {t("invoice.generate")}</Button>
+          <Button onClick={generateInvoice} className="w-full" size="lg"><FileText className="h-4 w-4 mr-2" /> {"Generate Invoice"}</Button>
         </div>
       ) : (
         <div className="space-y-4">
@@ -155,5 +157,6 @@ export default function GSTInvoice() {
         </div>
       )}
     </div>
+    </main>
   );
 }

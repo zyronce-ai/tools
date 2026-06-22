@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +32,7 @@ export default function ProductSEO() {
 
   const analyze = async () => {
     if (!title.trim()) {
-      toast({ title: "Product title daalo!", variant: "destructive" });
+      toast({ title: "Enter product title!", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -51,9 +53,10 @@ export default function ProductSEO() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <main className="space-y-6 max-w-4xl mx-auto">
+      <SEO title="Product SEO Optimizer for Ecommerce" description="Optimize your Amazon & Flipkart product listings for higher search rankings. AI-powered SEO tool for ecommerce sellers." path="/product-seo" />
       <AnimatePresence>
-        {loading && !result && <ToolLoadingOverlay message="SEO analysis ho raha hai…" />}
+        {loading && !result && <ToolLoadingOverlay message="Running SEO analysis…" />}
       </AnimatePresence>
 
       <div>
@@ -61,7 +64,7 @@ export default function ProductSEO() {
           <Search className="h-6 w-6 text-primary" />
           Product SEO Analyzer
         </h1>
-        <p className="text-muted-foreground mt-1">Apni listing ka SEO score check karo aur improve karo</p>
+        <p className="text-muted-foreground mt-1">Check your listing's SEO score and improve it</p>
       </div>
 
       <Card>
@@ -78,7 +81,7 @@ export default function ProductSEO() {
           <div>
             <Label>Product Description (optional)</Label>
             <Textarea
-              placeholder="Apna current product description paste karo..."
+              placeholder="Paste your current product description..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
@@ -115,6 +118,6 @@ export default function ProductSEO() {
           </CardContent>
         </Card>
       )}
-    </div>
+    </main>
   );
 }
