@@ -12,6 +12,7 @@ import ReactMarkdown from "react-markdown";
 import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 
 export default function ListingScorer() {
   const { toast } = useToast();
@@ -46,7 +47,7 @@ export default function ListingScorer() {
         {loading && !result && <ToolLoadingOverlay message="Scoring your listing…" />}
       </AnimatePresence>
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><ClipboardCheck className="h-6 w-6 text-primary" />{"Listing Quality Scorer"}</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><ClipboardCheck className="h-6 w-6 text-primary" />{"Product Listing Quality Scorer & Optimization Tool for Ecommerce"}</h1>
         <p className="text-muted-foreground mt-1">{"Paste your product listing link — AI will score it and give improvement tips"}</p>
       </div>
 
@@ -87,6 +88,13 @@ export default function ListingScorer() {
         </Card>
       )}
     </div>
+      <FAQ title="Frequently Asked Questions" id="listing-scorer" items={[
+        { question: "What makes a good product listing on ecommerce platforms?", answer: "A high-quality listing includes a clear, keyword-rich title, detailed product description, high-resolution images, bullet points highlighting key features, and accurate categorization. Our AI scores these elements and provides actionable improvement suggestions." },
+        { question: "How is the listing score calculated?", answer: "The AI evaluates your listing URL across multiple parameters including title optimization, description completeness, keyword coverage, image quality indicators, and platform-specific best practices. Each factor contributes to a weighted score out of 100." },
+        { question: "How can I improve my listing score?", answer: "Focus on optimizing your product title with relevant keywords, writing detailed feature-rich bullet points, adding high-quality images from multiple angles, and including all product specifications. Our tool generates specific recommendations based on your current listing." },
+        { question: "Which platforms are supported for listing analysis?", answer: "You can analyze listings from Flipkart, Amazon India, and Meesho. The tool also supports auto-detection of the platform from the URL for convenience." },
+        { question: "What is the ideal title length for an ecommerce listing?", answer: "For Amazon India, keep titles under 200 characters. For Flipkart, 60-80 characters is ideal. Include primary keywords, brand name, color, size, and key specifications early in the title." },
+      ]} />
     </main>
   );
 }

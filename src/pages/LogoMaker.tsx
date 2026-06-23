@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 import { getGeminiApiKey } from "@/lib/api-key-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -112,7 +113,7 @@ export default function LogoMaker() {
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Palette className="h-6 w-6 text-primary" />
-          Logo Maker
+          Free AI Logo Maker for Your Brand
         </h1>
         <p className="text-muted-foreground mt-1">Create a professional logo for your brand in seconds with AI</p>
       </div>
@@ -208,6 +209,13 @@ export default function LogoMaker() {
           )}
         </div>
       </div>
+      <FAQ title="Frequently Asked Questions" id="logo-maker" items={[
+        { q: "Can I create a logo for free?", a: "Yes, our AI logo maker is completely free to use. You can generate unlimited professional logos for your brand without paying anything. Just enter your brand name and customize the style." },
+        { q: "What logo formats are available for download?", a: "The generated logo is available as a high-quality PNG image with transparent background support, suitable for websites, social media, business cards, and print materials." },
+        { q: "How to design a brand logo for my ecommerce store?", a: "Enter your brand name, select your industry (e.g., fashion, tech, beauty), choose a style (modern, classic, bold, luxury), and pick a color preference. The AI will create a unique professional logo tailored to your brand identity." },
+        { q: "Can I choose different logo styles and colors?", a: "Yes, you can choose from six design styles — Modern, Classic, Bold, Playful, Luxury, and Tech — and eight color palettes including auto-select where AI picks the best colors for your brand." },
+        { q: "Will I own the rights to the AI-generated logo?", a: "Yes, once generated, the logo is yours to use commercially. You can use it for your brand, website, products, marketing materials, and social media without any attribution required." },
+      ]} />
     </main>
   );
 }

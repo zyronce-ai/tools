@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 function extractText(content: string | any[]): string {
@@ -192,7 +193,7 @@ export default function ChatBot() {
                 <Bot className="h-4 w-4 text-white" />
               </div>
               <div>
-                <h1 className="text-sm font-semibold text-[#F1F1F5]">AI Chatbot</h1>
+                <h1 className="text-sm font-semibold text-[#F1F1F5]">AI Chatbot for Ecommerce Sellers</h1>
                 <p className="text-[11px] text-[#8888A0]">Apka AI Business Partner</p>
               </div>
             </div>
@@ -355,6 +356,13 @@ export default function ChatBot() {
         </div>
       </div>
     </div>
+      <FAQ title="Frequently Asked Questions" id="chatbot" items={[
+        { q: "How can AI help my ecommerce business?", a: "Our AI chatbot helps ecommerce sellers with product listing optimization, GST query resolution, competitor analysis, banner copywriting, and product research across Amazon, Flipkart, and Meesho — all in one place." },
+        { q: "Can I use this AI chatbot for product research?", a: "Yes! You can paste product details or upload product images and the AI will analyze them to provide listing suggestions, pricing insights, and keyword optimization tips tailored for Indian ecommerce platforms." },
+        { q: "Is this AI chatbot better than ChatGPT for ecommerce?", a: "Unlike generic chatbots, our AI is purpose-built for Indian ecommerce sellers with deep knowledge of Amazon India, Flipkart, Meesho, and local market trends. It also supports Hindi-English Hinglish queries naturally." },
+        { q: "Can I upload images for AI analysis?", a: "Yes, you can upload product images or paste screenshots directly into the chat. The AI can analyze images to extract text, identify products, and provide listing improvement suggestions." },
+        { q: "Is this AI chatbot free to use?", a: "Yes, the AI chatbot is completely free to use. You can create unlimited conversations, save chat history, and get expert ecommerce advice without any subscription fees." },
+      ]} />
     </main>
   );
 }

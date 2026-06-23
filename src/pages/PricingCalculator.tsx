@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, IndianRupee, TrendingUp, Package } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 
 type Platform = "flipkart" | "meesho" | "amazon" | "website";
 
@@ -60,7 +61,7 @@ export default function PricingCalculator() {
       <SEO title="Pricing Calculator" description="Calculate optimal pricing for your ecommerce products" path="/pricing-calculator" />
       <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Calculator className="h-6 w-6 text-primary" />{"Pricing Calculator"}</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><Calculator className="h-6 w-6 text-primary" />{"Ecommerce Pricing Calculator with GST, Commission & Profit Margin"}</h1>
         <p className="text-muted-foreground mt-1">{"Calculate platform commission, shipping & profit margin"}</p>
       </div>
 
@@ -130,6 +131,13 @@ export default function PricingCalculator() {
         </div>
       </div>
     </div>
+      <FAQ title="Frequently Asked Questions" id="pricing-calculator" items={[
+        { question: "What profit margin should I keep for my ecommerce products?", answer: "We recommend a minimum net profit margin of 20-30% after accounting for platform commissions, GST, shipping, and packaging costs. Our calculator suggests selling prices for 20%, 25%, 30%, 40%, and 50% target margins so you can choose your strategy." },
+        { question: "How is GST calculated on platform commissions?", answer: "GST is charged on the platform commission amount, not on the total selling price. For example, if your commission is ₹70, the GST at 18% is ₹12.60. Our calculator automatically computes this based on your platform's commission rate." },
+        { question: "Does this calculator include Amazon and Flipkart fees?", answer: "Yes, it includes platform commission (14-15% for Amazon and Flipkart), shipping costs, and packaging costs. The calculator deducts all these charges from your selling price to show your true net profit." },
+        { question: "How do I set the right selling price for my product?", answer: "Start with your cost price, add packaging and shipping costs, then factor in the platform commission and GST. Use our suggested price feature to see prices required for different profit margins, then click one to auto-fill the selling price." },
+        { question: "What is the difference between net revenue and net profit?", answer: "Net revenue is your selling price minus platform deductions (commission, GST, shipping, packaging). Net profit is net revenue minus your product cost price. Our calculator shows both clearly in the breakdown." },
+      ]} />
     </main>
   );
 }

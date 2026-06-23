@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 
 type Platform = "flipkart" | "meesho" | "amazon" | "myntra" | "website";
 type ListingType = "single" | "bulk";
@@ -77,7 +78,7 @@ const ProductKeywords = () => {
         {loading && !output && <ToolLoadingOverlay message="Finding best keywords for your product…" />}
       </AnimatePresence>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold flex items-center gap-2"><Tags className="h-7 w-7 text-primary" />{"Product Keyword Generator"}</h1>
+        <h1 className="text-3xl font-bold flex items-center gap-2"><Tags className="h-7 w-7 text-primary" />{"Product Keyword Research Tool for Amazon, Flipkart & Shopify Sellers"}</h1>
         <p className="text-muted-foreground mt-1">{"Upload product image, select fabric, get keywords & descriptions!"}</p>
       </motion.div>
 
@@ -191,6 +192,13 @@ const ProductKeywords = () => {
         </motion.div>
       )}
     </div>
+      <FAQ title="Frequently Asked Questions" id="product-keywords" items={[
+        { question: "How to find high-volume keywords for my product?", answer: "Use the AI keyword research tool by entering your product name or uploading an image. It scans top ecommerce platforms like Amazon, Flipkart, and Meesho to suggest relevant high-traffic keywords tailored to your product category and fabric type." },
+        { question: "What is keyword difficulty and how is it calculated?", answer: "Keyword difficulty measures how hard it is to rank for a given keyword based on competition. Our tool analyzes existing listings to estimate competition levels so you can target keywords with the best balance of search volume and ranking potential." },
+        { question: "Can I use this tool for Amazon India and Flipkart?", answer: "Yes, the tool supports Amazon India, Flipkart, Meesho, Myntra, and general website listings. Select your target platform before generating keywords for platform-optimized results." },
+        { question: "How does image-based keyword generation work?", answer: "Upload a product image and our AI visually analyzes it to identify product attributes like fabric, pattern, color, and style, then generates relevant keywords you might have missed." },
+        { question: "What are the best keywords for fabric-based products like sarees and kurtis?", answer: "Top keywords include fabric type (cotton, silk, georgette), occasion (wedding, casual, festive), and style (printed, embroidered, solid). Our bulk listing mode also formats keywords for Flipkart bulk uploads with double colon separation." },
+      ]} />
     </main>
   );
 };

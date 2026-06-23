@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { streamFromEdge } from "@/lib/ai-stream";
 import ReactMarkdown from "react-markdown";
+import { FAQ } from "@/components/FAQ";
 
 const platforms = [
   { value: "amazon", label: "Amazon India" },
@@ -62,7 +63,7 @@ export default function ProductSEO() {
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Search className="h-6 w-6 text-primary" />
-          Product SEO Analyzer
+          Product SEO Analyzer & Optimizer for Amazon, Flipkart & Ecommerce
         </h1>
         <p className="text-muted-foreground mt-1">Check your listing's SEO score and improve it</p>
       </div>
@@ -118,6 +119,13 @@ export default function ProductSEO() {
           </CardContent>
         </Card>
       )}
+      <FAQ title="Frequently Asked Questions" id="product-seo" items={[
+        { question: "What is product SEO and why is it important for ecommerce?", answer: "Product SEO is the process of optimizing your product listings to rank higher in search results on platforms like Amazon, Flipkart, and Google. Good SEO increases visibility, drives organic traffic, and directly boosts sales without ad spend." },
+        { question: "How to rank higher on Amazon India?", answer: "Focus on backend search terms, use relevant keywords in your title and bullet points, maintain a high click-through rate, get positive reviews, and ensure your listing is complete with all specifications. Our analyzer checks these factors and scores your listing." },
+        { question: "What keywords should I target for my product?", answer: "Target a mix of high-volume generic keywords and long-tail specific keywords. For example, instead of just 'kurti', target 'cotton kurti for women', 'printed kurti set', or 'festival wear kurti'. The tool analyzes your input to recommend the best keyword strategy." },
+        { question: "How long should my product title be for SEO?", answer: "For Amazon, use up to 200 characters with the most important keywords first. For Flipkart, keep it between 60-80 characters. Include brand, product type, key attributes (color, size, material), and primary use case." },
+        { question: "What is a good SEO score for a product listing?", answer: "A score above 80/100 is considered excellent. Scores between 60-80 indicate room for improvement. Our tool provides a detailed breakdown so you know exactly which elements need optimization." },
+      ]} />
     </main>
   );
 }
