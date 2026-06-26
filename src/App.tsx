@@ -42,6 +42,8 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsConditions = lazy(() => import("./pages/TermsConditions"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const Contact = lazy(() => import("./pages/Contact"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Profile = lazy(() => import("./pages/Profile"));
 const ImageView = lazy(() => import("./pages/ImageView"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
@@ -118,6 +120,8 @@ const App = () => (
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/i/*" element={<ImageView />} />
                 <Route path="/*" element={<DashboardRoutes />} />

@@ -92,6 +92,22 @@ const faqs = [
   { q: "Can I cancel anytime?", a: "Yes, you can cancel your subscription anytime with no penalties. Your data stays with you, and you can export everything before canceling." },
 ];
 
+const footerRoutes: Record<string, string> = {
+  "AI ChatBot": "/chat",
+  "Image Tools": "/images",
+  "Pricing Calculator": "/pricing-calculator",
+  "Startup Guide": "/startup-guide",
+  "All Tools": "/pricing",
+  "About Us": "/about",
+  "Blog": "/blog",
+  "Contact": "/contact",
+  "API Settings": "/api-settings",
+  "Terms & Conditions": "/terms",
+  "Privacy Policy": "/privacy-policy",
+  "Refund Policy": "/refund-policy",
+  "Cookie Policy": "/cookie-policy",
+};
+
 const footerLinks = {
   product: ["AI ChatBot", "Image Tools", "Pricing Calculator", "Startup Guide", "All Tools"],
   company: ["About Us", "Blog", "Contact", "API Settings", "Startup Guide"],
@@ -314,9 +330,15 @@ const LandingPage = () => {
               </Link>
               <p className="text-sm text-gray-400 mb-6 max-w-xs">The all-in-one AI platform for ecommerce sellers. 25+ tools to grow your business.</p>
               <div className="flex gap-3">
-                {[Facebook, Twitter, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                  <a key={i} href="#" className="h-9 w-9 rounded-lg bg-gray-800 hover:bg-orange-500 flex items-center justify-center transition-colors"><Icon className="h-4 w-4" /></a>
-                ))}
+                {[
+  { Icon: Facebook, url: "https://facebook.com/nayratools" },
+  { Icon: Twitter, url: "https://twitter.com/NayraTools" },
+  { Icon: Instagram, url: "https://instagram.com/nayratools" },
+  { Icon: Linkedin, url: "https://linkedin.com/company/nayratools" },
+  { Icon: Youtube, url: "https://youtube.com/@nayratools" },
+].map(({ Icon, url }, i) => (
+  <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-gray-800 hover:bg-orange-500 flex items-center justify-center transition-colors"><Icon className="h-4 w-4" /></a>
+))}
               </div>
             </div>
             {[
@@ -328,7 +350,7 @@ const LandingPage = () => {
                 <h2 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">{col.title}</h2>
                 <ul className="space-y-3">
                   {col.links.map((link) => (
-                    <li key={link}><Link to={`/${link.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">{link}</Link></li>
+                    <li key={link}><Link to={footerRoutes[link] || "/"} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">{link}</Link></li>
                   ))}
                 </ul>
               </div>
