@@ -81,7 +81,7 @@ const PrivacyPolicy = () => {
                 <p>• URLs entered by you are used <strong className="text-foreground">solely for image extraction</strong> during the active session and are <strong className="text-foreground">never saved or logged</strong>.</p>
                 <p>• We do <strong className="text-foreground">not sell, trade, or transfer</strong> any user data to third parties under any circumstances.</p>
                 <p>• Authentication data is stored securely using <strong className="text-foreground">industry-standard encryption protocols</strong>.</p>
-                <p>• We use cookies for authentication, analytics (via Google Tag Manager), and functionality improvements. You can manage cookie preferences in your browser settings.</p>
+                <p>• No cookies or tracking mechanisms are used for advertising or analytics purposes.</p>
               </div>
             </Card>
 
