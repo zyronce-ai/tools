@@ -3,6 +3,7 @@ import { SEO } from "@/components/SEO";
 import { FAQSchema } from "@/components/JsonLd";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import {
   MessageCircle, PenTool, Tags, Search, Calculator, Image,
   Eraser, ZoomIn, FileText, Sparkles, LayoutDashboard,
