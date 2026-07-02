@@ -1,4 +1,4 @@
-// Shared helper: call AI via BluesMinds, Groq, OpenRouter, or Gemini
+// Shared helper: call AI via Groq or Gemini
 // Import in edge functions: import { callAI, corsHeaders } from "../_shared/ai-call.ts";
 
 export const corsHeaders = {
@@ -9,14 +9,12 @@ export const corsHeaders = {
 export async function callAI(
   messages: Array<{ role: string; content: string | any[] }>,
   userGeminiKey?: string,
-  model?: string,
+  _model?: string,
   _useOpenRouter?: boolean,
 ): Promise<Response> {
   const hasImages = messages.some(m => Array.isArray(m.content));
-  const BLUESMINDS_API_KEY = Deno.env.get("BLUESMINDS_API_KEY");
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
-  const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-  // 1. Groq — text only, blazing fast, skip if images
+  // 1. Groq — text only, skip if images present
   if (GROQ_API_KEY && !hasImages) {
     try {
       return await callGroq(messages, GROQ_API_KEY);
@@ -26,28 +24,7 @@ export async function callAI(
       console.error("Groq failed:", msg);
     }
   }
-  // 2. OpenRouter — any model fallback (vision, Qwen, etc.)
-  if (OPENROUTER_API_KEY) {
-    try {
-      const orModel = model || "qwen/qwen3-32b";
-      return await callOpenRouter(messages, OPENROUTER_API_KEY, orModel);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg === "RATE_LIMIT") throw e;
-      console.error("OpenRouter failed:", msg);
-    }
-  }
-  // 3. BluesMinds — text-only fallback (needs credits)
-  if (BLUESMINDS_API_KEY && !hasImages) {
-    try {
-      return await callBluesMinds(messages, BLUESMINDS_API_KEY);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg === "RATE_LIMIT") throw e;
-      console.error("BluesMinds failed:", msg);
-    }
-  }
-  // 4. Gemini (user's key from Settings)
+  // 2. Gemini (user's key from Settings) — supports text + vision
   if (userGeminiKey) {
     try {
       return await callGeminiDirect(messages, userGeminiKey);
@@ -58,39 +35,7 @@ export async function callAI(
     }
   }
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
-  if (OPENROUTER_API_KEY) throw new Error("OpenRouter failed: Check your API key in Settings.");
-  if (BLUESMINDS_API_KEY) throw new Error("BluesMinds failed: Credits khatam. BluesMinds me credits add karo.");
-  throw new Error("No AI provider. Settings mein Gemini API key lagao ya admin se API key set karwaiye.");
-}
-
-// BluesMinds — OpenAI-compatible gateway, supports text + vision
-async function callBluesMinds(
-  messages: Array<{ role: string; content: string | any[] }>,
-  apiKey: string,
-): Promise<Response> {
-  const hasImages = messages.some(m => Array.isArray(m.content));
-  const model = "gpt-4o";
-  const resp = await fetch("https://api.bluesminds.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: true,
-      temperature: 0.7,
-      max_tokens: 4096,
-    }),
-  });
-  if (!resp.ok) {
-    const t = await resp.text();
-    console.error("BluesMinds error:", resp.status, t);
-    if (resp.status === 429) throw new Error("RATE_LIMIT");
-    throw new Error(`BluesMinds error: ${resp.status} - ${t.slice(0, 300)}`);
-  }
-  return resp;
+  throw new Error("No AI provider. Settings mein Gemini API key lagao ya admin se GROQ_API_KEY set karwaiye.");
 }
 
 // Groq — OpenAI-compatible, blazing fast text inference
@@ -118,38 +63,6 @@ async function callGroq(
     console.error("Groq error:", resp.status, t);
     if (resp.status === 429) throw new Error("RATE_LIMIT");
     throw new Error(`Groq API error: ${resp.status} - ${t}`);
-  }
-  return resp;
-}
-
-// OpenRouter — access to 300+ models (Qwen, Claude, etc.)
-async function callOpenRouter(
-  messages: Array<{ role: string; content: string | any[] }>,
-  apiKey: string,
-  model: string,
-): Promise<Response> {
-  const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": "https://nayratools.vercel.app",
-      "X-Title": "NayraTools",
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: true,
-      temperature: 0.7,
-      max_tokens: 4096,
-    }),
-  });
-  if (!resp.ok) {
-    const t = await resp.text();
-    console.error("OpenRouter error:", resp.status, t);
-    if (resp.status === 429) throw new Error("RATE_LIMIT");
-    if (resp.status === 402) throw new Error("CREDITS_EXHAUSTED");
-    throw new Error(`OpenRouter error: ${resp.status} - ${t}`);
   }
   return resp;
 }
@@ -210,7 +123,7 @@ async function callGeminiDirect(
     throw new Error(`Gemini API error: ${resp.status} - ${t.slice(0, 300)}`);
   }
 
-  // Transform Gemini SSE → OpenAI-compatible SSE
+  // Transform Gemini SSE to OpenAI-compatible SSE
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
@@ -262,81 +175,19 @@ function hasImageInput(messages: Array<{ role: string; content: string | any[] }
   );
 }
 
-// Image generation / processing: Gemini primary, BluesMinds DALL-E as fallback
+// Image generation / processing: uses user's Gemini key
 export async function callAIImage(
   messages: Array<{ role: string; content: string | any[] }>,
   userGeminiKey?: string,
   model?: string,
 ): Promise<any> {
-  // Gemini primary for image (needs user's key from Settings)
-  if (userGeminiKey) {
-    try {
-      if (hasImageInput(messages)) return await callGeminiImageProcess(messages, userGeminiKey);
-      return await callGeminiImageDirect(messages, userGeminiKey);
-    } catch (e) {
-      console.error("Gemini image failed:", e instanceof Error ? e.message : String(e));
-    }
+  if (!userGeminiKey) {
+    throw new Error("No image provider available. Set a Gemini API key in Settings.");
   }
-  // BluesMinds DALL-E fallback for image generation only (needs credits)
-  const BLUESMINDS_API_KEY = Deno.env.get("BLUESMINDS_API_KEY");
-  if (BLUESMINDS_API_KEY && !hasImageInput(messages)) {
-    try {
-      return await callBluesMindsImageGen(messages, BLUESMINDS_API_KEY);
-    } catch (e) {
-      console.error("BluesMinds image gen failed:", e instanceof Error ? e.message : String(e));
-    }
+  if (hasImageInput(messages)) {
+    return callGeminiImageProcess(messages, userGeminiKey);
   }
-  throw new Error("No image provider available. Set a Gemini API key in Settings ya BluesMinds me credits daalo.");
-}
-
-// BluesMinds DALL-E image generation
-async function callBluesMindsImageGen(
-  messages: Array<{ role: string; content: string | any[] }>,
-  apiKey: string,
-): Promise<any> {
-  let prompt = "";
-  for (const m of messages) {
-    if (typeof m.content === "string") {
-      prompt += m.content + "\n";
-    } else if (Array.isArray(m.content)) {
-      for (const item of m.content) {
-        if (item.type === "text") prompt += item.text + "\n";
-      }
-    }
-  }
-  const resp = await fetch("https://api.bluesminds.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "dall-e-3",
-      prompt: prompt.trim(),
-      n: 1,
-      size: "1024x1024",
-      response_format: "b64_json",
-    }),
-  });
-  if (!resp.ok) {
-    const t = await resp.text();
-    throw new Error(`BluesMinds image error: ${resp.status} - ${t.slice(0, 300)}`);
-  }
-  const data = await resp.json();
-  const b64 = data.data?.[0]?.b64_json;
-  if (!b64) throw new Error("No image returned from BluesMinds");
-  return {
-    choices: [{
-      message: {
-        role: "assistant",
-        content: "Image generated successfully",
-        images: [{
-          type: "image_url",
-          image_url: { url: `data:image/png;base64,${b64}` },
-        }],
-      },
-    }],
-  };
+  return callGeminiImageDirect(messages, userGeminiKey);
 }
 
 // Build Gemini contents array from messages
@@ -451,8 +302,6 @@ async function callGeminiImageDirect(
   return parseGeminiResponse(data);
 }
 
-
-
 export function handleAIError(e: unknown, corsH: Record<string, string>) {
   const msg = e instanceof Error ? e.message : "Unknown error";
   if (msg === "RATE_LIMIT") {
@@ -465,11 +314,6 @@ export function handleAIError(e: unknown, corsH: Record<string, string>) {
       status: 401, headers: { ...corsH, "Content-Type": "application/json" },
     });
   }
-  if (msg === "CREDITS_EXHAUSTED") {
-    return new Response(JSON.stringify({ error: "AI provider failed. Settings mein apni Gemini API key lagao." }), {
-      status: 402, headers: { ...corsH, "Content-Type": "application/json" },
-    });
-  }
   return null;
 }
 
@@ -478,11 +322,6 @@ export function handleResponseErrors(response: Response, corsH: Record<string, s
   if (response.status === 429) {
     return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again later." }), {
       status: 429, headers: { ...corsH, "Content-Type": "application/json" },
-    });
-  }
-  if (response.status === 402) {
-    return new Response(JSON.stringify({ error: "AI provider failed. Settings mein apni Gemini API key lagao." }), {
-      status: 402, headers: { ...corsH, "Content-Type": "application/json" },
     });
   }
   return new Response(JSON.stringify({ error: "AI error" }), {
