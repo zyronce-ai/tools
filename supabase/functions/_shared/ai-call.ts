@@ -16,8 +16,8 @@ export async function callAI(
   const BLUESMINDS_API_KEY = Deno.env.get("BLUESMINDS_API_KEY");
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
   const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-  // 1. BluesMinds — primary provider, supports text + vision
-  if (BLUESMINDS_API_KEY) {
+  // 1. BluesMinds — primary provider for text only (vision/base64 not supported)
+  if (BLUESMINDS_API_KEY && !hasImages) {
     try {
       return await callBluesMinds(messages, BLUESMINDS_API_KEY);
     } catch (e) {
