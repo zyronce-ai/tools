@@ -60,7 +60,7 @@ const toolGroups: ToolGroup[] = [
     items: [
       { title: "Startup Guide", url: "/startup-guide", icon: Rocket, color: "#8888A0" },
       { title: "Text to Speech", url: "/text-to-speech", icon: Volume2, color: "#8888A0" },
-      { title: "API Settings", url: "/api-settings", icon: Key, color: "#8888A0" },
+
       { title: "History", url: "/history", icon: History, color: "#8888A0" },
     ],
   },

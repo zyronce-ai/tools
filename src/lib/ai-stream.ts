@@ -1,4 +1,4 @@
-import { getGeminiApiKey } from "./api-key-store";
+
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -25,8 +25,7 @@ export async function streamFromEdge({ functionName, body, onDelta, onDone, onEr
 
   try {
     const makeRequest = async () => {
-      const geminiKey = getGeminiApiKey();
-      const payload = geminiKey ? { ...body, userGeminiKey: geminiKey } : body;
+      const payload = body;
       return fetch(url, {
         method: "POST",
         headers: {

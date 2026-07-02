@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
-import { getGeminiApiKey } from "@/lib/api-key-store";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -55,7 +55,7 @@ export default function BannerMaker() {
     try {
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/banner-maker`, {
         method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
-        body: JSON.stringify({ productName, offerText, platform, style, userGeminiKey: getGeminiApiKey() || undefined }),
+        body: JSON.stringify({ productName, offerText, platform, style }),
       });
       if (!resp.ok) { const err = await resp.json(); throw new Error(err.error || "Banner generate failed"); }
       const data = await resp.json();

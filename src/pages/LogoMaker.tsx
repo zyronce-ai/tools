@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { SEO } from "@/components/SEO";
 import { FAQ } from "@/components/FAQ";
-import { getGeminiApiKey } from "@/lib/api-key-store";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,7 +72,7 @@ export default function LogoMaker() {
           industry,
           style,
           colors: colors === "auto" ? "auto-select best colors" : colors,
-          userGeminiKey: getGeminiApiKey() || undefined,
+
         }),
       });
       if (!resp.ok) {

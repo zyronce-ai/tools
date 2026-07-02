@@ -35,7 +35,7 @@ const FakeReviewDetector = lazy(() => import("./pages/FakeReviewDetector"));
 const ProductSEO = lazy(() => import("./pages/ProductSEO"));
 const StartupGuide = lazy(() => import("./pages/StartupGuide"));
 
-const ApiSettings = lazy(() => import("./pages/ApiSettings"));
+
 const BarcodeGenerator = lazy(() => import("./pages/BarcodeGenerator"));
 const ImageCompressor = lazy(() => import("./pages/ImageCompressor"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
@@ -87,7 +87,7 @@ const DashboardRoutes = () => (
         <Route path="fake-review-detector" element={<FakeReviewDetector />} />
         <Route path="product-seo" element={<ProductSEO />} />
         <Route path="startup-guide" element={<StartupGuide />} />
-        <Route path="api-settings" element={<ApiSettings />} />
+
         <Route path="barcode-generator" element={<BarcodeGenerator />} />
         <Route path="image-compressor" element={<ImageCompressor />} />
         

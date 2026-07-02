@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
-import { getGeminiApiKey } from "@/lib/api-key-store";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -61,7 +61,7 @@ export default function BackgroundRemover() {
     if (!originalImage) { toast({ title: "Upload an image first", variant: "destructive" }); return; }
     setLoading(true); setResultImage("");
     try {
-      const { data, error } = await supabase.functions.invoke("bg-remover", { body: { imageBase64: originalImage, backgroundType, userGeminiKey: getGeminiApiKey() || undefined } });
+      const { data, error } = await supabase.functions.invoke("bg-remover", { body: { imageBase64: originalImage, backgroundType } });
       if (error) throw new Error(error.message || "Background remove failed");
       const imageUrl = data?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
       if (imageUrl) { setResultImage(imageUrl); toast({ title: "Background removed! ✨" }); }

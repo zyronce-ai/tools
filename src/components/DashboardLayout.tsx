@@ -26,7 +26,7 @@ const breadcrumbNames: Record<string, string> = {
   "fake-review-detector": "Fake Review Detector",
   "product-seo": "Product SEO",
   "startup-guide": "Startup Guide",
-  "api-settings": "API Settings",
+
   "barcode-generator": "Barcode Generator",
   "image-compressor": "Image Compressor",
   "profile": "Profile",

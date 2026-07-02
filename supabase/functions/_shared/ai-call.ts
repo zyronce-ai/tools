@@ -8,12 +8,13 @@ export const corsHeaders = {
 
 export async function callAI(
   messages: Array<{ role: string; content: string | any[] }>,
-  userGeminiKey?: string,
+  _userGeminiKey?: string,
   _model?: string,
   _useOpenRouter?: boolean,
 ): Promise<Response> {
   const hasImages = messages.some(m => Array.isArray(m.content));
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
+  const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   // 1. Groq — text only, skip if images present
   if (GROQ_API_KEY && !hasImages) {
     try {
@@ -24,10 +25,10 @@ export async function callAI(
       console.error("Groq failed:", msg);
     }
   }
-  // 2. Gemini (user's key from Settings) — supports text + vision
-  if (userGeminiKey) {
+  // 2. Gemini — supports text + vision
+  if (GEMINI_API_KEY || _userGeminiKey) {
     try {
-      return await callGeminiDirect(messages, userGeminiKey);
+      return await callGeminiDirect(messages, _userGeminiKey || GEMINI_API_KEY);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.startsWith("INVALID_KEY")) throw e;
@@ -35,7 +36,7 @@ export async function callAI(
     }
   }
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
-  throw new Error("No AI provider. Settings mein Gemini API key lagao ya admin se GROQ_API_KEY set karwaiye.");
+  throw new Error("No AI provider. Admin se GEMINI_API_KEY set karwaiye.");
 }
 
 // Groq — OpenAI-compatible, blazing fast text inference
@@ -175,19 +176,20 @@ function hasImageInput(messages: Array<{ role: string; content: string | any[] }
   );
 }
 
-// Image generation / processing: uses user's Gemini key
+// Image generation / processing: uses server-side Gemini key
 export async function callAIImage(
   messages: Array<{ role: string; content: string | any[] }>,
-  userGeminiKey?: string,
-  model?: string,
+  _userGeminiKey?: string,
+  _model?: string,
 ): Promise<any> {
-  if (!userGeminiKey) {
-    throw new Error("No image provider available. Set a Gemini API key in Settings.");
+  const geminiKey = _userGeminiKey || Deno.env.get("GEMINI_API_KEY");
+  if (!geminiKey) {
+    throw new Error("No image provider available. Admin se GEMINI_API_KEY set karwaiye.");
   }
   if (hasImageInput(messages)) {
-    return callGeminiImageProcess(messages, userGeminiKey);
+    return callGeminiImageProcess(messages, geminiKey);
   }
-  return callGeminiImageDirect(messages, userGeminiKey);
+  return callGeminiImageDirect(messages, geminiKey);
 }
 
 // Build Gemini contents array from messages

@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { SEO } from "@/components/SEO";
-import { getGeminiApiKey } from "@/lib/api-key-store";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, ZoomIn, Download, Loader2 } from "lucide-react";
@@ -50,7 +50,7 @@ export default function ImageUpscaler() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${SUPABASE_KEY}`,
         },
-        body: JSON.stringify({ imageBase64: originalImage, userGeminiKey: getGeminiApiKey() || undefined }),
+        body: JSON.stringify({ imageBase64: originalImage }),
       });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || "Upscale failed");
