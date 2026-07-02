@@ -16,17 +16,7 @@ export async function callAI(
   const BLUESMINDS_API_KEY = Deno.env.get("BLUESMINDS_API_KEY");
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
   const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-  // 1. BluesMinds — primary provider for text only (vision/base64 not supported)
-  if (BLUESMINDS_API_KEY && !hasImages) {
-    try {
-      return await callBluesMinds(messages, BLUESMINDS_API_KEY);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg === "RATE_LIMIT") throw e;
-      console.error("BluesMinds failed:", msg);
-    }
-  }
-  // 2. Groq — text only fallback, skip if images present
+  // 1. Groq — text only, blazing fast, skip if images
   if (GROQ_API_KEY && !hasImages) {
     try {
       return await callGroq(messages, GROQ_API_KEY);
@@ -36,7 +26,7 @@ export async function callAI(
       console.error("Groq failed:", msg);
     }
   }
-  // 3. OpenRouter — any model fallback
+  // 2. OpenRouter — any model fallback (vision, Qwen, etc.)
   if (OPENROUTER_API_KEY) {
     try {
       const orModel = model || "qwen/qwen3-32b";
@@ -45,6 +35,16 @@ export async function callAI(
       const msg = e instanceof Error ? e.message : String(e);
       if (msg === "RATE_LIMIT") throw e;
       console.error("OpenRouter failed:", msg);
+    }
+  }
+  // 3. BluesMinds — text-only fallback (needs credits)
+  if (BLUESMINDS_API_KEY && !hasImages) {
+    try {
+      return await callBluesMinds(messages, BLUESMINDS_API_KEY);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg === "RATE_LIMIT") throw e;
+      console.error("BluesMinds failed:", msg);
     }
   }
   // 4. Gemini (user's key from Settings)
@@ -57,9 +57,9 @@ export async function callAI(
       console.error("Gemini failed:", msg);
     }
   }
-  if (BLUESMINDS_API_KEY) throw new Error("BluesMinds failed: Check your API key.");
-  if (OPENROUTER_API_KEY) throw new Error("OpenRouter failed: Check your API key in Settings.");
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
+  if (OPENROUTER_API_KEY) throw new Error("OpenRouter failed: Check your API key in Settings.");
+  if (BLUESMINDS_API_KEY) throw new Error("BluesMinds failed: Credits khatam. BluesMinds me credits add karo.");
   throw new Error("No AI provider. Settings mein Gemini API key lagao ya admin se API key set karwaiye.");
 }
 
@@ -262,14 +262,23 @@ function hasImageInput(messages: Array<{ role: string; content: string | any[] }
   );
 }
 
-// Image generation / processing: BluesMinds DALL-E for gen, Gemini for processing
+// Image generation / processing: Gemini primary, BluesMinds DALL-E as fallback
 export async function callAIImage(
   messages: Array<{ role: string; content: string | any[] }>,
   userGeminiKey?: string,
   model?: string,
 ): Promise<any> {
+  // Gemini primary for image (needs user's key from Settings)
+  if (userGeminiKey) {
+    try {
+      if (hasImageInput(messages)) return await callGeminiImageProcess(messages, userGeminiKey);
+      return await callGeminiImageDirect(messages, userGeminiKey);
+    } catch (e) {
+      console.error("Gemini image failed:", e instanceof Error ? e.message : String(e));
+    }
+  }
+  // BluesMinds DALL-E fallback for image generation only (needs credits)
   const BLUESMINDS_API_KEY = Deno.env.get("BLUESMINDS_API_KEY");
-  // BluesMinds DALL-E for image generation (no image input → logo-maker, banner-maker)
   if (BLUESMINDS_API_KEY && !hasImageInput(messages)) {
     try {
       return await callBluesMindsImageGen(messages, BLUESMINDS_API_KEY);
@@ -277,14 +286,7 @@ export async function callAIImage(
       console.error("BluesMinds image gen failed:", e instanceof Error ? e.message : String(e));
     }
   }
-  // Fallback to Gemini for image processing or if BluesMinds fails
-  if (!userGeminiKey) {
-    throw new Error("No image provider available. Set a Gemini API key in Settings.");
-  }
-  if (hasImageInput(messages)) {
-    return callGeminiImageProcess(messages, userGeminiKey);
-  }
-  return callGeminiImageDirect(messages, userGeminiKey);
+  throw new Error("No image provider available. Set a Gemini API key in Settings ya BluesMinds me credits daalo.");
 }
 
 // BluesMinds DALL-E image generation
