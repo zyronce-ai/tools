@@ -75,7 +75,7 @@ async function callGeminiDirect(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<Response> {
-  const geminiModel = "gemini-1.5-flash";
+  const geminiModel = "gemini-2.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const systemMsg = messages.find(m => m.role === "system");
@@ -253,7 +253,7 @@ async function callGeminiImageProcess(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-1.5-flash";
+  const geminiModel = "gemini-2.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {
@@ -281,7 +281,7 @@ async function callGeminiImageDirect(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-2.0-flash";
+  const geminiModel = "gemini-2.5-flash-image";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {
