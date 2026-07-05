@@ -31,11 +31,13 @@ export async function callAI(
       return await callGeminiDirect(messages, GEMINI_API_KEY);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      if (msg.startsWith("INVALID_KEY")) throw e;
+      if (msg.startsWith("INVALID_KEY") || msg === "RATE_LIMIT") throw e;
       console.error("Gemini failed:", msg);
+      throw new Error(hasImages ? "Gemini fail ho gaya (image analysis). Thodi der baad try karo." : "Gemini fail ho gaya.");
     }
   }
 
+  if (hasImages) throw new Error("No AI provider for image analysis. Admin se GEMINI_API_KEY set karwaiye.");
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
   throw new Error("No AI provider. Admin se GEMINI_API_KEY set karwaiye.");
 }
@@ -73,7 +75,7 @@ async function callGeminiDirect(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<Response> {
-  const geminiModel = "gemini-2.0-flash";
+  const geminiModel = "gemini-1.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const systemMsg = messages.find(m => m.role === "system");
@@ -251,7 +253,7 @@ async function callGeminiImageProcess(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-2.0-flash";
+  const geminiModel = "gemini-1.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {
