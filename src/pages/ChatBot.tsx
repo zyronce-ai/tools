@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Loader2, Bot, User, Plus, Trash2, MessageCircle, ImagePlus, X, Sparkles, Copy, Check, Settings } from "lucide-react";
+import { Send, Loader2, Bot, User, Plus, Trash2, MessageCircle, ImagePlus, X, Sparkles, Copy, Check } from "lucide-react";
 import { ChatMessage, Conversation, getConversations, saveConversation, deleteConversation } from "@/lib/content-store";
 import { streamFromEdge } from "@/lib/ai-stream";
 import { motion, AnimatePresence } from "framer-motion";
@@ -201,11 +201,8 @@ export default function ChatBot() {
           <div className="flex items-center gap-2">
             <span className="hidden sm:flex items-center gap-1.5 text-[11px] text-[#8888A0] bg-[#1E1E28] border border-[#2A2A38] px-2.5 py-1 rounded-full">
               <Sparkles className="h-3 w-3 text-[#7C3AED]" />
-              Powered by Claude
+              Powered by AI
             </span>
-            <button className="h-8 w-8 rounded-lg bg-[#1E1E28] border border-[#2A2A38] flex items-center justify-center text-[#8888A0] hover:text-[#F1F1F5] transition-all">
-              <Settings className="h-3.5 w-3.5" />
-            </button>
             <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8888A0] hover:text-[#F1F1F5] hidden md:flex" onClick={startNewChat}>
               <Plus className="h-4 w-4" />
             </Button>

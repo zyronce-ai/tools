@@ -9,13 +9,12 @@ export const corsHeaders = {
 export async function callAI(
   messages: Array<{ role: string; content: string | any[] }>,
   _userGeminiKey?: string,
-  _model?: string,
-  _useOpenRouter?: boolean,
 ): Promise<Response> {
-  const hasImages = messages.some(m => Array.isArray(m.content));
+  const hasImages = hasImageInput(messages);
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
-  const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
-  // 1. Groq — text only, skip if images present
+  const GEMINI_API_KEY = _userGeminiKey || Deno.env.get("GEMINI_API_KEY");
+
+  // Text-only requests: Groq first (fast, higher free-tier limit)
   if (GROQ_API_KEY && !hasImages) {
     try {
       return await callGroq(messages, GROQ_API_KEY);
@@ -25,16 +24,18 @@ export async function callAI(
       console.error("Groq failed:", msg);
     }
   }
-  // 2. Gemini — supports text + vision
-  if (GEMINI_API_KEY || _userGeminiKey) {
+
+  // Vision requests (or Groq fallback failure): Gemini
+  if (GEMINI_API_KEY) {
     try {
-      return await callGeminiDirect(messages, _userGeminiKey || GEMINI_API_KEY);
+      return await callGeminiDirect(messages, GEMINI_API_KEY);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.startsWith("INVALID_KEY")) throw e;
       console.error("Gemini failed:", msg);
     }
   }
+
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
   throw new Error("No AI provider. Admin se GEMINI_API_KEY set karwaiye.");
 }
@@ -72,7 +73,7 @@ async function callGeminiDirect(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<Response> {
-  const geminiModel = "gemini-1.5-flash";
+  const geminiModel = "gemini-2.0-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const systemMsg = messages.find(m => m.role === "system");
@@ -120,7 +121,7 @@ async function callGeminiDirect(
     const t = await resp.text();
     console.error("Gemini direct error:", resp.status, t);
     if (resp.status === 429) throw new Error("RATE_LIMIT");
-    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key is invalid or expired. Check in Settings.");
+    if (resp.status === 401 || resp.status === 403) throw new Error("INVALID_KEY: API key is invalid or expired.");
     throw new Error(`Gemini API error: ${resp.status} - ${t.slice(0, 300)}`);
   }
 
@@ -250,7 +251,7 @@ async function callGeminiImageProcess(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-1.5-flash";
+  const geminiModel = "gemini-2.0-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {
@@ -278,7 +279,7 @@ async function callGeminiImageDirect(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-1.5-flash";
+  const geminiModel = "gemini-2.0-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {

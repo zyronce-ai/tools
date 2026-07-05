@@ -97,7 +97,7 @@ Generate PRO-LEVEL, marketplace-ready keywords and a HIGH-CONVERTING description
     const response = await callAI([
       { role: "system", content: systemPrompt },
       { role: "user", content: userContent },
-    ], userGeminiKey, "openai/gpt-5", true);
+    ], userGeminiKey);
 
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;

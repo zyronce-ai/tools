@@ -36,7 +36,7 @@ Respond in English only.`;
     const response = await callAI([
       { role: "system", content: systemPrompt },
       { role: "user", content: `Create ${platform} content about: ${topic}` },
-    ], userGeminiKey, "openai/gpt-5-mini", true);
+    ], userGeminiKey);
 
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;

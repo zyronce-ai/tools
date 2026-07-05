@@ -56,7 +56,7 @@ Include approximate price ranges in INR (₹).`;
     const response = await callAI([
       { role: "system", content: systemPrompt },
       { role: "user", content: `Analyze competitors for: ${productName} in ${category || "general"} category on ${platformMap[platform] || "all platforms"}` },
-    ], userGeminiKey, "openai/gpt-5-mini", true);
+    ], userGeminiKey);
 
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;

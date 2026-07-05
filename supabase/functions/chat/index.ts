@@ -60,7 +60,7 @@ Use emojis in your response. Be concise but helpful.
       ...messages,
     ];
 
-    const response = await callAI(allMessages, userGeminiKey, "openai/gpt-5-nano", true);
+    const response = await callAI(allMessages, userGeminiKey);
 
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;

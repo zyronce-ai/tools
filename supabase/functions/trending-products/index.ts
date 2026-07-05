@@ -85,7 +85,7 @@ Provide clear English responses.`;
 
     const response = await callAI([
       { role: "user", content: prompt },
-    ], userGeminiKey, undefined, true);
+    ], userGeminiKey);
 
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;
