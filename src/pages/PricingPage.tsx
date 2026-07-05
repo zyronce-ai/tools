@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { PricingSection } from "@/components/PricingSection";
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
+import { useAuth } from "@/hooks/useAuth";
 
 const PricingPage = () => {
+  const { user } = useAuth();
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -26,7 +28,7 @@ const PricingPage = () => {
               ))}
             </nav>
             <div className="flex items-center gap-3">
-              <Link to="/login"><Button className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all">Get Started Free</Button></Link>
+              <Link to={user ? "/chat" : "/login"}><Button className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all">Get Started Free</Button></Link>
               <button className="md:hidden p-2" onClick={() => setNavOpen(!navOpen)}>{navOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
             </div>
           </div>
