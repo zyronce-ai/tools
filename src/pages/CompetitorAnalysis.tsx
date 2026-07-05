@@ -12,7 +12,6 @@ import ReactMarkdown from "react-markdown";
 import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { SEO } from "@/components/SEO";
-import { FAQ } from "@/components/FAQ";
 
 const categories = [
   "Clothing & Fashion", "Electronics", "Home & Kitchen", "Beauty & Health",
@@ -105,13 +104,6 @@ export default function CompetitorAnalysis() {
         </Card>
       )}
     </div>
-      <FAQ title="Frequently Asked Questions" id="competitor-analysis" items={[
-        { q: "How to analyze competitor listings on Amazon and Flipkart?", a: "Simply enter your product name, select the category and platform (Amazon India, Flipkart, or Meesho), and click Analyze. Our AI will scan competitor listings to provide pricing insights, keyword gaps, and listing optimization tips." },
-        { q: "What competitor metrics matter most for ecommerce?", a: "Key metrics include pricing strategy, keyword density in titles, rating distribution, review sentiment, image quality, feature comparison, and seller response patterns. Our tool analyzes all of these automatically." },
-        { q: "How to find competitor keywords for better rankings?", a: "The tool identifies high-performing keywords used by top competitors in their product titles and descriptions. It highlights which keywords you are missing and suggests a prioritized keyword strategy to improve your search ranking." },
-        { q: "Can I compare competitors across multiple platforms?", a: "Yes, you can analyze competitors across Amazon India, Flipkart, Meesho, or all platforms at once to understand how the same product category performs differently on each marketplace." },
-        { q: "Is this competitor analysis tool free for sellers?", a: "Absolutely. The competitor analysis tool is free to use with no usage limits. You can run unlimited analyses for any product category to stay ahead of the competition." },
-      ]} />
     </main>
   );
 }

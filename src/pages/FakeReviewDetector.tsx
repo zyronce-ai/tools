@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 import { SEO } from "@/components/SEO";
-import { FAQ } from "@/components/FAQ";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -86,13 +85,6 @@ export default function FakeReviewDetector() {
           </CardContent>
         </Card>
       )}
-      <FAQ title="Frequently Asked Questions" id="fake-review-detector" items={[
-        { q: "How to spot fake reviews on Amazon and Flipkart?", a: "Our AI analyzes review patterns including repetitive language, unnatural sentiment, verified purchase mismatches, and timing clusters. It flags suspicious reviews that are likely fake or incentivized so you can make informed buying decisions." },
-        { q: "Does this fake review detector work for Amazon reviews?", a: "Yes, it works for Amazon India, Flipkart, and Meesho reviews. Simply copy and paste reviews from any product page and our AI will detect which ones are likely fake within seconds." },
-        { q: "How accurate is the AI fake review detection?", a: "The AI uses advanced pattern recognition trained on known fake review datasets. It achieves high accuracy by analyzing linguistic cues, emotional tone, review timing, and structural patterns that distinguish genuine from fake reviews." },
-        { q: "Can I use this for competitor research?", a: "Absolutely. You can paste competitor product reviews to identify if they are using fake reviews to boost ratings. This helps you make data-driven decisions about which products to compete with and which to avoid." },
-        { q: "Is the fake review detection free to use?", a: "Yes, the fake review detector is completely free. You can analyze unlimited batches of reviews with no account or sign-up required." },
-      ]} />
     </main>
   );
 }
