@@ -12,7 +12,7 @@ export async function callAI(
 ): Promise<Response> {
   const hasImages = hasImageInput(messages);
   const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
-  const GEMINI_API_KEY = _userGeminiKey || Deno.env.get("GEMINI_API_KEY");
+  const geminiKeys = getGeminiKeys(_userGeminiKey);
 
   // Text-only requests: Groq first (fast, higher free-tier limit)
   if (GROQ_API_KEY && !hasImages) {
@@ -26,9 +26,9 @@ export async function callAI(
   }
 
   // Vision requests (or Groq fallback failure): Gemini
-  if (GEMINI_API_KEY) {
+  if (geminiKeys.length > 0) {
     try {
-      return await callGeminiDirect(messages, GEMINI_API_KEY);
+      return await withGeminiFallback(geminiKeys, (key) => callGeminiDirect(messages, key));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.startsWith("INVALID_KEY") || msg === "RATE_LIMIT") throw e;
@@ -40,6 +40,32 @@ export async function callAI(
   if (hasImages) throw new Error("No AI provider for image analysis. Admin se GEMINI_API_KEY set karwaiye.");
   if (GROQ_API_KEY) throw new Error("Groq fail ho gaya.");
   throw new Error("No AI provider. Admin se GEMINI_API_KEY set karwaiye.");
+}
+
+// Collect available Gemini API keys. A user-supplied (BYOK) key is used
+// exclusively — we never rotate through server keys on someone's own key.
+function getGeminiKeys(userKey?: string): string[] {
+  if (userKey) return [userKey];
+  return ["GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3"]
+    .map((name) => Deno.env.get(name))
+    .filter((k): k is string => !!k);
+}
+
+// Try each Gemini key in order; on quota/auth failure, fall through to the
+// next key (separate Google Cloud projects have separate free-tier quotas).
+async function withGeminiFallback<T>(keys: string[], fn: (key: string) => Promise<T>): Promise<T> {
+  let lastErr: unknown;
+  for (const key of keys) {
+    try {
+      return await fn(key);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      lastErr = e;
+      if (msg === "RATE_LIMIT" || msg.startsWith("INVALID_KEY")) continue;
+      throw e;
+    }
+  }
+  throw lastErr;
 }
 
 // Groq — OpenAI-compatible, blazing fast text inference
@@ -185,14 +211,12 @@ export async function callAIImage(
   _userGeminiKey?: string,
   _model?: string,
 ): Promise<any> {
-  const geminiKey = _userGeminiKey || Deno.env.get("GEMINI_API_KEY");
-  if (!geminiKey) {
+  const geminiKeys = getGeminiKeys(_userGeminiKey);
+  if (geminiKeys.length === 0) {
     throw new Error("No image provider available. Admin se GEMINI_API_KEY set karwaiye.");
   }
-  if (hasImageInput(messages)) {
-    return callGeminiImageProcess(messages, geminiKey);
-  }
-  return callGeminiImageDirect(messages, geminiKey);
+  const fn = hasImageInput(messages) ? callGeminiImageProcess : callGeminiImageDirect;
+  return withGeminiFallback(geminiKeys, (key) => fn(messages, key));
 }
 
 // Build Gemini contents array from messages

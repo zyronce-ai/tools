@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { SEO } from "@/components/SEO";
+import { removeBackground as removeBg } from "@imgly/background-removal";
 
 const bgOptions = [
   { value: "white", label: "⬜ Pure White - E-commerce Ready" },
@@ -57,15 +58,51 @@ export default function BackgroundRemover() {
     } catch { toast({ title: "Image processing failed", variant: "destructive" }); }
   };
 
+  const compositeOnFill = (cutoutUrl: string, fill: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width; canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas not supported"));
+        fill(ctx, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      };
+      img.onerror = () => reject(new Error("Image load failed"));
+      img.src = cutoutUrl;
+    });
+  };
+
   const removeBackground = async () => {
     if (!originalImage) { toast({ title: "Upload an image first", variant: "destructive" }); return; }
     setLoading(true); setResultImage("");
     try {
-      const { data, error } = await supabase.functions.invoke("bg-remover", { body: { imageBase64: originalImage, backgroundType } });
-      if (error) throw new Error(error.message || "Background remove failed");
-      const imageUrl = data?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-      if (imageUrl) { setResultImage(imageUrl); toast({ title: "Background removed! ✨" }); }
-      else { throw new Error("Image not processed, try again"); }
+      if (backgroundType === "lifestyle") {
+        const { data, error } = await supabase.functions.invoke("bg-remover", { body: { imageBase64: originalImage, backgroundType } });
+        if (error) throw new Error(error.message || "Background remove failed");
+        const imageUrl = data?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        if (imageUrl) { setResultImage(imageUrl); toast({ title: "Background removed! ✨" }); }
+        else { throw new Error("Image not processed, try again"); }
+        return;
+      }
+
+      // White / gradient / transparent: pure client-side segmentation, no AI backend needed
+      const cutoutBlob = await removeBg(originalImage);
+      const cutoutUrl = URL.createObjectURL(cutoutBlob);
+      let finalImage = cutoutUrl;
+      if (backgroundType === "white") {
+        finalImage = await compositeOnFill(cutoutUrl, (ctx, w, h) => { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); });
+      } else if (backgroundType === "gradient") {
+        finalImage = await compositeOnFill(cutoutUrl, (ctx, w, h) => {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, "#e5e7eb"); grad.addColorStop(1, "#ffffff");
+          ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+        });
+      }
+      setResultImage(finalImage);
+      toast({ title: "Background removed! ✨" });
     } catch (err: any) {
       const msg = String(err?.message || "Unknown error");
       const networkHint = msg.toLowerCase().includes("failed to fetch") || msg.toLowerCase().includes("network");
@@ -80,7 +117,7 @@ export default function BackgroundRemover() {
       <SEO title="Background Remover" description="Remove image backgrounds instantly with AI" path="/bg-remover" />
       <div className="space-y-6 max-w-4xl mx-auto">
       <AnimatePresence>
-        {loading && <ToolLoadingOverlay message="Removing background from your image…" />}
+        {loading && <ToolLoadingOverlay message={backgroundType === "lifestyle" ? "AI is generating a lifestyle background…" : "Removing background in your browser (first run downloads the AI model, may take a bit longer)…"} />}
       </AnimatePresence>
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Eraser className="h-6 w-6 text-primary" />{"AI Background Remover"}</h1>

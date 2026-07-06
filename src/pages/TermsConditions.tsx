@@ -34,7 +34,10 @@ const TermsConditions = () => (
         <h2 className="text-xl font-semibold text-foreground">6. Changes to Terms</h2>
         <p>We reserve the right to modify these terms at any time. Continued use of the platform constitutes acceptance of updated terms.</p>
         
-        <h2 className="text-xl font-semibold text-foreground">7. Contact</h2>
+        <h2 className="text-xl font-semibold text-foreground">7. Open Source Software</h2>
+        <p>Our Background Remover tool uses the open-source library <a href="https://github.com/imgly/background-removal-js" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@imgly/background-removal</a> (licensed under AGPL-3.0) to remove image backgrounds directly in your browser. In accordance with the AGPL license, the source code of this library is publicly available at the link above.</p>
+
+        <h2 className="text-xl font-semibold text-foreground">8. Contact</h2>
         <p>For any questions about these terms, please contact us at <a href="mailto:support@nayratools.com" className="text-primary hover:underline">support@nayratools.com</a>.</p>
       </div>
     </div>
