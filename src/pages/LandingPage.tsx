@@ -102,6 +102,9 @@ const footerLinks = {
 const LandingPage = () => {
   const { user } = useAuth();
   const ctaLink = user ? "/chat" : "/login";
+  const ctaText = user ? "Go to Dashboard" : "Get Started Free";
+  const heroCtaText = user ? "Go to Dashboard" : "Start Free";
+  const bottomCtaText = user ? "Go to Dashboard" : "Start Free Trial";
   const [navOpen, setNavOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -129,12 +132,12 @@ const LandingPage = () => {
               ))}
             </nav>
             <div className="flex items-center gap-3">
-                <Link to={ctaLink}><Button className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all">Get Started Free <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                <Link to={ctaLink}><Button className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all">{ctaText} <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
               <button className="md:hidden p-2" onClick={() => setNavOpen(!navOpen)}>{navOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
             </div>
           </div>
         </div>
-        <AnimatePresence>{navOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden border-t border-gray-100 bg-white overflow-hidden"><div className="px-4 py-4 space-y-3"><Link to="/chat" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Features</Link><a href="#pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Pricing</a><Link to="/blog" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Blog</Link><Link to="/about" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>About Us</Link><Link to="/contact" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Contact</Link><Link to={ctaLink}><Button className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2">Get Started Free</Button></Link></div></motion.div>}</AnimatePresence>
+        <AnimatePresence>{navOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden border-t border-gray-100 bg-white overflow-hidden"><div className="px-4 py-4 space-y-3"><Link to="/chat" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Features</Link><a href="#pricing" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Pricing</a><Link to="/blog" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Blog</Link><Link to="/about" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>About Us</Link><Link to="/contact" className="block text-sm font-medium text-gray-700 py-2" onClick={() => setNavOpen(false)}>Contact</Link><Link to={ctaLink}><Button className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2">{ctaText}</Button></Link></div></motion.div>}</AnimatePresence>
       </header>
 
       {/* HERO */}
@@ -149,7 +152,7 @@ const LandingPage = () => {
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">From product listings to competitor analysis, image editing to pricing — NayraTools gives you 25+ AI-powered tools to grow your online business.</p>
               <div className="flex flex-wrap gap-4">
-                <Link to={ctaLink}><Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white shadow-xl shadow-orange-200 hover:shadow-orange-300 px-8 py-6 text-base">Start Free <ArrowRight className="ml-2 h-5 w-5" /></Button></Link>
+                <Link to={ctaLink}><Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white shadow-xl shadow-orange-200 hover:shadow-orange-300 px-8 py-6 text-base">{heroCtaText} <ArrowRight className="ml-2 h-5 w-5" /></Button></Link>
                 <Link to="/startup-guide"><Button size="lg" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-6 text-base">Watch Demo</Button></Link>
               </div>
               <div className="flex items-center gap-4 mt-10 pt-6 border-t border-gray-100">
@@ -299,7 +302,7 @@ const LandingPage = () => {
             <p className="text-orange-100 text-lg mb-8">Join 10,000+ sellers who trust NayraTools to save time and increase sales.</p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input type="email" placeholder="Enter your email" className="flex-1 px-5 py-3.5 rounded-xl border-0 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-orange-300 focus:outline-none shadow-lg" />
-              <Link to={ctaLink}><Button className="bg-white text-orange-600 hover:bg-orange-50 px-8 py-3.5 text-base font-semibold shadow-xl">Start Free Trial</Button></Link>
+              <Link to={ctaLink}><Button className="bg-white text-orange-600 hover:bg-orange-50 px-8 py-3.5 text-base font-semibold shadow-xl">{bottomCtaText}</Button></Link>
             </div>
             <p className="text-orange-200 text-sm mt-4">No credit card required • 30-day free trial</p>
           </motion.div>
