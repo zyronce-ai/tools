@@ -253,12 +253,12 @@ async function callGeminiImageProcess(
   messages: Array<{ role: string; content: string | any[] }>,
   apiKey: string,
 ): Promise<any> {
-  const geminiModel = "gemini-2.5-flash";
+  const geminiModel = "gemini-2.5-flash-image";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
   const contents = buildGeminiContents(messages);
   const body = {
     contents,
-    generationConfig: { temperature: 0.8, maxOutputTokens: 8192 },
+    generationConfig: { responseModalities: ["TEXT", "IMAGE"], temperature: 0.8 },
   };
   const resp = await fetch(url, {
     method: "POST",
