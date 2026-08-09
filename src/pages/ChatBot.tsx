@@ -138,7 +138,7 @@ export default function ChatBot() {
   const renderMessageContent = (content: string | any[]) => {
     if (typeof content === "string") return content;
     return content.map((part, i) => {
-      if (part.type === "image_url") return <img key={i} src={part.image_url?.url} alt="User uploaded image for AI analysis" className="max-w-[300px] rounded-lg my-1 border border-[#2A2A38]" />;
+      if (part.type === "image_url") return <img key={i} src={part.image_url?.url} alt="User uploaded image for AI analysis" className="max-w-[300px] rounded-lg my-1 border border-border" />;
       if (part.type === "text") return <span key={i}>{part.text}</span>;
       return null;
     });
@@ -154,24 +154,24 @@ export default function ChatBot() {
         {historyOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black z-20 md:hidden" onClick={() => setHistoryOpen(false)} />
-            <motion.div initial={{ x: -280, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -280, opacity: 0 }} transition={{ duration: 0.2 }} className="fixed md:relative z-30 w-[260px] border-r border-[#2A2A38] bg-[#16161D] flex flex-col overflow-hidden flex-shrink-0 h-full">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-[#2A2A38]">
-                <h2 className="text-sm font-semibold text-[#F1F1F5]">Chat History</h2>
+            <motion.div initial={{ x: -280, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -280, opacity: 0 }} transition={{ duration: 0.2 }} className="fixed md:relative z-30 w-[260px] border-r border-border bg-card flex flex-col overflow-hidden flex-shrink-0 h-full">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                <h2 className="text-sm font-semibold text-foreground">Chat History</h2>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7 text-[#8888A0] hover:text-[#F1F1F5]" onClick={startNewChat}><Plus className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={startNewChat}><Plus className="h-3.5 w-3.5" /></Button>
                 </div>
               </div>
               <ScrollArea className="flex-1">
                 <div className="p-2 space-y-0.5">
-                  {conversations.length === 0 && <p className="text-xs text-[#8888A0]/60 text-center py-8">No history yet</p>}
+                  {conversations.length === 0 && <p className="text-xs text-muted-foreground/60 text-center py-8">No history yet</p>}
                   {conversations.map((conv) => (
                     <div key={conv.id} className={cn(
                       "group flex items-center gap-2 rounded-lg px-3 py-2 cursor-pointer transition-all text-sm",
-                      conv.id === activeId ? "bg-[#FF6B35]/10 text-[#F1F1F5]" : "text-[#8888A0] hover:text-[#F1F1F5] hover:bg-white/[0.04]"
+                      conv.id === activeId ? "bg-[#FF6B35]/10 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     )} onClick={() => { switchTo(conv); setHistoryOpen(false); }}>
                       <MessageCircle className="h-3.5 w-3.5 flex-shrink-0 opacity-50" />
                       <span className="truncate flex-1 text-xs">{conv.title}</span>
-                      <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 text-[#8888A0] hover:text-red-400 flex-shrink-0" onClick={(e) => { e.stopPropagation(); handleDelete(conv.id); }}><Trash2 className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-400 flex-shrink-0" onClick={(e) => { e.stopPropagation(); handleDelete(conv.id); }}><Trash2 className="h-3 w-3" /></Button>
                     </div>
                   ))}
                 </div>
@@ -181,10 +181,10 @@ export default function ChatBot() {
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col min-w-0 bg-[#0F0F13]">
-        <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-[#2A2A38] flex-shrink-0">
+      <div className="flex-1 flex flex-col min-w-0 bg-background">
+        <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-border flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button className="md:hidden p-1.5 -ml-1.5 rounded-lg hover:bg-white/[0.06] text-[#8888A0]" onClick={() => setHistoryOpen(true)}>
+            <button className="md:hidden p-1.5 -ml-1.5 rounded-lg hover:bg-muted text-muted-foreground" onClick={() => setHistoryOpen(true)}>
               <MessageCircle className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2.5">
@@ -192,17 +192,17 @@ export default function ChatBot() {
                 <Bot className="h-4 w-4 text-white" />
               </div>
               <div>
-                <h1 className="text-sm font-semibold text-[#F1F1F5]">AI Chatbot for Ecommerce Sellers</h1>
-                <p className="text-[11px] text-[#8888A0]">Apka AI Business Partner</p>
+                <h1 className="text-sm font-semibold text-foreground">AI Chatbot for Ecommerce Sellers</h1>
+                <p className="text-[11px] text-muted-foreground">Apka AI Business Partner</p>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="hidden sm:flex items-center gap-1.5 text-[11px] text-[#8888A0] bg-[#1E1E28] border border-[#2A2A38] px-2.5 py-1 rounded-full">
+            <span className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground bg-card border border-border px-2.5 py-1 rounded-full">
               <Sparkles className="h-3 w-3 text-[#7C3AED]" />
               Powered by AI
             </span>
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8888A0] hover:text-[#F1F1F5] hidden md:flex" onClick={startNewChat}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground hidden md:flex" onClick={startNewChat}>
               <Plus className="h-4 w-4" />
             </Button>
           </div>
@@ -219,8 +219,8 @@ export default function ChatBot() {
               >
                 <Bot className="h-10 w-10 text-white" />
               </motion.div>
-              <h2 className="text-xl font-heading font-bold text-[#F1F1F5] mb-2">Apka AI Business Partner</h2>
-              <p className="text-sm text-[#8888A0] mb-8 max-w-sm">
+              <h2 className="text-xl font-heading font-bold text-foreground mb-2">Apka AI Business Partner</h2>
+              <p className="text-sm text-muted-foreground mb-8 max-w-sm">
                 Product listings, GST queries, competitor analysis — sab kuch ek jagah
               </p>
               <div className="grid grid-cols-2 gap-2.5 w-full max-w-sm">
@@ -231,7 +231,7 @@ export default function ChatBot() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.08 }}
                     onClick={() => send(action.label)}
-                    className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#1E1E28] border border-[#2A2A38] text-sm text-[#F1F1F5] hover:border-[#FF6B35]/40 hover:bg-[#FF6B35]/5 transition-all text-left"
+                    className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-card border border-border text-sm text-foreground hover:border-[#FF6B35]/40 hover:bg-[#FF6B35]/5 transition-all text-left"
                   >
                     <span className="text-lg">{action.icon}</span>
                     <span className="text-xs leading-tight">{action.label}</span>
@@ -259,10 +259,10 @@ export default function ChatBot() {
                       "max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed relative group",
                       msg.role === "user"
                         ? "bg-[#FF6B35] text-white rounded-br-md"
-                        : "bg-[#1E1E28] border border-[#2A2A38] border-l-[#7C3AED] border-l-2 rounded-bl-md"
+                        : "bg-card border border-border border-l-[#7C3AED] border-l-2 rounded-bl-md"
                     )}>
                       {msg.role === "assistant" ? (
-                        <div className="prose prose-sm max-w-none prose-p:text-[#D1D1E0] prose-p:leading-relaxed prose-headings:text-[#F1F1F5] prose-strong:text-[#F1F1F5] prose-code:text-[#7C3AED] prose-code:bg-[#16161D] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#16161D] prose-pre:border prose-pre:border-[#2A2A38] prose-a:text-[#FF6B35]">
+                        <div className="prose prose-sm max-w-none prose-p:text-muted-foreground prose-p:leading-relaxed prose-headings:text-foreground prose-strong:text-foreground prose-code:text-[#7C3AED] prose-code:bg-card prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-card prose-pre:border prose-pre:border-border prose-a:text-[#FF6B35]">
                           <ReactMarkdown>{msg.content as string}</ReactMarkdown>
                         </div>
                       ) : (
@@ -278,7 +278,7 @@ export default function ChatBot() {
                         {msg.role === "assistant" && (
                           <button
                             onClick={() => copyText(msg.content as string, i)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity text-[#8888A0] hover:text-[#F1F1F5]"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
                           >
                             {copiedId === i ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
                           </button>
@@ -298,7 +298,7 @@ export default function ChatBot() {
                   <div className="h-8 w-8 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center">
                     <Bot className="h-4 w-4 text-[#7C3AED]" />
                   </div>
-                  <div className="bg-[#1E1E28] border border-[#2A2A38] border-l-[#7C3AED] border-l-2 rounded-2xl rounded-bl-md px-4 py-3">
+                  <div className="bg-card border border-border border-l-[#7C3AED] border-l-2 rounded-2xl rounded-bl-md px-4 py-3">
                     <div className="flex gap-1.5">
                       <span className="h-2 w-2 bg-[#7C3AED] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                       <span className="h-2 w-2 bg-[#7C3AED] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -311,17 +311,17 @@ export default function ChatBot() {
           )}
         </ScrollArea>
 
-        <div className="flex-shrink-0 px-4 md:px-6 py-3 border-t border-[#2A2A38] bg-[#0F0F13]">
+        <div className="flex-shrink-0 px-4 md:px-6 py-3 border-t border-border bg-background">
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className="max-w-3xl mx-auto">
             {attachedImage && (
               <div className="relative inline-block mb-2">
-                <img src={attachedImage} alt="Preview of selected product image" className="h-16 rounded-lg border border-[#2A2A38]" />
+                <img src={attachedImage} alt="Preview of selected product image" className="h-16 rounded-lg border border-border" />
                 <button type="button" className="absolute -top-1.5 -right-1.5 bg-[#FF6B35] text-white rounded-full h-5 w-5 flex items-center justify-center shadow-lg" onClick={() => setAttachedImage(null)}><X className="h-3 w-3" /></button>
               </div>
             )}
-            <div className="flex items-center gap-2 bg-[#1E1E28] border border-[#2A2A38] rounded-2xl px-3 py-1.5 focus-within:border-[#FF6B35]/50 focus-within:ring-1 focus-within:ring-[#FF6B35]/20 transition-all">
+            <div className="flex items-center gap-2 bg-card border border-border rounded-2xl px-3 py-1.5 focus-within:border-[#FF6B35]/50 focus-within:ring-1 focus-within:ring-[#FF6B35]/20 transition-all">
               <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileSelect} />
-              <button type="button" onClick={() => fileInputRef.current?.click()} disabled={loading} className="h-8 w-8 rounded-lg flex items-center justify-center text-[#8888A0] hover:text-[#F1F1F5] hover:bg-white/[0.06] transition-all flex-shrink-0">
+              <button type="button" onClick={() => fileInputRef.current?.click()} disabled={loading} className="h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all flex-shrink-0">
                 <ImagePlus className="h-4 w-4" />
               </button>
               <input
@@ -332,7 +332,7 @@ export default function ChatBot() {
                 onPaste={handlePaste}
                 placeholder="Ask me anything..."
                 disabled={loading}
-                className="flex-1 bg-transparent border-0 outline-none text-sm text-[#F1F1F5] placeholder-[#8888A0]/60 py-2 focus:ring-0"
+                className="flex-1 bg-transparent border-0 outline-none text-sm text-foreground placeholder:text-muted-foreground/60 py-2 focus:ring-0"
               />
               <button
                 type="submit"
@@ -340,14 +340,14 @@ export default function ChatBot() {
                 className={cn(
                   "h-8 w-8 rounded-xl flex items-center justify-center transition-all flex-shrink-0",
                   loading || (!input.trim() && !attachedImage)
-                    ? "bg-[#2A2A38] text-[#8888A0]"
+                    ? "bg-muted text-muted-foreground"
                     : "bg-[#FF6B35] text-white hover:scale-105 active:scale-95"
                 )}
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
             </div>
-            <p className="text-[11px] text-[#8888A0]/40 text-center mt-1.5">Press Ctrl+K for quick tools</p>
+            <p className="text-[11px] text-muted-foreground/40 text-center mt-1.5">Press Ctrl+K for quick tools</p>
           </form>
         </div>
       </div>

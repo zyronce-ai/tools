@@ -48,7 +48,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
     <BreadcrumbSchema items={breadcrumbItems} />
-    <div className={`${theme === "dark" ? "dashboard-dark" : ""} min-h-screen flex bg-background text-foreground`}>
+    <div className={`${theme === "dark" ? "dashboard-dark dark" : ""} min-h-screen flex bg-background text-foreground`}>
       <div className="hidden md:flex">
         <AppSidebar />
       </div>
