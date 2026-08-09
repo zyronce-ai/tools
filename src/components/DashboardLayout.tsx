@@ -86,7 +86,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-2 ml-auto">
             <button
-              onClick={toggleTheme}
+              onClick={(e) => toggleTheme(e)}
               className="h-9 w-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
               title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
             >

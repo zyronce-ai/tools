@@ -101,3 +101,16 @@
     border-radius: 2px;
   }
 }
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--reveal-x) var(--reveal-y));
+  }
+  to {
+    clip-path: circle(150vmax at var(--reveal-x) var(--reveal-y));
+  }
+}
+
+.theme-reveal {
+  animation: theme-reveal 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
