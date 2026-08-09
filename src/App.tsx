@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { OrganizationSchema, WebSiteSchema } from "@/components/JsonLd";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
 // Lazy load all pages
@@ -101,6 +102,7 @@ const DashboardRoutes = () => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
    <AuthProvider>
+      <ThemeProvider>
       <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -120,13 +122,15 @@ const App = () => (
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/i/*" element={<ImageView />} />
+                <Route path="/__test-upscaler" element={<ImageUpscaler />} />
                 <Route path="/*" element={<DashboardRoutes />} />
               </Routes>
             </Suspense>
           </BrowserRouter>
           </HelmetProvider>
-        </TooltipProvider>
-    </AuthProvider>
+</TooltipProvider>
+        </ThemeProvider>
+      </AuthProvider>
   </QueryClientProvider>
 );
 

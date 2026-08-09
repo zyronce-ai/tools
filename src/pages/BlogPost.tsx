@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
 import { getBlogPost, getBlogPosts } from "./Blog";
 import { ArticleSchema } from "@/components/JsonLd";
+import { useAuth } from "@/hooks/useAuth";
 
 const categories: Record<string, string> = {
   "ecommerce-tips": "Ecommerce Tips",
@@ -16,6 +17,7 @@ const categories: Record<string, string> = {
 };
 
 const BlogPost = () => {
+  const { user } = useAuth();
   const { slug } = useParams<{ slug: string }>();
   const post = getBlogPost(slug || "");
   const allPosts = getBlogPosts();
@@ -61,7 +63,7 @@ const BlogPost = () => {
               <Share2 className="h-4 w-4" />
             </Button>
             <Button asChild size="sm" className="shadow-md">
-              <Link to="/chat">Start Free →</Link>
+              <Link to={user ? "/chat" : "/login"}>{user ? "Go to Dashboard" : "Start Free →"}</Link>
             </Button>
           </div>
         </div>
@@ -113,7 +115,7 @@ const BlogPost = () => {
           <h3 className="text-2xl font-bold mb-3">Ready to grow your business? 🚀</h3>
           <p className="text-muted-foreground mb-6 text-lg">Try NayraTools — free AI-powered tools for online sellers.</p>
           <Button asChild size="lg" className="shadow-xl shadow-primary/20 px-8 h-12 rounded-xl text-base">
-            <Link to="/chat">Start Using Tools Free →</Link>
+            <Link to={user ? "/chat" : "/login"}>{user ? "Go to Dashboard" : "Start Using Tools Free →"}</Link>
           </Button>
         </motion.div>
 

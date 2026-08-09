@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
 
 const categories = [
   { id: "all", label: "All Posts", icon: BookOpen },
@@ -315,6 +316,7 @@ const fadeIn = { hidden: { opacity: 0 }, visible: { opacity: 1 } };
 const scaleUp = { hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } };
 
 const Blog = () => {
+  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -350,7 +352,7 @@ const Blog = () => {
               <Link to="/">Home</Link>
             </Button>
             <Button asChild size="sm" className="shadow-md">
-              <Link to="/chat">Start Free →</Link>
+              <Link to={user ? "/chat" : "/login"}>{user ? "Go to Dashboard" : "Start Free →"}</Link>
             </Button>
           </div>
         </div>
@@ -577,7 +579,7 @@ const Blog = () => {
               Start using NayraTools' free AI-powered tools and take your ecommerce business to the next level.
             </p>
             <Button asChild size="lg" className="shadow-xl shadow-primary/20 text-base px-8 h-12 rounded-xl">
-              <Link to="/chat">Start Using Tools Free →</Link>
+              <Link to={user ? "/chat" : "/login"}>{user ? "Go to Dashboard" : "Start Using Tools Free →"}</Link>
             </Button>
           </motion.div>
         </div>

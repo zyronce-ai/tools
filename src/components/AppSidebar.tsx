@@ -90,15 +90,15 @@ export function AppSidebar() {
   return (
     <div className={cn(
       "flex flex-col h-full transition-all duration-200",
-      "bg-[#16161D] border-r border-[#2A2A38]",
+      "bg-sidebar border-r border-sidebar-border",
       collapsed ? "w-[60px]" : "w-60"
     )}>
-      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-[#2A2A38] flex-shrink-0">
+      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-sidebar-border flex-shrink-0">
         <div className="h-8 w-8 rounded-lg bg-[#FF6B35] flex items-center justify-center flex-shrink-0">
           <Sparkles className="h-4 w-4 text-white" />
         </div>
         {!collapsed && (
-          <span className="font-heading text-base font-bold text-[#F1F1F5] tracking-tight">NayraTools</span>
+          <span className="font-heading text-base font-bold text-sidebar-foreground tracking-tight">NayraTools</span>
         )}
       </div>
 
@@ -110,7 +110,7 @@ export function AppSidebar() {
               {!collapsed && (
                 <button
                   onClick={() => toggleGroup(group.label)}
-                  className="flex items-center gap-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-widest text-[#8888A0]/60 hover:text-[#8888A0] transition-colors"
+                  className="flex items-center gap-2 w-full px-2 py-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground transition-colors"
                 >
                   <div className="h-1.5 w-1.5 rounded-full bg-[#FF6B35]" />
                   {group.label}
@@ -127,8 +127,8 @@ export function AppSidebar() {
                       "group relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150",
                       collapsed ? "justify-center mx-0" : "mx-0",
                       active
-                        ? "bg-[#FF6B35]/10 text-[#F1F1F5] font-medium"
-                        : "text-[#8888A0] hover:text-[#F1F1F5] hover:bg-white/[0.04]"
+                        ? "bg-primary/10 text-foreground font-medium"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     )}
                   >
                     {active && !collapsed && (
@@ -137,8 +137,8 @@ export function AppSidebar() {
                     <div className={cn(
                       "h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200",
                       active
-                        ? "bg-[#FF6B35]/10"
-                        : "group-hover:bg-white/[0.04]"
+                        ? "bg-primary/10"
+                        : "group-hover:bg-muted"
                     )}>
                       <item.icon className="h-4 w-4" style={{ color: active ? '#FF6B35' : item.color }} />
                     </div>
@@ -166,7 +166,7 @@ export function AppSidebar() {
         })}
       </div>
 
-      <div className="border-t border-[#2A2A38] p-3">
+      <div className="border-t border-sidebar-border p-3">
         {!collapsed ? (
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
@@ -174,7 +174,7 @@ export function AppSidebar() {
                 {initials}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-[#F1F1F5] truncate">{displayName}</p>
+                <p className="text-sm font-medium text-sidebar-foreground truncate">{displayName}</p>
                 <p className="text-[11px] text-[#7C3AED] font-semibold">{plan} Plan</p>
               </div>
             </div>

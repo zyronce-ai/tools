@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { UserProfileDropdown } from "@/components/UserProfileDropdown";
-import { Bell, Search, Crown, Sparkles, Menu } from "lucide-react";
+import { Bell, Search, Crown, Sparkles, Menu, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PricingModal } from "@/components/PricingModal";
 import { BreadcrumbSchema } from "@/components/JsonLd";
+import { useTheme } from "@/components/ThemeProvider";
 
 const breadcrumbNames: Record<string, string> = {
   "chat": "AI Chat",
@@ -36,6 +37,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pricingOpen, setPricingOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const pathSegments = location.pathname.split("/").filter(Boolean);
   const firstSegment = pathSegments[0] || "";
   const breadcrumbItems = [{ name: "Home", path: "/" }];
@@ -46,7 +48,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
     <BreadcrumbSchema items={breadcrumbItems} />
-    <div className="dashboard-dark min-h-screen flex bg-[#0F0F13] text-[#F1F1F5]">
+    <div className={`${theme === "dark" ? "dashboard-dark" : ""} min-h-screen flex bg-background text-foreground`}>
       <div className="hidden md:flex">
         <AppSidebar />
       </div>
@@ -61,8 +63,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       )}
 
       <div className="flex-1 flex flex-col min-w-0 max-h-screen">
-        <header className="h-14 flex items-center gap-3 px-4 border-b border-[#2A2A38] bg-[#0F0F13]/80 backdrop-blur-md sticky top-0 z-30 flex-shrink-0">
-          <button className="md:hidden p-1.5 -ml-1.5 rounded-lg hover:bg-white/[0.06] text-[#8888A0]" onClick={() => setSidebarOpen(true)}>
+        <header className="h-14 flex items-center gap-3 px-4 border-b border-sidebar-border bg-card/80 backdrop-blur-md sticky top-0 z-30 flex-shrink-0">
+          <button className="md:hidden p-1.5 -ml-1.5 rounded-lg hover:bg-muted text-muted-foreground" onClick={() => setSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
 
@@ -70,20 +72,27 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <div className="h-7 w-7 rounded-lg bg-[#FF6B35] flex items-center justify-center">
               <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-heading text-sm font-bold text-[#F1F1F5]">NayraTools</span>
+            <span className="font-heading text-sm font-bold text-foreground">NayraTools</span>
           </div>
 
           <div className="hidden sm:flex items-center flex-1 max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8888A0]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search tools..."
-              className="w-full h-9 pl-9 pr-4 rounded-xl bg-[#1E1E28] border border-[#2A2A38] text-sm text-[#F1F1F5] placeholder-[#8888A0]/60 focus:outline-none focus:border-[#FF6B35]/50 focus:ring-1 focus:ring-[#FF6B35]/20 transition-all"
+              className="w-full h-9 pl-9 pr-4 rounded-xl bg-card border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
             />
           </div>
 
           <div className="flex items-center gap-2 ml-auto">
-            <button className="h-9 w-9 rounded-xl bg-[#1E1E28] border border-[#2A2A38] flex items-center justify-center text-[#8888A0] hover:text-[#F1F1F5] hover:border-[#FF6B35]/30 transition-all relative">
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
+              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+            >
+              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            </button>
+            <button className="h-9 w-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all relative">
               <Bell className="h-4 w-4" />
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-[#FF6B35] rounded-full text-[9px] font-bold text-white flex items-center justify-center">3</span>
             </button>
