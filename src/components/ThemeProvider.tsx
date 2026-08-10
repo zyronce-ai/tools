@@ -17,43 +17,32 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
     return "light";
   });
-  const [reveal, setReveal] = useState<{ x: number; y: number; to: Theme } | null>(null);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = (e?: MouseEvent<HTMLElement>) => {
-    const x = e?.clientX ?? window.innerWidth - 60;
-    const y = e?.clientY ?? 30;
-    const to: Theme = theme === "light" ? "dark" : "light";
-    setReveal({ x, y, to });
-  };
+    const x = e?.clientX ?? window.innerWidth / 2;
+    const y = e?.clientY ?? 60;
+    const doc = document.documentElement;
+    doc.style.setProperty("--reveal-x", `${x}px`);
+    doc.style.setProperty("--reveal-y", `${y}px`);
 
-  const handleAnimationEnd = () => {
-    if (reveal) {
-      setTheme(reveal.to);
-      setReveal(null);
+    const next: Theme = theme === "light" ? "dark" : "light";
+    const apply = () => setTheme(next);
+
+    const svt = (document as any).startViewTransition;
+    if (svt) {
+      svt.call(document, apply);
+    } else {
+      apply();
     }
   };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
-      {reveal && (
-        <div
-          key={reveal.to}
-          className="fixed inset-0 z-[9999] pointer-events-none theme-reveal"
-          style={{
-            background: reveal.to === "dark" ? "#0F0F13" : "#F5F5F5",
-            clipPath: `circle(0px at ${reveal.x}px ${reveal.y}px)`,
-            // @ts-expect-error -- custom CSS property for keyframes
-            "--reveal-x": `${reveal.x}px`,
-            "--reveal-y": `${reveal.y}px`,
-          }}
-          onAnimationEnd={handleAnimationEnd}
-        />
-      )}
     </ThemeContext.Provider>
   );
 }
