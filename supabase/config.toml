@@ -51,3 +51,6 @@ verify_jwt = false
 
 [functions.elevenlabs-tts]
 verify_jwt = false
+
+[functions.label-cropper]
+verify_jwt = false

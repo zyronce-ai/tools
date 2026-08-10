@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, TrendingUp, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot } from "lucide-react";
+import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, TrendingUp, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot, Scissors } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "react-router-dom";
@@ -60,7 +60,7 @@ const toolGroups: ToolGroup[] = [
     items: [
       { title: "Startup Guide", url: "/startup-guide", icon: Rocket, color: "#8888A0" },
       { title: "Text to Speech", url: "/text-to-speech", icon: Volume2, color: "#8888A0" },
-
+      { title: "Label Cropper", url: "/label-cropper", icon: Scissors, color: "#8888A0" },
       { title: "History", url: "/history", icon: History, color: "#8888A0" },
     ],
   },

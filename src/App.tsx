@@ -39,6 +39,7 @@ const StartupGuide = lazy(() => import("./pages/StartupGuide"));
 
 const BarcodeGenerator = lazy(() => import("./pages/BarcodeGenerator"));
 const ImageCompressor = lazy(() => import("./pages/ImageCompressor"));
+const LabelCropper = lazy(() => import("./pages/LabelCropper"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsConditions = lazy(() => import("./pages/TermsConditions"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
@@ -91,6 +92,7 @@ const DashboardRoutes = () => (
 
         <Route path="barcode-generator" element={<BarcodeGenerator />} />
         <Route path="image-compressor" element={<ImageCompressor />} />
+        <Route path="label-cropper" element={<LabelCropper />} />
         
         <Route path="profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />

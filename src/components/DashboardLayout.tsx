@@ -30,6 +30,7 @@ const breadcrumbNames: Record<string, string> = {
 
   "barcode-generator": "Barcode Generator",
   "image-compressor": "Image Compressor",
+  "label-cropper": "Label Cropper",
   "profile": "Profile",
 };
 
