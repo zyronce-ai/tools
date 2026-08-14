@@ -81,7 +81,7 @@ serve(async (req) => {
         Authorization: `Bearer ${FIRECRAWL_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url: targetUrl, formats: ["markdown", "links"], onlyMainContent: true, waitFor: 3000 }),
+      body: JSON.stringify({ url: targetUrl, formats: ["markdown", "links"], onlyMainContent: true, waitFor: 1000 }),
     });
 
     let scrapedData = "";
@@ -117,43 +117,30 @@ APPLIED FILTERS:
 ${filtersDescription}
 
 --- SCRAPED FLIPKART DATA ---
-${scrapedData.slice(0, 8000)}
+${scrapedData.slice(0, 4500)}
 --- END SCRAPED DATA ---
 
 Product Links Found:
-${scrapedLinks.slice(0, 30).map((l: string, i: number) => `${i + 1}. ${l}`).join("\n")}
+${scrapedLinks.slice(0, 20).map((l: string, i: number) => `${i + 1}. ${l}`).join("\n")}
 
-Now analyze this REAL data and provide:
+Now analyze this REAL data and respond FAST with a concise markdown report. Keep it short and to the point.
 
-## 🔥 Flipkart Trending Products — ${category === "all" ? "All Categories" : (subCategoryLabel !== "All" ? subCategoryLabel : category.charAt(0).toUpperCase() + category.slice(1))}
+## 🔥 Flipkart Trending — ${category === "all" ? "All Categories" : (subCategoryLabel !== "All" ? subCategoryLabel : category.charAt(0).toUpperCase() + category.slice(1))}
 
-For each product found in the scraped data, provide:
-1. **Product Name** - exact name from Flipkart
-2. **Price** - in ₹ (as shown on Flipkart)
-3. **Discount** - if available
-4. **Rating** - if available
-5. **Latch/Deal Status** - whether the product has an active Latch / Limited-Time Deal / Lightning Deal badge
-6. **🔗 Flipkart Link** - actual product URL from the scraped links above, ALWAYS as a clickable markdown link like [Open on Flipkart](URL)
-7. **Why It's Trending** - brief reason
+List the top 10 products from the scraped data. For each product, output a single line with this exact format:
+- **Product Name** — ₹Price (X% off, ⭐4.2) — Latch: ✅/❌ — [Open on Flipkart](URL) — one-line why trending
 
-CRITICAL: Every single product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs or text without a link. The user must be able to click and open the product directly on Flipkart in a new tab.
+CRITICAL: Every product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs.
 
 IMPORTANT: Strictly respect the applied filters above. Only list products that fall within the requested price range, discount, and rating. ${latchOnly ? "Only include products that have an active Latch / Limited-Time Deal / Lightning Deal." : ""}
 
-List at least 10-15 products with their ACTUAL Flipkart links.
-
-## 📊 Category Insights
-- Which products have the best discounts / latch deals
-- Price ranges that are selling most
-- Seasonal patterns visible
-
+Then add TWO short sections (max 3 lines each):
 ## 💡 Seller Tips
-- Which products to start selling based on this data
-- Pricing strategy based on current Flipkart prices
-- How to compete with these top sellers
+- 2 quick tips: which product to sell & what price to set
 
-IMPORTANT: Use REAL data from the scrape. Include actual Flipkart product URLs wherever possible. Format links as clickable markdown links like [Product Name](URL).
-Provide clear English responses.`;
+## 📊 Insights
+- 2 quick observations from the data
+`;
 
     const response = await callAI([
       { role: "user", content: prompt },
