@@ -65,12 +65,12 @@ const AboutUs = () => (
         <div className="mt-8 p-8 rounded-2xl bg-card border border-border/50 text-center">
           <h2 className="text-2xl font-bold mb-4">Meet the Founder</h2>
           <div className="mx-auto h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-            <span className="text-3xl font-bold text-primary">CP</span>
+            <span className="text-3xl font-bold text-primary">V</span>
           </div>
-          <h3 className="text-xl font-semibold mb-1">Chetan Parihar</h3>
+          <h3 className="text-xl font-semibold mb-1">Vansu</h3>
           <p className="text-sm text-primary font-medium mb-4">Founder & Entrepreneur</p>
           <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Chetan Parihar is a passionate entrepreneur with deep experience in technology and ecommerce. He built NayraTools with the vision of making powerful AI tools easily accessible to every Indian online seller. Chetan believes that with the right use of technology, even small sellers can compete with big brands. NayraTools is the result of his hard work and dedication, making sellers' lives easier every day.
+            Vansu is a passionate entrepreneur with deep experience in technology and ecommerce. He built NayraTools with the vision of making powerful AI tools easily accessible to every Indian online seller. Vansu believes that with the right use of technology, even small sellers can compete with big brands. NayraTools is the result of his hard work and dedication, making sellers' lives easier every day.
           </p>
         </div>
       </div>
