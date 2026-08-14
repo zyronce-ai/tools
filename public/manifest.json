@@ -1,7 +1,8 @@
 {
-  "name": "Nayra Trendz - AI Ecommerce Tools",
+  "name": "NayraTrendz - AI Ecommerce Tools",
   "short_name": "Nayra Tools",
   "description": "AI-powered ecommerce tools for sellers",
+  "version": "4.6.0",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",

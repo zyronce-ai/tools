@@ -1,5 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
+import {
+  PDFDocument,
+  PDFOperator,
+  PDFOperatorNames,
+  PDFNumber,
+} from "https://esm.sh/pdf-lib@1.17.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -159,24 +164,48 @@ async function cropPage(
   picklistInterval: number,
 ): Promise<void> {
   const source = sourcePdf.getPage(pageIndex);
-  const copied = await targetPdf.copyPages(sourcePdf, [pageIndex]);
-  const page = copied[0];
+  const { width: pageW, height: pageH } = source.getSize();
 
-  // Use original page size if it's already a label-size sheet, otherwise
-  // crop the A4 sheet to the top-left 4x6 label region.
-  const media = source.getSize();
-  if (media.width <= LABEL_W + 40 && media.height <= LABEL_H + 40) {
-    // Already label-sized — keep as is
+  // Label box on the A4 sheet, measured from real Flipkart label PDFs.
+  // Coordinates are top-left origin (same as pymupdf): the 4x6 shipping label
+  // occupies X 190..404, Y 28..381 on the 595x842 A4 sheet.
+  const SX = 190, SY_TOP = 28, SX2 = 404, SY_BOTTOM = 381;
+
+  if (pageW <= LABEL_W + 40 && pageH <= LABEL_H + 40) {
+    // Already label-sized sheet — copy the page as-is
+    const copied = await targetPdf.copyPages(sourcePdf, [pageIndex]);
+    targetPdf.addPage(copied[0]);
   } else {
-    // Crop top-left 4x6 area of the A4 sheet.
-    // NOTE: adjust the X offset to pick a different label column/grid position.
-    const x = 0;
-    const yTopLeft = media.height; // pdf coords origin is bottom-left
-    page.setMediaBox(x, yTopLeft - LABEL_H, LABEL_W, LABEL_H);
-    page.setCropBox(x, yTopLeft - LABEL_H, LABEL_W, LABEL_H);
-  }
+    // Crop the label box onto a fresh 4x6 canvas using embedPage + drawPage
+    // (avoids print-rotation issues that setCropBox causes).
+    // boundingBox clips the embed to the label region; an explicit clip path
+    // keeps nothing outside the canvas so print drivers don't auto-fit the
+    // content down to a smaller size.
+    const embedded = await targetPdf.embedPage(
+      source,
+      {
+        left: SX,
+        right: SX2,
+        bottom: pageH - SY_BOTTOM,
+        top: pageH - SY_TOP,
+      },
+    );
+    const page = targetPdf.addPage([LABEL_W, LABEL_H]);
 
-  targetPdf.addPage(page);
+    const num = (v: number) => PDFNumber.of(v);
+    page.pushOperators(
+      PDFOperator.of(PDFOperatorNames.PushGraphicsState),
+      PDFOperator.of(PDFOperatorNames.MoveTo, [num(0), num(0)]),
+      PDFOperator.of(PDFOperatorNames.LineTo, [num(LABEL_W), num(0)]),
+      PDFOperator.of(PDFOperatorNames.LineTo, [num(LABEL_W), num(LABEL_H)]),
+      PDFOperator.of(PDFOperatorNames.LineTo, [num(0), num(LABEL_H)]),
+      PDFOperator.of(PDFOperatorNames.ClosePath),
+      PDFOperator.of(PDFOperatorNames.ClipNonZero),
+      PDFOperator.of(PDFOperatorNames.EndPath),
+    );
+    page.drawPage(embedded, { x: 0, y: 0, width: LABEL_W, height: LABEL_H });
+    page.pushOperators(PDFOperator.of(PDFOperatorNames.PopGraphicsState));
+  }
 
   // Insert an empty picklist page after every N labels
   if (picklistInterval > 0 && (labelNumber % picklistInterval === 0)) {

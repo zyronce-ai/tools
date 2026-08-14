@@ -345,6 +345,7 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} NayraTools. All rights reserved.</p>
             <p className="text-sm text-gray-600">Made with ❤️ for ecommerce sellers everywhere</p>
+            <p className="text-sm text-gray-600">v4.6.0</p>
           </div>
         </div>
       </footer>
