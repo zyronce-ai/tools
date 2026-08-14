@@ -13,6 +13,13 @@ import { AnimatePresence } from "framer-motion";
 import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import { streamFromEdge } from "@/lib/ai-stream";
 import ReactMarkdown from "react-markdown";
+import type { Components } from "react-markdown";
+
+const markdownComponents: Components = {
+  a: ({ href, children, ...props }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>
+  ),
+};
 
 const categories = [
   { value: "all", label: "All Categories" },
@@ -253,7 +260,7 @@ export default function TrendingProducts() {
       {result && (
         <Card>
           <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
-            <ReactMarkdown>{result}</ReactMarkdown>
+            <ReactMarkdown components={markdownComponents}>{result}</ReactMarkdown>
           </CardContent>
         </Card>
       )}

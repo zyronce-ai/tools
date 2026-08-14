@@ -133,8 +133,10 @@ For each product found in the scraped data, provide:
 3. **Discount** - if available
 4. **Rating** - if available
 5. **Latch/Deal Status** - whether the product has an active Latch / Limited-Time Deal / Lightning Deal badge
-6. **🔗 Flipkart Link** - actual product URL from the scraped links above
+6. **🔗 Flipkart Link** - actual product URL from the scraped links above, ALWAYS as a clickable markdown link like [Open on Flipkart](URL)
 7. **Why It's Trending** - brief reason
+
+CRITICAL: Every single product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs or text without a link. The user must be able to click and open the product directly on Flipkart in a new tab.
 
 IMPORTANT: Strictly respect the applied filters above. Only list products that fall within the requested price range, discount, and rating. ${latchOnly ? "Only include products that have an active Latch / Limited-Time Deal / Lightning Deal." : ""}
 
