@@ -94,9 +94,20 @@ const faqs = [
 ];
 
 const footerLinks = {
-  product: ["AI ChatBot", "Image Tools", "Pricing Calculator", "Startup Guide", "All Tools"],
-  company: ["About Us", "Blog", "Contact", "API Settings", "Startup Guide"],
-  legal: ["Terms & Conditions", "Privacy Policy", "Refund Policy", "Cookie Policy"],
+  product: [
+    { label: "AI ChatBot", to: "/chat" },
+    { label: "Pricing Calculator", to: "/pricing-calculator" },
+    { label: "Startup Guide", to: "/startup-guide" },
+  ],
+  company: [
+    { label: "About Us", to: "/about" },
+    { label: "Blog", to: "/blog" },
+    { label: "Contact", to: "/contact" },
+  ],
+  legal: [
+    { label: "Terms & Conditions", to: "/terms" },
+    { label: "Privacy Policy", to: "/privacy-policy" },
+  ],
 };
 
 const LandingPage = () => {
@@ -334,7 +345,7 @@ const LandingPage = () => {
                 <h2 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">{col.title}</h2>
                 <ul className="space-y-3">
                   {col.links.map((link) => (
-                    <li key={link}><Link to={`/${link.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">{link}</Link></li>
+                    <li key={link.label}><Link to={link.to} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">{link.label}</Link></li>
                   ))}
                 </ul>
               </div>
