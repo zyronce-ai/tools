@@ -81,7 +81,7 @@ serve(async (req) => {
         Authorization: `Bearer ${FIRECRAWL_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url: targetUrl, formats: ["markdown", "links"], onlyMainContent: true, waitFor: 1000 }),
+      body: JSON.stringify({ url: targetUrl, formats: ["markdown", "links"], onlyMainContent: true, waitFor: 1500 }),
     });
 
     let scrapedData = "";
@@ -96,7 +96,7 @@ serve(async (req) => {
     } else {
       const errText = await scrapeResponse.text();
       console.error("Firecrawl scrape failed:", scrapeResponse.status, errText);
-      scrapedData = "Could not scrape Flipkart directly. Using AI knowledge instead.";
+      scrapedData = "Could not scrape Flipkart directly. Using market knowledge instead.";
     }
 
     const filtersDescription = [
@@ -111,38 +111,41 @@ serve(async (req) => {
       sortBy && sortBy !== "popularity" ? `Sort by: ${sortBy}` : "Sort by: Best Selling (popularity)",
     ].filter(Boolean).join(", ") || "No specific filters (all categories)";
 
-    const prompt = `You are an expert Indian ecommerce analyst. I scraped the Flipkart page for these filters and got this data:
+    const prompt = `You are a top-tier Indian ecommerce product-viability analyst working for serious Flipkart/Meesho/Amazon sellers. Sellers pay premium prices for ACCURATE, decisive analysis — not vague lists.
 
 APPLIED FILTERS:
 ${filtersDescription}
 
 --- SCRAPED FLIPKART DATA ---
-${scrapedData.slice(0, 4500)}
+${scrapedData.slice(0, 5000)}
 --- END SCRAPED DATA ---
 
-Product Links Found:
-${scrapedLinks.slice(0, 20).map((l: string, i: number) => `${i + 1}. ${l}`).join("\n")}
+Real Product Links Found:
+${scrapedLinks.slice(0, 25).map((l: string, i: number) => `${i + 1}. ${l}`).join("\n")}
 
-Now analyze this REAL data and respond FAST with a concise markdown report. Keep it short and to the point.
+Your job: identify the 10 hottest, most sellable products that match the filters. Use the REAL scraped products when present. If the scrape is sparse, use your real knowledge of actual best-selling Indian (Flipkart) products in this category and price range. NEVER make up a brand that doesn't exist; prefer real, popular Indian-market brands like boAt, Noise, ZEBRONICS, Wildcraft, Campus, Puma, Denim, Wow Skin Science, Mamaearth, Borosil, etc.
 
-## 🔥 Flipkart Trending — ${category === "all" ? "All Categories" : (subCategoryLabel !== "All" ? subCategoryLabel : category.charAt(0).toUpperCase() + category.slice(1))}
+RESPONSE FORMAT — output these EXACT sections in order:
 
-ALWAYS output a list of exactly 10 products (never fewer). For each product, output a single line with this exact format:
-- **Product Name** — ₹Price (X% off, ⭐4.2) — Latch: ✅/❌ — [Open on Flipkart](URL) — one-line why trending
+FIRST, a 2-3 line summary in markdown starting with "## 🔥 Flipkart Trending — ${category === "all" ? "All Categories" : (subCategoryLabel !== "All" ? subCategoryLabel : category.charAt(0).toUpperCase() + category.slice(1))}" — state the single strongest opportunity of the week.
 
-IMPORTANT RULES:
-1. You MUST list 10 products. Never output just 1 or 2. If the scraped data has too few products, supplement the list using your real knowledge of actual best-selling Indian ecommerce products that match the category and applied filters. Do not stop at what is barely visible in the scraped text.
-2. Every product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs.
-3. Strictly respect the applied filters. Products should broadly fall within the requested category, price range, discount, and rating. ${latchOnly ? "Prioritize products that commonly have Latch / Limited-Time Deals / Lightning Deals." : ""}
-4. Vary the products — do not repeat the same item. Give 10 distinct, real products with realistic Indian prices.
+THEN, exactly 10 product records, EACH as its own line starting with the exact token ❯❯PRODUCT❮❮ followed by one minified JSON object with this exact schema (no markdown, no code fences, no text on the same line after the JSON):
+{"name":"Product Name","brand":"Brand","url":"https://www.flipkart.com/...","price":1299,"mrp":3999,"off":67,"rating":4.2,"reviews":45000,"demand":78,"competition":34,"profit":71,"verdict":"SELL","trend":"one-line why it is trending now","reason":"one-line why it is profitable/viable for a reseller to sell this"}
 
-Then add TWO short sections (max 3 lines each):
-## 💡 Seller Tips
-- 2 quick tips: which product to sell & what price to set
+Rules for the JSON fields:
+- name/brand/url = real product identity. price = current selling price in ₹ (number). mrp = maximum retail price (number). off = integer discount %.
+- rating = 0-5 with one decimal. reviews = approximate real review count (number).
+- demand = 0-100 (how strong current buyer demand is).
+- competition = 0-100 (how crowded the listing is for similar sellers).
+- profit = 0-100 (estimated NET profitability for a reseller after Flipkart commission, shipping, packaging & ads). Give varied, decisive scores — not all middling.
+- verdict = exactly "SELL" if profit >= 60, "MAYBE" if profit 40-59, "SKIP" if profit < 40. Match verdict to the profit score.
+- Do NOT include a "sourcing" key — the system adds sourcing links automatically.
 
-## 📊 Insights
-- 2 quick observations from the data
-`;
+THEN, a "## 💡 Seller Action Plan" markdown section (max 4 lines): the single best product to sell, the exact price to set, and when to restock (season/date).
+
+THEN, a "## 📊 Market Insights" markdown section (max 3 lines): 2 sharp observations.
+
+Output ONLY the summary, the 10 ❯❯PRODUCT❮❮ lines, and the two markdown sections. Nothing else. All 10 product lines MUST be present.`;
 
     const response = await callAI([
       { role: "user", content: prompt },
@@ -151,6 +154,8 @@ Then add TWO short sections (max 3 lines each):
     const errResp = handleResponseErrors(response, corsHeaders);
     if (errResp) return errResp;
 
+    // Forward the AI stream directly. The frontend parses ❯❯PRODUCT❮❮ lines
+    // from the accumulated text and injects sourcing links client-side.
     return new Response(response.body, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
   } catch (e) {
     console.error("trending-products error:", e);
