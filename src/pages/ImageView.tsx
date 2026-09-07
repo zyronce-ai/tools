@@ -21,7 +21,7 @@ const ImageView = () => {
       <img
         src={imageUrl}
         alt="Shared image"
-        className="max-w-full max-h-[90vh] object-contain rounded-lg"
+        className="max-w-full max-h-[90vh] object-contain"
       />
     </div>
   );
