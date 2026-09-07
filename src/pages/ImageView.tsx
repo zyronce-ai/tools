@@ -76,7 +76,7 @@ const ImageView = () => {
         className="max-w-full max-h-[90vh] object-contain rounded-lg"
         onError={() => setError(true)}
       />
-      <p className="text-white/40 text-xs mt-4">nayratrendz.in</p>
+      <p className="text-white/40 text-xs mt-4">tool.nayratrendz.in</p>
     </div>
   );
 };

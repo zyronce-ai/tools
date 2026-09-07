@@ -76,7 +76,7 @@ const ImageToUrl = () => {
           if (error) throw error;
 
           // Generate custom domain URL
-          const customUrl = `https://nayratrendz.in/i/${fileName}`;
+          const customUrl = `https://tool.nayratrendz.in/i/${fileName}`;
           updated[i] = { ...img, uploading: false, url: customUrl };
         } catch (err: any) {
           updated[i] = { ...img, uploading: false, error: err.message || "Upload failed" };
