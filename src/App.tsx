@@ -31,7 +31,6 @@ const ImageUpscaler = lazy(() => import("./pages/ImageUpscaler"));
 const TextToSpeech = lazy(() => import("./pages/TextToSpeech"));
 const ImageToUrl = lazy(() => import("./pages/ImageToUrl"));
 const LogoMaker = lazy(() => import("./pages/LogoMaker"));
-const TrendingProducts = lazy(() => import("./pages/TrendingProducts"));
 const FakeReviewDetector = lazy(() => import("./pages/FakeReviewDetector"));
 const ProductSEO = lazy(() => import("./pages/ProductSEO"));
 const StartupGuide = lazy(() => import("./pages/StartupGuide"));
@@ -85,7 +84,6 @@ const DashboardRoutes = () => (
         <Route path="text-to-speech" element={<TextToSpeech />} />
         <Route path="image-to-url" element={<ImageToUrl />} />
         <Route path="logo-maker" element={<LogoMaker />} />
-        <Route path="trending-products" element={<TrendingProducts />} />
         <Route path="fake-review-detector" element={<FakeReviewDetector />} />
         <Route path="product-seo" element={<ProductSEO />} />
         <Route path="startup-guide" element={<StartupGuide />} />

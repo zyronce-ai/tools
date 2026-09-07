@@ -23,7 +23,6 @@ const breadcrumbNames: Record<string, string> = {
   "text-to-speech": "Text to Speech",
   "image-to-url": "Image to URL",
   "logo-maker": "Logo Maker",
-  "trending-products": "Trending Products",
   "fake-review-detector": "Fake Review Detector",
   "product-seo": "Product SEO",
   "startup-guide": "Startup Guide",

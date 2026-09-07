@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, TrendingUp, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot, Scissors } from "lucide-react";
+import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot, Scissors } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "react-router-dom";
@@ -27,7 +27,6 @@ const toolGroups: ToolGroup[] = [
       { title: "Product Keywords", url: "/keywords", icon: Tags, color: "#FF6B35" },
       { title: "Listing Scorer", url: "/listing-scorer", icon: ClipboardCheck, color: "#FF6B35" },
       { title: "Product SEO", url: "/product-seo", icon: SearchCheck, color: "#FF6B35", pro: true },
-      { title: "Trending Products", url: "/trending-products", icon: TrendingUp, color: "#FF6B35", pro: true },
       { title: "Competitor Analysis", url: "/competitor", icon: Search, color: "#FF6B35", pro: true },
       { title: "Fake Review Detector", url: "/fake-review-detector", icon: ShieldAlert, color: "#FF6B35", pro: true },
     ],

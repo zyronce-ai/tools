@@ -53,7 +53,6 @@ const categories = [
   {
     name: "Research & Analysis", icon: BarChart3,
     tools: [
-      { icon: TrendingUp, name: "Trending Products", desc: "Discover market trends" },
       { icon: ShieldAlert, name: "Fake Review Detector", desc: "Review authenticity check" },
 
     ],
