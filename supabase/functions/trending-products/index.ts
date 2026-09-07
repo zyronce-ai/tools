@@ -127,12 +127,14 @@ Now analyze this REAL data and respond FAST with a concise markdown report. Keep
 
 ## 🔥 Flipkart Trending — ${category === "all" ? "All Categories" : (subCategoryLabel !== "All" ? subCategoryLabel : category.charAt(0).toUpperCase() + category.slice(1))}
 
-List the top 10 products from the scraped data. For each product, output a single line with this exact format:
+ALWAYS output a list of exactly 10 products (never fewer). For each product, output a single line with this exact format:
 - **Product Name** — ₹Price (X% off, ⭐4.2) — Latch: ✅/❌ — [Open on Flipkart](URL) — one-line why trending
 
-CRITICAL: Every product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs.
-
-IMPORTANT: Strictly respect the applied filters above. Only list products that fall within the requested price range, discount, and rating. ${latchOnly ? "Only include products that have an active Latch / Limited-Time Deal / Lightning Deal." : ""}
+IMPORTANT RULES:
+1. You MUST list 10 products. Never output just 1 or 2. If the scraped data has too few products, supplement the list using your real knowledge of actual best-selling Indian ecommerce products that match the category and applied filters. Do not stop at what is barely visible in the scraped text.
+2. Every product MUST have its Flipkart URL as a clickable markdown link [Open on Flipkart](https://www.flipkart.com/...). Never output bare URLs.
+3. Strictly respect the applied filters. Products should broadly fall within the requested category, price range, discount, and rating. ${latchOnly ? "Prioritize products that commonly have Latch / Limited-Time Deals / Lightning Deals." : ""}
+4. Vary the products — do not repeat the same item. Give 10 distinct, real products with realistic Indian prices.
 
 Then add TWO short sections (max 3 lines each):
 ## 💡 Seller Tips
