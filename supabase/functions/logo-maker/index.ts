@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { callAIImage, corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { kieTextToImage } from "../_shared/kie-image.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -23,11 +24,7 @@ Requirements:
 - Suitable for use on products, packaging, website, and social media
 - Professional typography for the brand name`;
 
-    const data = await callAIImage(
-      [{ role: "user", content: prompt }],
-      userGeminiKey,
-      "google/gemini-2.5-flash-image",
-    );
+    const data = await kieTextToImage(prompt, "1:1");
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

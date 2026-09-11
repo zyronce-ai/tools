@@ -1,5 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { callAIImage, corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { kieTextToImage } from "../_shared/kie-image.ts";
+
+const sizeMap: Record<string, string> = {
+  instagram: "1:1",
+  facebook: "16:9",
+  whatsapp: "1:1",
+  website: "16:9",
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -7,17 +15,10 @@ serve(async (req) => {
   try {
     const { productName, offerText, platform, style, userGeminiKey } = await req.json();
 
-    const sizeMap: Record<string, string> = {
-      instagram: "1080x1080 square",
-      facebook: "1200x628 landscape",
-      whatsapp: "800x800 square",
-      website: "1920x950 landscape banner",
-    };
-
     const prompt = `Generate a professional e-commerce promotional banner image for:
 Product: ${productName}
 Offer/Text to display: ${offerText}
-Size: ${sizeMap[platform] || "1080x1080 square"}
+Size: ${sizeMap[platform] || "1:1"}
 Style: ${style || "modern and vibrant"}
 
 Requirements:
@@ -29,11 +30,8 @@ Requirements:
 - Clean typography with clear call-to-action
 - No blurry or unreadable text`;
 
-    const data = await callAIImage(
-      [{ role: "user", content: prompt }],
-      userGeminiKey,
-      "google/gemini-2.5-flash-image",
-    );
+    // Use KIE instead of Gemini
+    const data = await kieTextToImage(prompt, sizeMap[platform] || "1:1");
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

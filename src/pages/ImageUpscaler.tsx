@@ -11,9 +11,10 @@ import ToolLoadingOverlay from "@/components/ToolLoadingOverlay";
 import Upscaler from "upscaler";
 import x4 from "@upscalerjs/esrgan-medium/4x";
 
-// Keep the model's input capped so 4x upscaling lands near 4K instead of
-// blowing past it (and past what a browser tab can hold in memory).
-const MAX_INPUT_DIMENSION = 1024;
+// Keep the model's input capped so 4x upscaling stays within what a browser
+// tab can actually hold in memory. 768 x 4 = ~3072px output (near-4K) which is
+// sharp but far safer than letting a 1024px input balloon to 4096px.
+const MAX_INPUT_DIMENSION = 768;
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -83,14 +84,21 @@ export default function ImageUpscaler() {
     try {
       const input = await capImageSize(originalImage);
       const result = await getUpscaler().upscale(input, {
-        patchSize: 64,
-        padding: 4,
+        patchSize: 128,
+        padding: 6,
         progress: (amount: number) => setProgress(Math.round(amount * 100)),
       });
       setUpscaledImage(result);
       toast({ title: "Image upscaled to 4K!" });
     } catch (err: any) {
-      toast({ title: err.message || "Upscale failed, try again", variant: "destructive" });
+      const raw = String(err?.message || err || "");
+      const friendly = /webgl|backend|context/i.test(raw)
+        ? "Your browser blocked GPU acceleration. Try Chrome, or enable hardware acceleration in browser settings."
+        : /memory|allocat/i.test(raw)
+          ? "Ran out of memory — try a smaller image."
+          : raw || "Upscale failed, try again";
+      console.error("Upscale failed:", err);
+      toast({ title: friendly, variant: "destructive" });
     } finally {
       setLoading(false);
     }

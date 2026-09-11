@@ -41,6 +41,10 @@ async function compressImage(file: File, targetReduction: number): Promise<Compr
         return;
       }
 
+      // JPEG has no alpha channel, so transparent PNGs would turn black.
+      // Paint a white base first to keep transparency looking correct.
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
 
       const targetSize = file.size * (1 - targetReduction);

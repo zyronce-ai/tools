@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { callAIImage, corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { corsHeaders, handleAIError } from "../_shared/ai-call.ts";
+import { kieGenerateImage, uploadBase64ToAiTemp } from "../_shared/kie-image.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -15,19 +16,16 @@ serve(async (req) => {
       transparent: "Remove the background completely, making it transparent/clean white. Keep only the product with crisp edges. Professional product cutout style.",
     };
 
-    const prompt = bgPrompts[backgroundType] || bgPrompts.white;
+    const prompt = (bgPrompts[backgroundType] || bgPrompts.white) + " Preserve product shape and texture exactly.";
 
-    const data = await callAIImage(
-      [{
-        role: "user",
-        content: [
-          { type: "text", text: `${prompt} Preserve product shape and texture exactly.` },
-          { type: "image_url", image_url: { url: imageBase64 } },
-        ],
-      }],
-      userGeminiKey,
-      "google/gemini-2.5-flash-image",
-    );
+    // Upload the user's image to Supabase storage to get a public URL for KIE input.
+    const inputImageUrl = await uploadBase64ToAiTemp(imageBase64, "bg-input");
+
+    const data = await kieGenerateImage({
+      prompt,
+      imageUrls: [inputImageUrl],
+      imageSize: "auto",
+    });
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
