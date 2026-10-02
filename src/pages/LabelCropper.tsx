@@ -26,8 +26,15 @@ export default function LabelCropper() {
   const [keepInvoice, setKeepInvoice] = useState(true);
   const [mergeFiles, setMergeFiles] = useState(false);
   const [multiOrderBottom, setMultiOrderBottom] = useState(false);
-  const [picklistInterval, setPicklistInterval] = useState(10);
+  const [picklistInterval, setPicklistInterval] = useState(0);
   const [reviewOrders, setReviewOrders] = useState("");
+
+  // Crop region settings
+  const [autoDetectCrop, setAutoDetectCrop] = useState(false);
+  const [cropLeft, setCropLeft] = useState(190);
+  const [cropRight, setCropRight] = useState(404);
+  const [cropTop, setCropTop] = useState(28);
+  const [cropBottom, setCropBottom] = useState(381);
 
   const validateFile = (f: File) => {
     if (!f) return;
@@ -67,6 +74,11 @@ export default function LabelCropper() {
       form.append("multi_order_bottom", String(multiOrderBottom));
       form.append("picklist_interval", String(picklistInterval));
       form.append("review_orders", reviewOrders);
+      form.append("auto_detect_crop", String(autoDetectCrop));
+      form.append("crop_left", String(cropLeft));
+      form.append("crop_right", String(cropRight));
+      form.append("crop_top", String(cropTop));
+      form.append("crop_bottom", String(cropBottom));
 
       const resp = await fetch(`${SUPABASE_URL}/functions/v1/label-cropper`, {
         method: "POST",
@@ -224,6 +236,14 @@ export default function LabelCropper() {
               </span>
             </label>
 
+            <label className="flex items-start gap-3 rounded-lg border border-border p-3 cursor-pointer hover:border-primary/40 transition-colors">
+              <input type="checkbox" checked={autoDetectCrop} onChange={(e) => setAutoDetectCrop(e.target.checked)} className="mt-0.5 h-4 w-4 accent-primary" />
+              <span>
+                <span className="block text-sm font-medium text-foreground">Auto-detect crop region</span>
+                <span className="block text-xs text-muted-foreground">Try to detect label position from page content</span>
+              </span>
+            </label>
+
             <div className="rounded-lg border border-border p-3">
               <Label htmlFor="picklist_interval">Add picklist page after [X] orders</Label>
               <Input
@@ -235,6 +255,29 @@ export default function LabelCropper() {
                 className="mt-2"
               />
               <p className="text-xs text-muted-foreground mt-1">0 disables picklist pages</p>
+            </div>
+
+            <div className="rounded-lg border border-border p-3 md:col-span-2">
+              <p className="text-sm font-medium text-foreground mb-3">Manual Crop Region (points, A4 = 595x842 pt)</p>
+              <div className="grid grid-cols-4 gap-2">
+                <div>
+                  <Label htmlFor="crop_left">Left (X)</Label>
+                  <Input id="crop_left" type="number" min={0} max={595} value={cropLeft} onChange={(e) => setCropLeft(parseInt(e.target.value, 10) || 0)} className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="crop_right">Right (X)</Label>
+                  <Input id="crop_right" type="number" min={0} max={595} value={cropRight} onChange={(e) => setCropRight(parseInt(e.target.value, 10) || 595)} className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="crop_top">Top (Y)</Label>
+                  <Input id="crop_top" type="number" min={0} max={842} value={cropTop} onChange={(e) => setCropTop(parseInt(e.target.value, 10) || 0)} className="mt-1" />
+                </div>
+                <div>
+                  <Label htmlFor="crop_bottom">Bottom (Y)</Label>
+                  <Input id="crop_bottom" type="number" min={0} max={842} value={cropBottom} onChange={(e) => setCropBottom(parseInt(e.target.value, 10) || 842)} className="mt-1" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Default: 190, 404, 28, 381 (standard Flipkart label). Adjust if labels cut off.</p>
             </div>
 
             <div className="rounded-lg border border-border p-3 md:col-span-2">

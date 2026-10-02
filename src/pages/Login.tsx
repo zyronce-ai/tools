@@ -13,7 +13,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [showOtp, setShowOtp] = useState(false);
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -27,25 +28,55 @@ const Login = () => {
     e.preventDefault();
     const errs: typeof errors = {};
     if (!email.trim()) errs.email = "Email address is required";
-    if (!password) errs.password = "Password is required";
     setErrors(errs);
     if (Object.keys(errs).length) return;
     setLoading(true);
+
     if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({ email });
       if (error) {
         setErrors({ general: error.message === "User already registered" ? "This email is already registered. Please login." : error.message });
         setLoading(false);
         return;
       }
-      setErrors({ general: "✅ Account created! Please login." });
+      setErrors({ general: "✅ Account created! OTP sent to your email." });
+      setShowOtp(true);
       setLoading(false);
       setIsSignUp(false);
       return;
     }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    // Login via OTP — send code
+    if (!showOtp) {
+      try {
+        const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
+          body: JSON.stringify({ email, type: "login" }),
+        });
+        if (resp.ok) {
+          setShowOtp(true);
+          setErrors({ general: "OTP sent! Check your email." });
+        } else {
+          const err = await resp.json();
+          setErrors({ general: err.error || "Failed to send OTP." });
+        }
+      } catch {
+        setErrors({ general: "Network issue — try again." });
+      }
+      setLoading(false);
+      return;
+    }
+
+    // Verify OTP
+    if (!otp.trim() || otp.length < 4) {
+      setErrors({ general: "Enter the OTP from your email." });
+      setLoading(false);
+      return;
+    }
+    const { error } = await supabase.auth.verifyOtp({ type: "email", token: otp, email });
     if (error) {
-      setErrors({ general: error.message === "Invalid login credentials" ? "Invalid email or password." : error.message });
+      setErrors({ general: error.message === "Invalid OTP" ? "Wrong OTP. Try again." : error.message });
       setLoading(false);
       return;
     }
@@ -89,13 +120,16 @@ const Login = () => {
               <div className="relative"><Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" /><input type="email" placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} className="w-full h-12 pl-10 pr-4 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-orange-300 focus:ring-2 focus:ring-orange-100 transition-all" /></div>
               {errors.email && <p className="text-xs text-red-500 mt-1 ml-1">{errors.email}</p>}
             </div>
-            <div>
-              <div className="relative"><Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" /><input type={showPw ? "text" : "password"} placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="w-full h-12 pl-10 pr-10 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-orange-300 focus:ring-2 focus:ring-orange-100 transition-all" /><button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400">{showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button></div>
-              {errors.password && <p className="text-xs text-red-500 mt-1 ml-1">{errors.password}</p>}
-            </div>
+
+            {showOtp && (
+              <div>
+                <div className="relative"><Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" /><input type="text" placeholder="Enter OTP from email" value={otp} onChange={e => setOtp(e.target.value)} maxLength={6} className="w-full h-12 pl-10 pr-4 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-orange-300 focus:ring-2 focus:ring-orange-100 transition-all" /></div>
+                {errors.general && errors.general.includes("OTP") && <p className="text-xs text-red-500 mt-1 ml-1">{errors.general}</p>}
+              </div>
+            )}
 
             <Button type="submit" disabled={loading} className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 rounded-xl shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all text-base font-semibold">
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : isSignUp ? "Create Free Account" : "Login to Dashboard"}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : showOtp ? "Verify OTP" : isSignUp ? "Create Free Account" : "Send Login OTP"}
             </Button>
           </form>
 
