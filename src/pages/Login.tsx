@@ -46,9 +46,10 @@ const Login = () => {
       return;
     }
 
-    // Login via Supabase native OTP — send code
+    // Login via Supabase native OTP (guaranteed to verify with verifyOtp)
     if (!showOtp) {
-      const { error } = await supabase.auth.signInWithOtp({ email });
+      const trimmedEmail = email.trim().toLowerCase();
+      const { error } = await supabase.auth.signInWithOtp({ email: trimmedEmail });
       if (error) {
         setErrors({ general: error.message || "Failed to send OTP" });
         setLoading(false);
@@ -73,7 +74,6 @@ const Login = () => {
       setLoading(false);
       return;
     }
-    // Supabase requires email to match exactly what was sent with signInWithOtp
     const { error } = await supabase.auth.verifyOtp({ type: "email", token: trimmedOtp, email: trimmedEmail });
     if (error) {
       setErrors({ general: error.message === "Invalid OTP" ? "Wrong OTP. Try again." : error.message });
