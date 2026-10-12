@@ -46,24 +46,16 @@ const Login = () => {
       return;
     }
 
-    // Login via OTP — send code
+    // Login via Supabase native OTP — send code
     if (!showOtp) {
-      try {
-        const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-otp`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
-          body: JSON.stringify({ email, type: "login" }),
-        });
-        if (resp.ok) {
-          setShowOtp(true);
-          setErrors({ general: "OTP sent! Check your email." });
-        } else {
-          const err = await resp.json();
-          setErrors({ general: err.error || "Failed to send OTP." });
-        }
-      } catch {
-        setErrors({ general: "Network issue — try again." });
+      const { error } = await supabase.auth.signInWithOtp({ email });
+      if (error) {
+        setErrors({ general: error.message || "Failed to send OTP" });
+        setLoading(false);
+        return;
       }
+      setShowOtp(true);
+      setErrors({ general: "OTP sent! Check your email." });
       setLoading(false);
       return;
     }
@@ -74,7 +66,15 @@ const Login = () => {
       setLoading(false);
       return;
     }
-    const { error } = await supabase.auth.verifyOtp({ type: "email", token: otp, email });
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedOtp = otp.trim();
+    if (trimmedOtp.length < 4) {
+      setErrors({ general: "Enter the OTP from your email." });
+      setLoading(false);
+      return;
+    }
+    // Supabase requires email to match exactly what was sent with signInWithOtp
+    const { error } = await supabase.auth.verifyOtp({ type: "email", token: trimmedOtp, email: trimmedEmail });
     if (error) {
       setErrors({ general: error.message === "Invalid OTP" ? "Wrong OTP. Try again." : error.message });
       setLoading(false);
