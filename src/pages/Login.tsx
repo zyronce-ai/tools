@@ -88,6 +88,13 @@ const Login = () => {
         setLoading(false);
         return;
       }
+      // Set Supabase session so useAuth detects the user
+      if (data.session?.access_token) {
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token || "",
+        });
+      }
       navigate("/chat");
     } catch {
       setErrors({ general: "Network issue — try again." });
