@@ -8,10 +8,13 @@ import { HelmetProvider } from "react-helmet-async";
 import { OrganizationSchema, WebSiteSchema } from "@/components/JsonLd";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/hooks/useAuth";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Loader2 } from "lucide-react";
 
 // Lazy load all pages
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const Login = lazy(() => import("./pages/Login"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const ChatBot = lazy(() => import("./pages/ChatBot"));
@@ -70,45 +73,48 @@ const App = () => (
           <OrganizationSchema />
           <WebSiteSchema />
           <BrowserRouter>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/terms" element={<TermsConditions />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/pricing" element={<PricingPage />} />
-                <Route path="/i/*" element={<ImageView />} />
-                <Route path="/__test-upscaler" element={<ImageUpscaler />} />
+            <AuthProvider>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/terms" element={<TermsConditions />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/pricing" element={<PricingPage />} />
+                  <Route path="/i/*" element={<ImageView />} />
+                  <Route path="/__test-upscaler" element={<ImageUpscaler />} />
 
-                {/* Dashboard Routes - No Auth Required */}
-                <Route path="/chat" element={<DashboardLayout><ChatBot /></DashboardLayout>} />
-                <Route path="/history" element={<DashboardLayout><ContentHistory /></DashboardLayout>} />
-                <Route path="/images" element={<DashboardLayout><ImageExtractor /></DashboardLayout>} />
-                <Route path="/keywords" element={<DashboardLayout><ProductKeywords /></DashboardLayout>} />
-                <Route path="/pricing-calculator" element={<DashboardLayout><PricingCalculator /></DashboardLayout>} />
-                <Route path="/competitor" element={<DashboardLayout><CompetitorAnalysis /></DashboardLayout>} />
-                <Route path="/banner" element={<DashboardLayout><BannerMaker /></DashboardLayout>} />
-                <Route path="/invoice" element={<DashboardLayout><GSTInvoice /></DashboardLayout>} />
-                <Route path="/bg-remover" element={<DashboardLayout><BackgroundRemover /></DashboardLayout>} />
-                <Route path="/listing-scorer" element={<DashboardLayout><ListingScorer /></DashboardLayout>} />
-                <Route path="/image-upscaler" element={<DashboardLayout><ImageUpscaler /></DashboardLayout>} />
-                <Route path="/text-to-speech" element={<DashboardLayout><TextToSpeech /></DashboardLayout>} />
-                <Route path="/image-to-url" element={<DashboardLayout><ImageToUrl /></DashboardLayout>} />
-                <Route path="/logo-maker" element={<DashboardLayout><LogoMaker /></DashboardLayout>} />
-                <Route path="/fake-review-detector" element={<DashboardLayout><FakeReviewDetector /></DashboardLayout>} />
-                <Route path="/product-seo" element={<DashboardLayout><ProductSEO /></DashboardLayout>} />
-                <Route path="/startup-guide" element={<DashboardLayout><StartupGuide /></DashboardLayout>} />
-                <Route path="/barcode-generator" element={<DashboardLayout><BarcodeGenerator /></DashboardLayout>} />
-                <Route path="/image-compressor" element={<DashboardLayout><ImageCompressor /></DashboardLayout>} />
-                <Route path="/label-cropper" element={<DashboardLayout><LabelCropper /></DashboardLayout>} />
-                <Route path="/profile" element={<DashboardLayout><Profile /></DashboardLayout>} />
+                  {/* Protected Dashboard Routes */}
+                  <Route path="/chat" element={<ProtectedRoute><DashboardLayout><ChatBot /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/history" element={<ProtectedRoute><DashboardLayout><ContentHistory /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/images" element={<ProtectedRoute><DashboardLayout><ImageExtractor /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/keywords" element={<ProtectedRoute><DashboardLayout><ProductKeywords /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/pricing-calculator" element={<ProtectedRoute><DashboardLayout><PricingCalculator /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/competitor" element={<ProtectedRoute><DashboardLayout><CompetitorAnalysis /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/banner" element={<ProtectedRoute><DashboardLayout><BannerMaker /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/invoice" element={<ProtectedRoute><DashboardLayout><GSTInvoice /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/bg-remover" element={<ProtectedRoute><DashboardLayout><BackgroundRemover /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/listing-scorer" element={<ProtectedRoute><DashboardLayout><ListingScorer /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/image-upscaler" element={<ProtectedRoute><DashboardLayout><ImageUpscaler /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/text-to-speech" element={<ProtectedRoute><DashboardLayout><TextToSpeech /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/image-to-url" element={<ProtectedRoute><DashboardLayout><ImageToUrl /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/logo-maker" element={<ProtectedRoute><DashboardLayout><LogoMaker /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/fake-review-detector" element={<ProtectedRoute><DashboardLayout><FakeReviewDetector /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/product-seo" element={<ProtectedRoute><DashboardLayout><ProductSEO /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/startup-guide" element={<ProtectedRoute><DashboardLayout><StartupGuide /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/barcode-generator" element={<ProtectedRoute><DashboardLayout><BarcodeGenerator /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/image-compressor" element={<ProtectedRoute><DashboardLayout><ImageCompressor /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/label-cropper" element={<ProtectedRoute><DashboardLayout><LabelCropper /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/profile" element={<ProtectedRoute><DashboardLayout><Profile /></DashboardLayout></ProtectedRoute>} />
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </AuthProvider>
           </BrowserRouter>
         </HelmetProvider>
       </TooltipProvider>

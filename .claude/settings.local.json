@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(time curl -sS -X POST https://kfgmndeeeivakfvboeng.supabase.co/functions/v1/chat -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmZ21uZGVlZWl2YWtmdmJvZW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODEyOTAsImV4cCI6MjA5NzM1NzI5MH0.FudaZ6fnx9K3yGjymX53upSbuy4fSHlgwz9nN9d500g' -d '{\"messages\":[{\"role\":\"user\",\"content\":\"hi, say hello\"}]}' --max-time 60)",
+      "Bash(curl -sS -X POST https://kfgmndeeeivakfvboeng.supabase.co/functions/v1/chat -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmZ21uZGVlZWl2YWtmdmJvZW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODEyOTAsImV4cCI6MjA5NzM1NzI5MH0.FudaZ6fnx9K3yGjymX53upSbuy4fSHlgwz9nN9d500g' -d '{\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}' --max-time 30)"
+    ]
+  }
+}
