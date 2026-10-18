@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { useAuth } from "@/hooks/useAuth";
 import { signInWithGoogle } from "@/lib/firebase";
 import { toast } from "sonner";
+import { Sparkles } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,7 +35,27 @@ const Login = () => {
         path="/login"
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col pt-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
+        {/* NAVBAR */}
+        <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <Link to="/" className="flex items-center gap-2.5">
+                <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-200">
+                  <Sparkles className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>NayraTools</span>
+              </Link>
+              <nav className="hidden md:flex items-center gap-8">
+                {["Features", "Pricing", "Blog", "About Us", "Contact"].map((item) => (
+                  item === "Pricing"
+                    ? <a key={item} href="/#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</a>
+                    : <Link key={item} to={item === "Blog" ? "/blog" : item === "About Us" ? "/about" : item === "Contact" ? "/contact" : `/${item.toLowerCase().replace(/\s+/g, "-")}`} className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</Link>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </header>
         {/* Main Container */}
         <div className="flex-1 flex items-start justify-center pt-12">
           {/* Login Card */}
