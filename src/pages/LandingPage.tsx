@@ -20,12 +20,22 @@ import { PricingSection } from "@/components/PricingSection";
 const fadeUp = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.6 } };
 const stagger = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } };
 
+// URL mapping for tools
+const toolUrlMap: Record<string, string> = {
+  "AI ChatBot": "/chat",
+  "Product Keywords": "/keywords",
+  "Competitor Analysis": "/competitor",
+  "Banner Maker": "/banner",
+  "Image Extractor": "/images",
+  "GST Invoice": "/invoice",
+  "Barcode Generator": "/barcode-generator",
+};
+
 const categories = [
   {
     name: "Text & Content", icon: PenTool,
     tools: [
       { icon: MessageCircle, name: "AI ChatBot", desc: "Ecommerce expert assistant — 24/7 support" },
-
       { icon: Tags, name: "Product Keywords", desc: "High-volume keyword research" },
       { icon: ClipboardCheck, name: "Listing Scorer", desc: "AI listing quality score & fixes" },
       { icon: SearchCheck, name: "Product SEO", desc: "SEO optimization for listings" },
@@ -54,16 +64,14 @@ const categories = [
     name: "Research & Analysis", icon: BarChart3,
     tools: [
       { icon: ShieldAlert, name: "Fake Review Detector", desc: "Review authenticity check" },
-
     ],
   },
   {
     name: "Utility", icon: Zap,
     tools: [
       { icon: Volume2, name: "Text to Speech", desc: "Convert text to natural voice" },
-      { icon: QrCode, name: "Barcode/QR", desc: "Generate barcodes & QR codes" },
+      { icon: QrCode, name: "Barcode Generator", desc: "Generate barcodes & QR codes" },
       { icon: Rocket, name: "Startup Guide", desc: "Complete business start guide" },
-
     ],
   },
 ];
@@ -202,7 +210,7 @@ const LandingPage = () => {
           <AnimatePresence mode="wait">
             <motion.div key={activeCategory} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories[activeCategory].tools.map((tool) => (
-                <Link key={tool.name} to={`/${tool.name.toLowerCase().replace(/[&\s]+/g, "-").replace(/--+/g, "-").replace(/^-|-$/g, "")}`} className="group bg-white rounded-xl p-5 border border-gray-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-100/30 transition-all duration-300">
+                <Link key={tool.name} to={toolUrlMap[tool.name] || `/${tool.name.toLowerCase().replace(/[&\s]+/g, "-").replace(/--+/g, "-").replace(/^-|-$/g, "")}`} className="group bg-white rounded-xl p-5 border border-gray-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-100/30 transition-all duration-300">
                   <div className="flex items-start gap-4">
                     <div className="h-10 w-10 rounded-lg bg-orange-50 group-hover:bg-orange-100 flex items-center justify-center flex-shrink-0 transition-colors"><tool.icon className="h-5 w-5 text-orange-600" /></div>
                     <div><h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">{tool.name}</h3><p className="text-sm text-gray-500 mt-0.5">{tool.desc}</p></div>
