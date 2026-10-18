@@ -47,8 +47,8 @@ const Login = () => {
                 <span className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>NayraTools</span>
               </Link>
               <nav className="hidden md:flex items-center gap-8">
-                <a href="/#features" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Features</a>
-                <a href="/#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Pricing</a>
+                <Link to="/#features" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Features</Link>
+                <Link to="/#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Pricing</Link>
                 <Link to="/blog" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Blog</Link>
                 <Link to="/about" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">About Us</Link>
                 <Link to="/contact" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Contact</Link>

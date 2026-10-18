@@ -143,11 +143,11 @@ const LandingPage = () => {
               <span className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif" }}>NayraTools</span>
             </Link>
             <nav className="hidden md:flex items-center gap-8">
-              {["Features", "Pricing", "Blog", "About Us", "Contact"].map((item) => (
-                item === "Pricing"
-                  ? <a key={item} href="#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</a>
-                  : <Link key={item} to={item === "Blog" ? "/blog" : item === "About Us" ? "/about" : item === "Contact" ? "/contact" : `/${item.toLowerCase().replace(/\s+/g, "-")}`} className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">{item}</Link>
-              ))}
+              <a href="#features" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Features</a>
+              <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Pricing</a>
+              <Link to="/blog" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Blog</Link>
+              <Link to="/about" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">About Us</Link>
+              <Link to="/contact" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition-colors">Contact</Link>
             </nav>
             <div className="flex items-center gap-3">
                 <Link to={ctaLink}><Button className="hidden md:inline-flex bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all">{ctaText} <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
