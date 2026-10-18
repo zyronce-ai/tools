@@ -1,3 +1,6 @@
+// OTP sending removed - will be rebuilt later
+// This function is disabled
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -9,82 +12,11 @@ const corsHeaders = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  try {
-    const { email, type } = await req.json();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return new Response(JSON.stringify({ success: false, error: "Invalid email" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Store OTP in Supabase
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-    // Delete old OTPs for this email and type
-    await fetch(`${supabaseUrl}/rest/v1/otp_verification?email=eq.${encodeURIComponent(email)}&type=eq.${encodeURIComponent(type)}`, {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${supabaseKey}`,
-        "apikey": supabaseKey,
-      },
-    });
-
-    // Insert new OTP
-    const insertRes = await fetch(`${supabaseUrl}/rest/v1/otp_verification`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${supabaseKey}`,
-        "apikey": supabaseKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, otp, type }),
-    });
-
-    if (!insertRes.ok) {
-      throw new Error("Failed to store OTP");
-    }
-
-    // Send email via Resend
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) {
-      throw new Error("RESEND_API_KEY not configured");
-    }
-
-    const subject = type === "signup"
-      ? "Welcome to NayraTools — Your Verification Code"
-      : "Your NayraTools Login Code";
-
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; padding: 20px;"><tr><td style="background-color: #ffffff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"><h1 style="color: #1a1a2e; font-size: 28px; font-weight: 700; margin: 0 0 16px 0; text-align: center;">${type === "signup" ? "Welcome to NayraTools!" : "Your Login Code"}</h1><p style="color: #4a4a6a; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0; text-align: center;">${type === "signup" ? "Thanks for joining NayraTools! Use the code below to verify your email and start selling smarter." : "Use the code below to log in to your NayraTools account. This code expires in 10 minutes."}</p><div style="text-align: center; margin: 32px 0;"><div style="display: inline-block; background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); border-radius: 16px; padding: 24px 40px; box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);"><span style="color: #ffffff; font-size: 42px; font-weight: 800; letter-spacing: 8px; font-family: monospace;">${otp}</span></div></div><p style="color: #8888a0; font-size: 13px; line-height: 1.5; margin: 24px 0 0 0; text-align: center;">This code expires in <strong>10 minutes</strong>. If you didn't request this, please ignore this email.</p></td></tr></table></body></html>`;
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "NayraTools <noreply@tool.nayratrendz.in>",
-        to: [email],
-        subject,
-        html,
-      }),
-    });
-
-    if (!res.ok) {
-      const error = await res.text();
-      throw new Error(`Resend failed: ${res.status}`);
-    }
-
-    return new Response(JSON.stringify({ success: true, message: "OTP sent successfully" }), {
-      status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  } catch (e) {
-    console.error("resend-otp error:", e);
-    return new Response(JSON.stringify({ success: false, error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
+  return new Response(JSON.stringify({
+    success: false,
+    error: "Auth system temporarily disabled. Please try again later."
+  }), {
+    status: 503,
+    headers: { ...corsHeaders, "Content-Type": "application/json" }
+  });
 });

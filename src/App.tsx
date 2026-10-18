@@ -7,14 +7,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { OrganizationSchema, WebSiteSchema } from "@/components/JsonLd";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { AuthProvider } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
+
 // Lazy load all pages
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const Login = lazy(() => import("./pages/Login"));
-
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const ChatBot = lazy(() => import("./pages/ChatBot"));
@@ -34,8 +31,6 @@ const LogoMaker = lazy(() => import("./pages/LogoMaker"));
 const FakeReviewDetector = lazy(() => import("./pages/FakeReviewDetector"));
 const ProductSEO = lazy(() => import("./pages/ProductSEO"));
 const StartupGuide = lazy(() => import("./pages/StartupGuide"));
-
-
 const BarcodeGenerator = lazy(() => import("./pages/BarcodeGenerator"));
 const ImageCompressor = lazy(() => import("./pages/ImageCompressor"));
 const LabelCropper = lazy(() => import("./pages/LabelCropper"));
@@ -65,55 +60,19 @@ const PageLoader = () => (
   </div>
 );
 
-const DashboardRoutes = () => (
-  <ProtectedRoute>
-    <DashboardLayout>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="chat" element={<ChatBot />} />
-        <Route path="history" element={<ContentHistory />} />
-        <Route path="images" element={<ImageExtractor />} />
-        <Route path="keywords" element={<ProductKeywords />} />
-        <Route path="pricing-calculator" element={<PricingCalculator />} />
-        <Route path="competitor" element={<CompetitorAnalysis />} />
-        <Route path="banner" element={<BannerMaker />} />
-        <Route path="invoice" element={<GSTInvoice />} />
-        <Route path="bg-remover" element={<BackgroundRemover />} />
-        <Route path="listing-scorer" element={<ListingScorer />} />
-        <Route path="image-upscaler" element={<ImageUpscaler />} />
-        <Route path="text-to-speech" element={<TextToSpeech />} />
-        <Route path="image-to-url" element={<ImageToUrl />} />
-        <Route path="logo-maker" element={<LogoMaker />} />
-        <Route path="fake-review-detector" element={<FakeReviewDetector />} />
-        <Route path="product-seo" element={<ProductSEO />} />
-        <Route path="startup-guide" element={<StartupGuide />} />
-
-        <Route path="barcode-generator" element={<BarcodeGenerator />} />
-        <Route path="image-compressor" element={<ImageCompressor />} />
-        <Route path="label-cropper" element={<LabelCropper />} />
-        
-        <Route path="profile" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
-  </DashboardLayout>
-</ProtectedRoute>);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
-   <AuthProvider>
-      <ThemeProvider>
+    <ThemeProvider>
       <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <HelmetProvider>
-            <OrganizationSchema />
-            <WebSiteSchema />
+        <Toaster />
+        <Sonner />
+        <HelmetProvider>
+          <OrganizationSchema />
+          <WebSiteSchema />
           <BrowserRouter>
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<Login />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/terms" element={<TermsConditions />} />
@@ -123,14 +82,37 @@ const App = () => (
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/i/*" element={<ImageView />} />
                 <Route path="/__test-upscaler" element={<ImageUpscaler />} />
-                <Route path="/*" element={<DashboardRoutes />} />
+
+                {/* Dashboard Routes - No Auth Required */}
+                <Route path="/chat" element={<DashboardLayout><ChatBot /></DashboardLayout>} />
+                <Route path="/history" element={<DashboardLayout><ContentHistory /></DashboardLayout>} />
+                <Route path="/images" element={<DashboardLayout><ImageExtractor /></DashboardLayout>} />
+                <Route path="/keywords" element={<DashboardLayout><ProductKeywords /></DashboardLayout>} />
+                <Route path="/pricing-calculator" element={<DashboardLayout><PricingCalculator /></DashboardLayout>} />
+                <Route path="/competitor" element={<DashboardLayout><CompetitorAnalysis /></DashboardLayout>} />
+                <Route path="/banner" element={<DashboardLayout><BannerMaker /></DashboardLayout>} />
+                <Route path="/invoice" element={<DashboardLayout><GSTInvoice /></DashboardLayout>} />
+                <Route path="/bg-remover" element={<DashboardLayout><BackgroundRemover /></DashboardLayout>} />
+                <Route path="/listing-scorer" element={<DashboardLayout><ListingScorer /></DashboardLayout>} />
+                <Route path="/image-upscaler" element={<DashboardLayout><ImageUpscaler /></DashboardLayout>} />
+                <Route path="/text-to-speech" element={<DashboardLayout><TextToSpeech /></DashboardLayout>} />
+                <Route path="/image-to-url" element={<DashboardLayout><ImageToUrl /></DashboardLayout>} />
+                <Route path="/logo-maker" element={<DashboardLayout><LogoMaker /></DashboardLayout>} />
+                <Route path="/fake-review-detector" element={<DashboardLayout><FakeReviewDetector /></DashboardLayout>} />
+                <Route path="/product-seo" element={<DashboardLayout><ProductSEO /></DashboardLayout>} />
+                <Route path="/startup-guide" element={<DashboardLayout><StartupGuide /></DashboardLayout>} />
+                <Route path="/barcode-generator" element={<DashboardLayout><BarcodeGenerator /></DashboardLayout>} />
+                <Route path="/image-compressor" element={<DashboardLayout><ImageCompressor /></DashboardLayout>} />
+                <Route path="/label-cropper" element={<DashboardLayout><LabelCropper /></DashboardLayout>} />
+                <Route path="/profile" element={<DashboardLayout><Profile /></DashboardLayout>} />
+
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </BrowserRouter>
-          </HelmetProvider>
-</TooltipProvider>
-        </ThemeProvider>
-      </AuthProvider>
+        </HelmetProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

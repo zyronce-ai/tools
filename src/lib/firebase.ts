@@ -1,52 +1,23 @@
-import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  signInWithPopup,
-  signOut as fbSignOut,
-  onAuthStateChanged,
-  type User,
-} from "firebase/auth";
+// Firebase auth removed - will be rebuilt later
+// This file is kept for future implementation
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBMyHnIk251JOVumStKpc8aiZOZJBV9sXg",
-  authDomain: "zyronce-12.firebaseapp.com",
-  projectId: "zyronce-12",
-  storageBucket: "zyronce-12.firebasestorage.app",
-  messagingSenderId: "1063158139850",
-  appId: "1:1063158139850:web:81eaad0a592d0f0b949d33",
-  measurementId: "G-DY9Z87GLZQ",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const googleProvider = new GoogleAuthProvider();
-const githubProvider = new GithubAuthProvider();
+export const auth = null;
 
 export async function signInWithGoogle() {
-  const result = await signInWithPopup(auth, googleProvider);
-  return result.user;
+  throw new Error("Auth system not implemented yet");
 }
 
 export async function signInWithGitHub() {
-  const result = await signInWithPopup(auth, githubProvider);
-  return result.user;
+  throw new Error("Auth system not implemented yet");
 }
 
-export async function signOut() {
-  await fbSignOut(auth);
-}
+export async function signOut() {}
 
-export function onAuthChange(cb: (user: User | null) => void) {
-  return onAuthStateChanged(auth, cb);
+export function onAuthChange(cb: (user: null) => void) {
+  cb(null);
+  return () => {};
 }
 
 export async function getFirebaseToken(): Promise<string> {
-  const user = auth.currentUser;
-  if (!user) throw new Error("No user logged in");
-  return user.getIdToken();
+  throw new Error("Auth system not implemented yet");
 }
-
-export { auth };

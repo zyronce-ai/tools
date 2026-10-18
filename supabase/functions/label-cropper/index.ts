@@ -335,9 +335,8 @@ async function cropPage(
   }
 
   // If this page is a review order, add a small footer text at the bottom of the label
-  // We get this info from the label data passed via context
-  // (For now, we'll add a helper function that the caller can use)
-  // The review text is handled by the caller passing a flag
+  // Note: review footer text is drawn inside the cropPage function above (isReviewOrder check)
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
