@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot, Scissors } from "lucide-react";
+import { MessageCircle, History, Tags, SearchCheck, ClipboardCheck, Search, ShieldAlert, Image, Palette, Eraser, ZoomIn, FileImage, Upload, FileText, Calculator, QrCode, Rocket, Volume2, ImageDown, Key, ChevronDown, Crown, Sparkles, Bot, Scissors, Package } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "react-router-dom";
@@ -24,6 +24,7 @@ const toolGroups: ToolGroup[] = [
     label: "Listing Tools",
     color: "from-orange-500 to-orange-600",
     items: [
+      { title: "Amazon Listing Generator", url: "/amazon-listing-generator", icon: Package, color: "#FF6B35" },
       { title: "Product Keywords", url: "/keywords", icon: Tags, color: "#FF6B35" },
       { title: "Listing Scorer", url: "/listing-scorer", icon: ClipboardCheck, color: "#FF6B35" },
       { title: "Product SEO", url: "/product-seo", icon: SearchCheck, color: "#FF6B35", pro: true },

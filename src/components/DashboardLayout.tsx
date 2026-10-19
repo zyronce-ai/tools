@@ -16,6 +16,7 @@ const breadcrumbNames: Record<string, string> = {
   "pricing-calculator": "Pricing Calculator",
   "competitor": "Competitor Analysis",
   "banner": "Banner Maker",
+  "amazon-listing-generator": "Amazon Listing Generator",
   "invoice": "GST Invoice",
   "bg-remover": "Background Remover",
   "listing-scorer": "Listing Scorer",
