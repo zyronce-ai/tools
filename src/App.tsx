@@ -24,6 +24,7 @@ const ProductKeywords = lazy(() => import("./pages/ProductKeywords"));
 const PricingCalculator = lazy(() => import("./pages/PricingCalculator"));
 const CompetitorAnalysis = lazy(() => import("./pages/CompetitorAnalysis"));
 const BannerMaker = lazy(() => import("./pages/BannerMaker"));
+const AmazonListingGenerator = lazy(() => import("./pages/AmazonListingGenerator"));
 const GSTInvoice = lazy(() => import("./pages/GSTInvoice"));
 const BackgroundRemover = lazy(() => import("./pages/BackgroundRemover"));
 const ListingScorer = lazy(() => import("./pages/ListingScorer"));
@@ -96,6 +97,7 @@ const App = () => (
                   <Route path="/pricing-calculator" element={<ProtectedRoute><DashboardLayout><PricingCalculator /></DashboardLayout></ProtectedRoute>} />
                   <Route path="/competitor" element={<ProtectedRoute><DashboardLayout><CompetitorAnalysis /></DashboardLayout></ProtectedRoute>} />
                   <Route path="/banner" element={<ProtectedRoute><DashboardLayout><BannerMaker /></DashboardLayout></ProtectedRoute>} />
+                  <Route path="/amazon-listing-generator" element={<ProtectedRoute><DashboardLayout><AmazonListingGenerator /></DashboardLayout></ProtectedRoute>} />
                   <Route path="/invoice" element={<ProtectedRoute><DashboardLayout><GSTInvoice /></DashboardLayout></ProtectedRoute>} />
                   <Route path="/bg-remover" element={<ProtectedRoute><DashboardLayout><BackgroundRemover /></DashboardLayout></ProtectedRoute>} />
                   <Route path="/listing-scorer" element={<ProtectedRoute><DashboardLayout><ListingScorer /></DashboardLayout></ProtectedRoute>} />
