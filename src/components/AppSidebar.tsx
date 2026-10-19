@@ -70,7 +70,7 @@ export function AppSidebar() {
   const { user } = useAuth();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const [openGroups, setOpenGroups] = useState<string[]>([]);
+  const [openGroups, setOpenGroups] = useState<string[]>(["AI Tools", "Listing Tools", "Design Tools", "Finance Tools", "Other"]);
   const [pricingOpen, setPricingOpen] = useState(false);
 
   const isActive = (url: string) => {
