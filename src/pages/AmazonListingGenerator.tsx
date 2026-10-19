@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
-import { DashboardLayout } from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Upload, Copy, Download, X, Image as ImageIcon } from "lucide-react";
@@ -187,12 +186,11 @@ ${listingData.keywordAudit ? `\nF. COMPLETE KEYWORD COVERAGE AUDIT\n\n${listingD
         path="/amazon-listing-generator"
       />
 
-      <DashboardLayout>
-        <div className="max-w-4xl mx-auto p-6">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Amazon Listing Generator</h1>
-            <p className="text-gray-600">Create optimized product listings for Amazon in minutes</p>
-          </div>
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Amazon Listing Generator</h1>
+          <p className="text-gray-600">Create optimized product listings for Amazon in minutes</p>
+        </div>
 
           {step === 1 ? (
             <Card>
@@ -512,7 +510,6 @@ ${listingData.keywordAudit ? `\nF. COMPLETE KEYWORD COVERAGE AUDIT\n\n${listingD
             )
           )}
         </div>
-      </DashboardLayout>
     </>
   );
 };
