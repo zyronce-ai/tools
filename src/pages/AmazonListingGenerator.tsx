@@ -4,7 +4,7 @@ import { SEO } from "@/components/SEO";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Upload, Copy, Download } from "lucide-react";
+import { Loader2, Upload, Copy, Download, X, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
 interface ListingData {
@@ -17,6 +17,7 @@ interface ListingData {
   keywords: string[];
   backendKeywords: string;
   imageUrls: string[];
+  imageRecommendations?: string[];
 }
 
 const CATEGORIES = [
@@ -48,16 +49,36 @@ const AmazonListingGenerator = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
+      const newImages: string[] = [];
+      let processed = 0;
+
       Array.from(files).forEach((file) => {
+        // Check file size (max 5MB per image)
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(`${file.name} is too large. Max 5MB per image.`);
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (event) => {
           if (event.target?.result) {
-            setUploadedImages((prev) => [...prev, event.target?.result as string]);
+            newImages.push(event.target.result as string);
+          }
+          processed++;
+
+          if (processed === files.length) {
+            setUploadedImages((prev) => [...prev, ...newImages]);
+            toast.success(`${newImages.length} image(s) uploaded successfully`);
           }
         };
         reader.readAsDataURL(file);
       });
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setUploadedImages((prev) => prev.filter((_, i) => i !== index));
+    toast.success("Image removed");
   };
 
   const handleGenerateListing = async () => {
@@ -229,10 +250,10 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Product Images (Optional)
+                    Product Images (Optional) - AI will analyze them
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
+                    <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                     <input
                       type="file"
                       multiple
@@ -245,12 +266,36 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                       htmlFor="image-upload"
                       className="cursor-pointer text-orange-600 hover:text-orange-700 font-medium"
                     >
-                      Click to upload images
+                      Click to upload product images
                     </label>
-                    {uploadedImages.length > 0 && (
-                      <p className="text-sm text-gray-600 mt-2">{uploadedImages.length} image(s) selected</p>
-                    )}
+                    <p className="text-xs text-gray-500 mt-2">Max 5MB per image. AI will analyze colors, materials, and features.</p>
                   </div>
+
+                  {/* Image Preview Grid */}
+                  {uploadedImages.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-sm font-medium text-gray-700 mb-3">
+                        Uploaded Images ({uploadedImages.length})
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        {uploadedImages.map((img, index) => (
+                          <div key={index} className="relative group">
+                            <img
+                              src={img}
+                              alt={`Product ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg border border-gray-200"
+                            />
+                            <button
+                              onClick={() => handleRemoveImage(index)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <Button
@@ -392,6 +437,28 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                     <p className="text-gray-700 break-words">{listingData.backendKeywords}</p>
                   </CardContent>
                 </Card>
+
+                {/* Image Recommendations */}
+                {listingData.imageRecommendations && listingData.imageRecommendations.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Recommended Images for Your Listing</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {listingData.imageRecommendations.map((rec, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="font-semibold text-orange-600 min-w-[24px]">{i + 1}.</span>
+                            <span className="text-gray-700">{rec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="text-xs text-gray-500 mt-4">
+                        💡 Tip: High-quality images with these perspectives will improve your conversion rate
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex gap-4">
