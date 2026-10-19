@@ -11,6 +11,8 @@ interface ListingData {
   category: string;
   productName: string;
   title: string;
+  titleCharCount: number;
+  titleKeywords: string[];
   highlights: string;
   bulletPoints: string[];
   description: string;
@@ -18,6 +20,8 @@ interface ListingData {
   backendKeywords: string;
   imageUrls: string[];
   imageRecommendations?: string[];
+  keywordAudit?: string;
+  fullText?: string;
 }
 
 const CATEGORIES = [
@@ -132,37 +136,42 @@ const AmazonListingGenerator = () => {
   const handleDownloadListing = () => {
     if (!listingData) return;
 
-    const content = `
-AMAZON PRODUCT LISTING
-======================
+    // Use full formatted text if available, otherwise create it
+    const content = listingData.fullText || `
+AMAZON PRODUCT LISTING - ${listingData.productName}
+${"=".repeat(80)}
 
-CATEGORY: ${listingData.category}
+A. FINAL AMAZON TITLE
 
-TITLE (${listingData.title.length}/75 characters):
 ${listingData.title}
 
-HIGHLIGHTS (${listingData.highlights.length}/125 characters):
-${listingData.highlights}
+Character Count: ${listingData.titleCharCount || listingData.title.length} characters
 
-BULLET POINTS:
-${listingData.bulletPoints.map((bp, i) => `${i + 1}. ${bp}`).join("\n")}
+Title Keywords Used:
+${listingData.titleKeywords.map(k => `- ${k}`).join("\n")}
 
-DESCRIPTION:
+B. 5 AMAZON BULLET POINTS
+
+${listingData.bulletPoints.map((bp, i) => `${i + 1}. ${bp}`).join("\n\n")}
+
+C. AMAZON PRODUCT DESCRIPTION
+
 ${listingData.description}
 
-KEYWORDS:
-${listingData.keywords.join(", ")}
+D. BACKEND GENERIC SEARCH TERMS
 
-BACKEND KEYWORDS (semicolon separated):
 ${listingData.backendKeywords}
 
-IMAGES:
-${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
+E. 7 SEO IMAGE FILE NAMES
+
+${listingData.imageUrls.map((url, i) => `${i + 1}. ${url}`).join("\n")}
+
+${listingData.keywordAudit ? `\nF. COMPLETE KEYWORD COVERAGE AUDIT\n\n${listingData.keywordAudit}` : ''}
     `;
 
     const element = document.createElement("a");
     element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
-    element.setAttribute("download", `amazon-listing-${listingData.productName.replace(/\s+/g, "-")}.txt`);
+    element.setAttribute("download", `amazon-listing-${listingData.productName.replace(/\s+/g, "-").toLowerCase()}.txt`);
     element.style.display = "none";
     document.body.appendChild(element);
     element.click();
@@ -321,7 +330,7 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                 <Card>
                   <CardHeader>
                     <div className="flex justify-between items-center">
-                      <CardTitle>Title ({listingData.title.length}/75 characters)</CardTitle>
+                      <CardTitle>A. FINAL AMAZON TITLE</CardTitle>
                       <Button
                         size="sm"
                         variant="outline"
@@ -331,27 +340,21 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <p className="text-lg font-semibold text-gray-900">{listingData.title}</p>
-                  </CardContent>
-                </Card>
-
-                {/* Highlights */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex justify-between items-center">
-                      <CardTitle>Highlights ({listingData.highlights.length}/125 characters)</CardTitle>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCopyToClipboard(listingData.highlights, "Highlights")}
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700">{listingData.highlights}</p>
+                    <p className="text-sm text-gray-600">
+                      Character Count: <span className="font-semibold">{listingData.titleCharCount || listingData.title.length} characters</span>
+                    </p>
+                    {listingData.titleKeywords && listingData.titleKeywords.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-700 mb-2">Title Keywords Used:</p>
+                        <ul className="text-sm text-gray-600 space-y-1">
+                          {listingData.titleKeywords.map((kw, i) => (
+                            <li key={i}>• {kw}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
 
@@ -359,25 +362,24 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                 <Card>
                   <CardHeader>
                     <div className="flex justify-between items-center">
-                      <CardTitle>Bullet Points</CardTitle>
+                      <CardTitle>B. 5 AMAZON BULLET POINTS</CardTitle>
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleCopyToClipboard(listingData.bulletPoints.join("\n"), "Bullet Points")}
+                        onClick={() => handleCopyToClipboard(listingData.bulletPoints.join("\n\n"), "Bullet Points")}
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3">
+                    <div className="space-y-4">
                       {listingData.bulletPoints.map((bp, i) => (
-                        <li key={i} className="text-gray-700 flex gap-3">
-                          <span className="font-semibold text-orange-600">{i + 1}.</span>
-                          <span>{bp}</span>
-                        </li>
+                        <div key={i} className="text-gray-700">
+                          <p className="text-sm">{bp}</p>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -385,7 +387,7 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                 <Card>
                   <CardHeader>
                     <div className="flex justify-between items-center">
-                      <CardTitle>Product Description</CardTitle>
+                      <CardTitle>C. AMAZON PRODUCT DESCRIPTION</CardTitle>
                       <Button
                         size="sm"
                         variant="outline"
@@ -396,26 +398,14 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-gray-700 whitespace-pre-wrap">{listingData.description}</div>
-                  </CardContent>
-                </Card>
-
-                {/* Keywords */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex justify-between items-center">
-                      <CardTitle>High Search Keywords</CardTitle>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCopyToClipboard(listingData.keywords.join(", "), "Keywords")}
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700">{listingData.keywords.join(", ")}</p>
+                    <div
+                      className="text-gray-700 whitespace-pre-wrap prose prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: listingData.description
+                          .replace(/<strong>/g, '<strong class="font-bold text-gray-900">')
+                          .replace(/<u>/g, '<u class="underline decoration-orange-500 decoration-2">')
+                      }}
+                    />
                   </CardContent>
                 </Card>
 
@@ -423,7 +413,7 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                 <Card>
                   <CardHeader>
                     <div className="flex justify-between items-center">
-                      <CardTitle>Backend Keywords (Semicolon Separated)</CardTitle>
+                      <CardTitle>D. BACKEND GENERIC SEARCH TERMS</CardTitle>
                       <Button
                         size="sm"
                         variant="outline"
@@ -434,18 +424,59 @@ ${listingData.imageUrls.map((url, i) => `Image ${i + 1}: ${url}`).join("\n")}
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-700 break-words">{listingData.backendKeywords}</p>
+                    <p className="text-gray-700 break-words font-mono text-sm bg-gray-50 p-3 rounded">{listingData.backendKeywords}</p>
+                    <p className="text-xs text-gray-500 mt-2">Space-separated keywords (no commas/semicolons)</p>
                   </CardContent>
                 </Card>
 
-                {/* Image Recommendations */}
-                {listingData.imageRecommendations && listingData.imageRecommendations.length > 0 && (
+                {/* Image Filenames */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>E. 7 SEO IMAGE FILE NAMES</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {listingData.imageUrls.map((url, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="font-semibold text-orange-600 min-w-[24px]">{i + 1}.</span>
+                          <code className="text-sm bg-gray-50 px-2 py-1 rounded">{url}</code>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Keyword Audit */}
+                {listingData.keywordAudit && (
                   <Card>
                     <CardHeader>
-                      <CardTitle>Recommended Images for Your Listing</CardTitle>
+                      <CardTitle>F. COMPLETE KEYWORD COVERAGE AUDIT</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
+                      <div className="text-gray-700 whitespace-pre-wrap text-sm font-mono bg-gray-50 p-4 rounded overflow-x-auto">
+                        {listingData.keywordAudit}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-4">
+                  <Button
+                    onClick={() => setStep(1)}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Generate New Listing
+                  </Button>
+                  <Button
+                    onClick={handleDownloadListing}
+                    className="flex-1 bg-orange-600 hover:bg-orange-700 text-white"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Complete Listing
+                  </Button>
+                </div>
                         {listingData.imageRecommendations.map((rec, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <span className="font-semibold text-orange-600 min-w-[24px]">{i + 1}.</span>
