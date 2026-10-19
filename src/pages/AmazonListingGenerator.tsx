@@ -475,37 +475,6 @@ ${listingData.keywordAudit ? `\nF. COMPLETE KEYWORD COVERAGE AUDIT\n\n${listingD
                     Download Complete Listing
                   </Button>
                 </div>
-                        {listingData.imageRecommendations.map((rec, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <span className="font-semibold text-orange-600 min-w-[24px]">{i + 1}.</span>
-                            <span className="text-gray-700">{rec}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="text-xs text-gray-500 mt-4">
-                        💡 Tip: High-quality images with these perspectives will improve your conversion rate
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex gap-4">
-                  <Button
-                    onClick={() => setStep(1)}
-                    variant="outline"
-                    className="flex-1"
-                  >
-                    Generate New Listing
-                  </Button>
-                  <Button
-                    onClick={handleDownloadListing}
-                    className="flex-1 bg-orange-600 hover:bg-orange-700 text-white"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download Listing
-                  </Button>
-                </div>
               </div>
             )
           )}
